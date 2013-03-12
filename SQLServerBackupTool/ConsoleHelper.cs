@@ -31,12 +31,19 @@ namespace SQLServerBackupTool
                 case OutputStatusType.Info:
                     WriteColor(ConsoleColor.Yellow, "INFO");
                     break;
+
                 case OutputStatusType.OK:
                     WriteColor(ConsoleColor.Green, "OK");
                     break;
+
                 case OutputStatusType.Error:
                     WriteColor(ConsoleColor.Red, "ERROR");
                     break;
+
+                case OutputStatusType.Warning:
+                    WriteColor(ConsoleColor.Magenta, "WARN");
+                    break;
+
                 default:
                     throw new ArgumentOutOfRangeException("s");
             }

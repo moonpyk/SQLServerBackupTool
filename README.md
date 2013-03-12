@@ -11,7 +11,7 @@ In my setup, the program is automatically started all nights by the Windows Task
 ## Features ##
 
 - Backup any number of databases
-- **TBD** Automatic zip creation of backups
+- Automatic zip creation of backups
 - **TBD** Automatic copy of each backup to a configured Network share / FTP Server / Cloud service
 
 ## Configuration ##

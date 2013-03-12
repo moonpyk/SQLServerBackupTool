@@ -25,18 +25,7 @@ namespace SQLServerBackupTool.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=dedie-vpn\\SQLEXPRESS;Initial Catalog=master;Persist Security Info=Tru" +
-            "e;User ID=backups;Password=D045I1MByQ4No1w;Application Name=SQLServerBackupTool")]
-        public string BackupConnection {
-            get {
-                return ((string)(this["BackupConnection"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool EnableBackupZip {
             get {
                 return ((bool)(this["EnableBackupZip"]));
@@ -60,6 +49,29 @@ namespace SQLServerBackupTool.Properties {
         public string BackupPath {
             get {
                 return ((string)(this["BackupPath"]));
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool EnableDeleteBackup {
+            get {
+                return ((bool)(this["EnableDeleteBackup"]));
+            }
+            set {
+                this["EnableDeleteBackup"] = value;
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=.\\SQLEXPRESS;Integrated Security=True;Application Name=SQLServerBacku" +
+            "pTool")]
+        public string BackupConnection {
+            get {
+                return ((string)(this["BackupConnection"]));
             }
         }
     }
