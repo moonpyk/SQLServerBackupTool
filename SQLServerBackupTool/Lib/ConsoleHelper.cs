@@ -1,19 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace SQLServerBackupTool
+namespace SQLServerBackupTool.Lib
 {
     public class ConsoleHelper
     {
+        /// <summary>
+        /// Enable/disable all coloring while using those helpers
+        /// </summary>
         public static bool DisableColoring
         {
             get;
             set;
         }
-        
+
+        /// <summary>
+        /// Writes a string to the console using the given color
+        /// </summary>
+        /// <param name="c">Foreground color to use</param>
+        /// <param name="text">Text to write</param>
         public static void WriteColor(ConsoleColor c, string text)
         {
             if (DisableColoring)
@@ -29,6 +33,12 @@ namespace SQLServerBackupTool
             Console.ForegroundColor = previousColor;
         }
 
+        /// <summary>
+        /// Utility function for writing nice log output to console with identation and color
+        /// </summary>
+        /// <param name="indent">Number of space to prepend</param>
+        /// <param name="s">Type of message</param>
+        /// <param name="text">Content of message</param>
         public static void WriteStatus(int indent, OutputStatusType s, string text)
         {
             for (var i = 0; i < indent; i++)

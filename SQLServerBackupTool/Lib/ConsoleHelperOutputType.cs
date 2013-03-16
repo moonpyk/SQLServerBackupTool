@@ -1,4 +1,4 @@
-﻿namespace SQLServerBackupTool
+﻿namespace SQLServerBackupTool.Lib
 {
     public enum OutputStatusType
     {
