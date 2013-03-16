@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Data.Common;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
 
-namespace SQLServerBackupTool
+namespace SQLServerBackupTool.Lib
 {
-    internal class BackupUtil : IDisposable
+    public class SqlServerBackupProvider : ISqlBackupProvider
     {
         public const string BackupCommandTemplate = @"
 BACKUP DATABASE [{0}] 
@@ -14,20 +12,26 @@ TO  DISK = N'{1}'
 WITH NOFORMAT, NOINIT, NAME = N'{0} - {2}', SKIP, NOREWIND, NOUNLOAD, STATS = 10;
 ";
 
-        private readonly SqlConnection _co;
+        private readonly DbConnection _co;
         private bool _disposed;
 
-        public BackupUtil(string connectionString)
+        public SqlServerBackupProvider(string connectionString)
         {
             _co = new SqlConnection(connectionString);
         }
 
+        /// <summary>
+        /// Indicates if the underlaying SQL Connection is opened
+        /// </summary>
         public bool IsConnectionOpened
         {
             get;
             protected set;
         }
 
+        /// <summary>
+        /// Opens the underlaying SQL Connection
+        /// </summary>
         public void Open()
         {
             if (_disposed)
@@ -42,6 +46,9 @@ WITH NOFORMAT, NOINIT, NAME = N'{0} - {2}', SKIP, NOREWIND, NOUNLOAD, STATS = 10
             IsConnectionOpened = true;
         }
 
+        /// <summary>
+        /// Closes the underlaying SQL Connecion
+        /// </summary>
         public void Close()
         {
             if (!IsConnectionOpened)
@@ -52,6 +59,13 @@ WITH NOFORMAT, NOINIT, NAME = N'{0} - {2}', SKIP, NOREWIND, NOUNLOAD, STATS = 10
             _co.Close();
         }
 
+        /// <summary>
+        /// Instructs SQL Server to make a backup of the given database, path with specified timestamp
+        /// </summary>
+        /// <param name="databaseName">Name of the database</param>
+        /// <param name="backupPath">Full destination file name of the database backup</param>
+        /// <param name="ts">Timestamp, used for indicative purposes inside the resulting backup metadata</param>
+        /// <returns>Return value of <see cref="SqlCommand.ExecuteNonQuery"/></returns>
         public int BackupDatabase(string databaseName, string backupPath, DateTime ts)
         {
             if (!IsConnectionOpened)
@@ -66,7 +80,7 @@ WITH NOFORMAT, NOINIT, NAME = N'{0} - {2}', SKIP, NOREWIND, NOUNLOAD, STATS = 10
                 databaseName,
                 backupPath,
                 string.Format("{0} {1}", ts.ToShortDateString(), ts.ToShortTimeString()
-                    ));
+            ));
 
             return q.ExecuteNonQuery();
         }
@@ -78,7 +92,7 @@ WITH NOFORMAT, NOINIT, NAME = N'{0} - {2}', SKIP, NOREWIND, NOUNLOAD, STATS = 10
         public void Dispose()
         {
             Close();
-            
+
             _co.Dispose();
             _disposed = true;
         }

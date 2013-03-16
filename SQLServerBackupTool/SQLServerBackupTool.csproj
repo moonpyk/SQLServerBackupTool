@@ -46,8 +46,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\SQLServerBackupTool.Lib\BackupUtil.cs">
-      <Link>BackupUtil.cs</Link>
+    <Compile Include="..\SQLServerBackupTool.Lib\SqlServerBackupProvider.cs">
+      <Link>Lib\SqlServerBackupProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\SQLServerBackupTool.Lib\ISqlBackupProvider.cs">
+      <Link>Lib\ISqlBackupProvider.cs</Link>
     </Compile>
     <Compile Include="ConsoleHelper.cs" />
     <Compile Include="Program.cs" />

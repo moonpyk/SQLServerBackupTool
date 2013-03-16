@@ -52,15 +52,12 @@ namespace SQLServerBackupTool.Properties {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool EnableDeleteBackupAfterZip {
             get {
                 return ((bool)(this["EnableDeleteBackupAfterZip"]));
-            }
-            set {
-                this["EnableDeleteBackupAfterZip"] = value;
             }
         }
         

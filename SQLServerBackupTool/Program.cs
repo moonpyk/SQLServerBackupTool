@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Data.SqlClient;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using Ionic.Zip;
+using SQLServerBackupTool.Lib;
 using SQLServerBackupTool.Properties;
 
 namespace SQLServerBackupTool
@@ -15,7 +15,7 @@ namespace SQLServerBackupTool
             Intro();
 
             var s = Settings.Default;
-            using (var bk = new BackupUtil(s.BackupConnection))
+            using (var bk = new SqlServerBackupProvider(s.BackupConnection))
             {
                 try
                 {
