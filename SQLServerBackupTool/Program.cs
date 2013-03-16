@@ -1,77 +1,75 @@
 ﻿using System;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.IO;
+using System.Reflection;
 using Ionic.Zip;
 using SQLServerBackupTool.Properties;
 
 namespace SQLServerBackupTool
 {
-    class Program
+    internal class Program
     {
-        public const string BackupCommandTemplate = @"
-BACKUP DATABASE [{0}] 
-TO  DISK = N'{1}' 
-WITH NOFORMAT, NOINIT,  NAME = N'{0} - {2}', SKIP, NOREWIND, NOUNLOAD,  STATS = 10;
-";
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
+            Intro();
+
             var s = Settings.Default;
-            using (var co = new SqlConnection(s.BackupConnection))
+            using (var bk = new BackupUtil(s.BackupConnection))
             {
                 try
                 {
-                    ConsoleHelper.WriteStatus(2, OutputStatusType.Info, "Opening connection...");
-                    ConsoleHelper.WriteStatus(4, OutputStatusType.OK, "Database connection opened");
+                    Log(2, OutputStatusType.Info, "Opening connection...");
+
+                    bk.Open();
+                    Log(4, OutputStatusType.OK, "Database connection opened");
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    ConsoleHelper.WriteStatus(4, OutputStatusType.Error, "Error while opening database connection !");
+                    LogException(ex);
+                    Log(4, OutputStatusType.Error, "Error while opening database connection !");
+                    Exit(false);
                     return;
                 }
-                co.Open();
 
                 foreach (var ddb in s.DatabaseList)
                 {
-                    ConsoleHelper.WriteStatus(4, OutputStatusType.Info, string.Format("Doing database backup of '{0}'", ddb));
+                    Log(4, OutputStatusType.Info, string.Format("Doing database backup of '{0}'", ddb));
 
-                    var q = co.CreateCommand();
-                    var now = DateTime.Now;
+                    var ts = DateTime.Now;
 
                     var fNameBase = string.Format(
                         "{0}.{1}",
                         ddb,
-                        now.ToString("yyyyMMdd.HHmmss")
-                    );
+                        ts.ToString("yyyyMMdd.HHmmss")
+                        );
 
                     var backupFullPath = Path.Combine(
                         s.BackupPath,
                         string.Format("{0}.bak", fNameBase)
-                    );
+                        );
 
-                    ConsoleHelper.WriteStatus(4, OutputStatusType.Info, string.Format("Output file path : '{0}'", backupFullPath));
-
-                    q.CommandText = string.Format(BackupCommandTemplate,
-                        ddb,
-                        backupFullPath,
-                        string.Format("{0} {1}", now.ToShortDateString(), now.ToShortTimeString())
-                    );
+                    Log(4, OutputStatusType.Info, string.Format("Output file path : '{0}'", backupFullPath));
 
                     try
                     {
-                        ConsoleHelper.WriteStatus(7, OutputStatusType.Info, "Staring backup...");
-                        q.ExecuteNonQuery();
+                        Log(7, OutputStatusType.Info, "Staring backup...");
 
-                        ConsoleHelper.WriteStatus(9, OutputStatusType.OK, "Backup done.");
+                        bk.BackupDatabase(ddb, backupFullPath, ts);
+
+                        Log(9, OutputStatusType.OK, "Backup done.");
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
-                        ConsoleHelper.WriteStatus(9, OutputStatusType.Error, "Error while doing backup");
+                        LogException(ex);
+                        Log(9, OutputStatusType.Error, "Error while doing backup");
                         continue;
                     }
 
                     if (!File.Exists(backupFullPath))
                     {
-                        ConsoleHelper.WriteStatus(7, OutputStatusType.Warning, "Unable to read the backup file, maybe the backup has been done on a remote server ?");
+                        Log(7, OutputStatusType.Warning,
+                            "Unable to read the backup file, maybe the backup has been done on a remote server ?");
                         continue;
                     }
 
@@ -81,41 +79,73 @@ WITH NOFORMAT, NOINIT,  NAME = N'{0} - {2}', SKIP, NOREWIND, NOUNLOAD,  STATS = 
                     {
                         try
                         {
-                            ConsoleHelper.WriteStatus(7, OutputStatusType.Info, "Doing backup zip...");
+                            Log(7, OutputStatusType.Info, "Doing backup zip...");
                             using (var z = new ZipFile())
                             {
                                 var zipFilePath = Path.Combine(s.BackupPath, string.Format("{0}.zip", fNameBase));
                                 z.AddFile(backupFullPath, string.Empty);
                                 z.Save(zipFilePath);
                             }
-                            ConsoleHelper.WriteStatus(9, OutputStatusType.OK, "Zip archive successfully created");
+                            Log(9, OutputStatusType.OK, "Zip archive successfully created");
                         }
-                        catch (Exception)
+                        catch (Exception ex)
                         {
-                            ConsoleHelper.WriteStatus(9, OutputStatusType.Error, "Error during zip archive creation");
+                            LogException(ex);
+                            Log(9, OutputStatusType.Error, "Error during zip archive creation");
                             continue;
                         }
 
-                        if (s.EnableDeleteBackup)
+                        if (s.EnableDeleteBackupAfterZip)
                         {
                             try
                             {
-                                ConsoleHelper.WriteStatus(7, OutputStatusType.Info, "Deleting original backup file...");
+                                Log(7, OutputStatusType.Info, "Deleting original backup file...");
                                 File.Delete(backupFullPath);
-                                ConsoleHelper.WriteStatus(9, OutputStatusType.OK, "Original backup file deleted.");
+                                Log(9, OutputStatusType.OK, "Original backup file deleted.");
                             }
-                            catch (Exception)
+                            catch (Exception ex)
                             {
-                                ConsoleHelper.WriteStatus(9, OutputStatusType.Error, "Unable to delete original backup file.");
+                                LogException(ex);
+                                Log(9, OutputStatusType.Error, "Unable to delete original backup file.");
                             }
                         }
                     }
                 }
 
-                ConsoleHelper.WriteStatus(2, OutputStatusType.Info, "All work is done, exiting.");
+                Log(2, OutputStatusType.Info, "All work is done, exiting.");
 
-                Console.ReadLine();
+                Exit(true);
             }
+        }
+
+        private static void Intro()
+        {
+            var v = Assembly.GetCallingAssembly().GetName().Version;
+
+            Console.Write("SQLServerBackupTool ");
+            ConsoleHelper.WriteColor(ConsoleColor.Magenta, string.Format("v{0}", v));
+            Console.Write(" by @moonpyk");
+            Console.WriteLine();
+        }
+
+        private static void Exit(bool isClean)
+        {
+#if DEBUG
+            Console.WriteLine("Press any key to exit...");
+            Console.ReadLine();
+#endif
+        }
+
+        private static void Log(int indent, OutputStatusType s, string text)
+        {
+            ConsoleHelper.WriteStatus(indent, s, text);
+        }
+
+        private static void LogException(Exception ex)
+        {
+#if DEBUG
+            Debug.WriteLine(ex);
+#endif
         }
     }
 }

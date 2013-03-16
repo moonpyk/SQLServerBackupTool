@@ -8,8 +8,20 @@ namespace SQLServerBackupTool
 {
     public class ConsoleHelper
     {
+        public static bool DisableColoring
+        {
+            get;
+            set;
+        }
+        
         public static void WriteColor(ConsoleColor c, string text)
         {
+            if (DisableColoring)
+            {
+                Console.Write(text);
+                return;
+            }
+
             var previousColor = Console.ForegroundColor;
 
             Console.ForegroundColor = c;
@@ -17,9 +29,9 @@ namespace SQLServerBackupTool
             Console.ForegroundColor = previousColor;
         }
 
-        public static void WriteStatus(int ident, OutputStatusType s, string text)
+        public static void WriteStatus(int indent, OutputStatusType s, string text)
         {
-            for (var i = 0; i < ident; i++)
+            for (var i = 0; i < indent; i++)
             {
                 Console.Write(" ");
             }

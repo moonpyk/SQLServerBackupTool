@@ -14,7 +14,7 @@
     <Setting Name="BackupPath" Type="System.String" Scope="Application">
       <Value Profile="(Default)">c:\Program Files\Microsoft SQL Server\MSSQL10_50.SQLEXPRESS\MSSQL\Backup\</Value>
     </Setting>
-    <Setting Name="EnableDeleteBackup" Type="System.Boolean" Scope="User">
+    <Setting Name="EnableDeleteBackupAfterZip" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="BackupConnection" Type="(Connection string)" Scope="Application">
