@@ -11,7 +11,7 @@ namespace SQLServerBackupTool
         public const string BackupCommandTemplate = @"
 BACKUP DATABASE [{0}] 
 TO  DISK = N'{1}' 
-WITH NOFORMAT, NOINIT,  NAME = N'{0} - {2}', SKIP, NOREWIND, NOUNLOAD,  STATS = 10;
+WITH NOFORMAT, NOINIT, NAME = N'{0} - {2}', SKIP, NOREWIND, NOUNLOAD, STATS = 10;
 ";
 
         private readonly SqlConnection _co;
