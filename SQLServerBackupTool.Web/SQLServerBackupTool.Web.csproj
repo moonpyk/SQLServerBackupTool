@@ -137,6 +137,12 @@
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SQLServerBackupTool.Lib\SQLServerBackupTool.Lib.csproj">
+      <Project>{92ae3e7a-d315-4f20-8256-28f0fbf3c2d6}</Project>
+      <Name>SQLServerBackupTool.Lib</Name>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
