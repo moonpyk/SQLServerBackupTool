@@ -2,9 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title></title>
+    <title>SQLServer Backup Tool @(!string.IsNullOrWhiteSpace(ViewBag.Title) ? " - " + ViewBag.Title : null)</title>
+    @Styles.Render("~/Content/css")
 </head>
 <body>
-    @RenderBody()
+    <div class="container-fluid">
+        @RenderBody()
+    </div>
+    @Scripts.Render("~/bundles/jquery", "~/bundles/ssbtw")
 </body>
 </html>

@@ -41,6 +41,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Antlr3.Runtime">
+      <HintPath>..\packages\WebGrease.1.1.0\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -51,6 +54,9 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Optimization">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.0.0\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
@@ -108,8 +114,12 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
+    <Reference Include="WebGrease">
+      <HintPath>..\packages\WebGrease.1.1.0\lib\WebGrease.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -120,7 +130,17 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Content Include="Content\img\glyphicons-halflings-white.png" />
+    <Content Include="Content\img\glyphicons-halflings.png" />
+    <Content Include="Content\Site.css">
+      <DependentUpon>Site.scss</DependentUpon>
+    </Content>
     <Content Include="Global.asax" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <None Include="Scripts\jquery-1.9.1.intellisense.js" />
+    <Content Include="Scripts\jquery-1.9.1.js" />
+    <Content Include="Scripts\jquery-1.9.1.min.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -131,6 +151,7 @@
       <DependentUpon>Web.config</DependentUpon>
     </Content>
     <Content Include="Views\Web.config" />
+    <Content Include="Scripts\jquery-1.9.1.min.map" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -154,6 +175,132 @@
   <ItemGroup>
     <Content Include="Views\Shared\_Layout.cshtml" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\Site.scss" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\bootstrap\responsive.scss" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\bootstrap\bootstrap.scss" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\bootstrap\_wells.scss" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\bootstrap\_variables.scss" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\bootstrap\_utilities.scss" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\bootstrap\_type.scss" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\bootstrap\_tooltip.scss" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\bootstrap\_thumbnails.scss" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\bootstrap\_tables.scss" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\bootstrap\_sprites.scss" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\bootstrap\_scaffolding.scss" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\bootstrap\_responsive-utilities.scss" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\bootstrap\_responsive-navbar.scss" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\bootstrap\_responsive-768px-979px.scss" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\bootstrap\_responsive-767px-max.scss" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\bootstrap\_responsive-1200px-min.scss" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\bootstrap\_reset.scss" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\bootstrap\_progress-bars.scss" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\bootstrap\_popovers.scss" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\bootstrap\_pagination.scss" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\bootstrap\_pager.scss" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\bootstrap\_navs.scss" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\bootstrap\_navbar.scss" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\bootstrap\_modals.scss" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\bootstrap\_mixins.scss" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\bootstrap\_media.scss" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\bootstrap\_layouts.scss" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\bootstrap\_labels-badges.scss" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\bootstrap\_hero-unit.scss" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\bootstrap\_grid.scss" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\bootstrap\_forms.scss" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\bootstrap\_dropdowns.scss" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\bootstrap\_component-animations.scss" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\bootstrap\_code.scss" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\bootstrap\_close.scss" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\bootstrap\_carousel.scss" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\bootstrap\_buttons.scss" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\bootstrap\_button-groups.scss" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\bootstrap\_breadcrumbs.scss" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\bootstrap\_alerts.scss" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\bootstrap\_accordion.scss" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -168,16 +315,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
-          <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>0</DevelopmentServerPort>
-          <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:11437/</IISUrl>
-          <NTLMAuthentication>False</NTLMAuthentication>
-          <UseCustomServer>False</UseCustomServer>
-          <CustomServerUrl>
-          </CustomServerUrl>
-          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+          <SaveServerSettingsInUserFile>True</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
     </VisualStudio>
