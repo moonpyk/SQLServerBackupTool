@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Net.Http.Headers;
 using System.Security.Principal;
 using System.Text;
@@ -41,7 +42,7 @@ namespace SQLServerBackupTool.Web.Lib
 
         private static bool AuthenticateUser(string credentials)
         {
-            bool validated;
+            var validated = false;
 
             try
             {
@@ -52,24 +53,31 @@ namespace SQLServerBackupTool.Web.Lib
                 var name = credentials.Substring(0, separator);
                 var password = credentials.Substring(separator + 1);
 
-                validated = Membership.ValidateUser(name, password);
-                if (validated)
+                try
                 {
-                    var user = Membership.GetUser(name, true);
-
-                    if (user != null)
+                    validated = Membership.ValidateUser(name, password);
+                    if (validated)
                     {
-                        var identity = new GenericIdentity(user.UserName);
+                        var user = Membership.GetUser(name, true);
 
-                        string[] rolesForUser = null;
-
-                        if (Roles.Enabled)
+                        if (user != null)
                         {
-                            rolesForUser = Roles.GetRolesForUser(user.UserName);
-                        }
+                            var identity = new GenericIdentity(user.UserName);
 
-                        SetPrincipal(new GenericPrincipal(identity, rolesForUser));
+                            string[] rolesForUser = null;
+
+                            if (Roles.Enabled)
+                            {
+                                rolesForUser = Roles.GetRolesForUser(user.UserName);
+                            }
+
+                            SetPrincipal(new GenericPrincipal(identity, rolesForUser));
+                        }
                     }
+                }
+                catch (EntityCommandExecutionException)
+                {
+                    // Weird Universal providers exception see : http://connect.microsoft.com/VisualStudio/feedback/details/751178/membership-getuser-and-membership-validateuser-deadlock
                 }
             }
             catch (FormatException)

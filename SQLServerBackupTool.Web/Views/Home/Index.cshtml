@@ -1,7 +1,41 @@
-﻿@{
-    ViewBag.Title = "Databases list";
+﻿@model IEnumerable<SQLServerBackupTool.Web.Models.DatabaseInfo>
+@{
+    ViewBag.Title = "databases list";
 }
-<h1>
-    @ViewBag.Title
-</h1>
 
+<div class="loginbox">
+    <i class="icon-user"></i>&nbsp;@User.Identity.Name (@(string.Join(", ", Roles.GetRolesForUser())))
+</div>
+<br />
+<table class="table table-bordered table-striped table-vmiddle">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Database name</th>
+            <th style="width: 91px;"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Any())
+        {
+            foreach (var di in Model)
+            {
+            <tr>
+                <td>@di.Id</td>
+                <td>@di.Name</td>
+                <td>
+                    <a class="btn btn-inverse" href="#"><i class="icon-white icon-download"></i>&nbsp;Backup</a>
+                </td>
+            </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="3">
+                    <i style="text-align: center;">No available database for backup</i>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

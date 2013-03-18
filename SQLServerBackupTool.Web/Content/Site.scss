@@ -3,3 +3,24 @@ $iconWhiteSpritePath: "img/glyphicons-halflings-white.png";
 
 @import "bootstrap/bootstrap";
 
+.ss {
+	color: $grayLight;
+}
+
+.loginbox {
+	@include border-radius(4px);
+	border: 1px solid $tableBorder;
+	padding: 3px 3px 3px 5px;
+}
+
+.purple {
+	color: $purple;
+}
+
+.table-vmiddle {
+	tr {
+		td,th {
+			vertical-align: middle;
+		}
+	}
+}
