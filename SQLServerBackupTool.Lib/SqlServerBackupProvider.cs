@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data.Common;
 using System.Data.SqlClient;
+using System.Threading.Tasks;
 
 namespace SQLServerBackupTool.Lib
 {
@@ -47,6 +48,14 @@ WITH NOFORMAT, NOINIT, NAME = N'{0} - {2}', SKIP, NOREWIND, NOUNLOAD, STATS = 10
         }
 
         /// <summary>
+        /// Async proxy to <see cref="Open"/>
+        /// </summary>
+        public Task OpenAsync()
+        {
+            return Task.Factory.StartNew(Open);
+        }
+
+        /// <summary>
         /// Closes the underlaying SQL Connecion
         /// </summary>
         public void Close()
@@ -83,6 +92,14 @@ WITH NOFORMAT, NOINIT, NAME = N'{0} - {2}', SKIP, NOREWIND, NOUNLOAD, STATS = 10
             ));
 
             return q.ExecuteNonQuery();
+        }
+
+        /// <summary>
+        /// Async proxy to <see cref="BackupDatabase"/>
+        /// </summary>
+        public Task<int> BackupDatabaseAsync(string databaseName, string backupPath, DateTime ts)
+        {
+            return Task.Factory.StartNew(() => BackupDatabase(databaseName, backupPath, ts));
         }
 
         /// <summary>
