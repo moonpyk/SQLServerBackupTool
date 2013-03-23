@@ -1,0 +1,90 @@
+﻿@model PagedList.IPagedList<MembershipUser>
+@{
+    ViewBag.Title = "Users management";
+}
+<table class="table table-bordered table-striped">
+    <thead>
+        @*    <tr>
+    	    <th>
+    	        Username
+    	    </th>
+    	    <th>
+    	        Email
+    	    </th>
+    	    <th>
+    	        @Html.DisplayNameFor(m => m.IsApproved)
+    	    </th>
+    	    <th>
+    	        @Html.DisplayNameFor(m => m.IsLockedOut)
+    	    </th>
+    	    <th>
+    	        @Html.DisplayNameFor(m => m.LastLockoutDate)
+    	    </th>
+    	    <th>
+    	        @Html.DisplayNameFor(m => m.CreationDate)
+    	    </th>
+    	    <th>
+    	        @Html.DisplayNameFor(m => m.LastLoginDate)
+    	    </th>
+    	    <th>
+    	        @Html.DisplayNameFor(m => m.LastActivityDate)
+    	    </th>
+    	    <th>
+    	        @Html.DisplayNameFor(m => m.LastPasswordChangedDate)
+    	    </th>
+    	    <th>
+    	        @Html.DisplayNameFor(m => m.IsOnline)
+    	    </th>
+    	    <th></th>
+    	</tr>*@
+    </thead>
+
+    <tbody>
+        @foreach (var m in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(_ => m.UserName)
+                </td>
+                <td>
+                    @Html.DisplayFor(_ => m.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(_ => m.IsApproved)
+                </td>
+                <td>
+                    @Html.DisplayFor(_ => m.IsLockedOut)
+                </td>
+                <td>
+                    @Html.DisplayFor(_ => m.LastLockoutDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(_ => m.CreationDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(_ => m.LastLoginDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(_ => m.LastActivityDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(_ => m.LastPasswordChangedDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(_ => m.IsOnline)
+                </td>
+                <td>
+                    @*            
+                    @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+	            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+	            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                    *@
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div style="text-align: center;">
+    @PagedList.Mvc.HtmlHelper.PagedListPager(Html, Model, i => Url.Action("Index", new { page = i }))
+</div>

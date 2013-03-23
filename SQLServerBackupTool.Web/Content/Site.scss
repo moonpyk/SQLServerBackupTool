@@ -1,5 +1,9 @@
+@import "bootstrap/variables";
+
 $iconSpritePath: "img/glyphicons-halflings.png";
 $iconWhiteSpritePath: "img/glyphicons-halflings-white.png";
+
+$linkColor: $purple;
 
 @import "bootstrap/bootstrap";
 
@@ -25,14 +29,10 @@ $iconWhiteSpritePath: "img/glyphicons-halflings-white.png";
     }
 }
 
-#nav {
-    margin: 12px 0 0;
+.title {
+    text-transform: lowercase;
 }
 
-// Override default bootstrap
-.nav-pills > .active > a,
-.nav-pills > .active > a:hover,
-.nav-pills > .active > a:focus {
-    color: $white;
-    background-color: $purple;
+#nav {
+    margin: 12px 0 0;
 }

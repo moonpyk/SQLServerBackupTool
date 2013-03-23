@@ -1,14 +1,14 @@
-﻿using System.Configuration;
+﻿using Dapper;
+using SQLServerBackupTool.Web.Lib.Mvc;
+using SQLServerBackupTool.Web.Models;
+using System.Configuration;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-using Dapper;
-using SQLServerBackupTool.Web.Models;
 
 namespace SQLServerBackupTool.Web.Controllers
 {
-    [Authorize]
-    public class HomeController : Controller
+    public class HomeController : ApplicationController
     {
         //
         // GET: /Home/
