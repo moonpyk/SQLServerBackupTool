@@ -1,4 +1,5 @@
-﻿using Ionic.Zip;
+﻿using System.Collections.Generic;
+using Ionic.Zip;
 using Mono.Options;
 using SQLServerBackupTool.Lib;
 using SQLServerBackupTool.Properties;
@@ -11,6 +12,8 @@ namespace SQLServerBackupTool
 {
     internal class Program
     {
+        private static readonly List<string> DatabaseList = new List<string>();
+
         private static bool Silent
         {
             get;
@@ -37,7 +40,16 @@ namespace SQLServerBackupTool
                 },
                 {
                     "R|readline", "Don't exit directly after finish, wait for a key to be typed", _ => ReadLine = _ != null
-                }
+                },
+                {
+                    "d|databases=", "Comma separated list of databases names to backup, overrides App.config databases list", delegate(string _)
+                    {
+                        if (!string.IsNullOrWhiteSpace(_))
+                        {
+                            DatabaseList.AddRange(_.Split(','));
+                        }
+                    }
+                },
             };
 
             opts.Parse(args);
@@ -86,7 +98,16 @@ namespace SQLServerBackupTool
                     return;
                 }
 
-                foreach (var ddb in s.DatabaseList)
+                // Nothing populated from command line
+                if (DatabaseList.Count == 0)
+                {
+                    foreach (var confd in s.DatabaseList)
+                    {
+                        DatabaseList.Add(confd);
+                    }
+                }
+
+                foreach (var ddb in DatabaseList)
                 {
                     Log(4, OutputStatusType.Info, string.Format("Doing database backup of '{0}'", ddb));
 
