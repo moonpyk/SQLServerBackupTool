@@ -1,21 +1,75 @@
-﻿using System;
+﻿using Ionic.Zip;
+using Mono.Options;
+using SQLServerBackupTool.Lib;
+using SQLServerBackupTool.Properties;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
-using Ionic.Zip;
-using SQLServerBackupTool.Lib;
-using SQLServerBackupTool.Properties;
 
 namespace SQLServerBackupTool
 {
     internal class Program
     {
+        private static bool Silent
+        {
+            get;
+            set;
+        }
+
+        private static bool ReadLine
+        {
+            get;
+            set;
+        }
+
         private static void Main(string[] args)
         {
+            var showHelp = false;
+
+            var opts = new OptionSet
+            {
+                {"h|?|help", "Displays this help message", _ => showHelp = _ != null},
+                {
+                    "s|silent",
+                    "Put ssbt in silent mode, nothing will be written in the standard output (excludes --readline)",
+                    _ => Silent = _ != null
+                },
+                {
+                    "R|readline", "Don't exit directly after finish, wait for a key to be typed", _ => ReadLine = _ != null
+                }
+            };
+
+            opts.Parse(args);
+
             Intro();
 
+            if (showHelp)
+            {
+                Console.WriteLine();
+                Console.WriteLine(" Usage :");
+                opts.WriteOptionDescriptions(Console.Out);
+                Exit(true);
+                return;
+            }
+
             var s = Settings.Default;
-            using (var bk = new SqlServerBackupProvider(s.BackupConnection))
+
+            SqlServerBackupProvider bk;
+
+            try
+            {
+                bk = new SqlServerBackupProvider(s.BackupConnection);
+            }
+            catch (Exception ex)
+            {
+                Log(1, OutputStatusType.Error, "Something went wrong during SQL connection creation, you should check your connection string.");
+                LogException(ex);
+                Exit(false);
+                return;
+            }
+
+            using (bk)
             {
                 try
                 {
@@ -118,8 +172,14 @@ namespace SQLServerBackupTool
             }
         }
 
+
         private static void Intro()
         {
+            if (Silent)
+            {
+                return;
+            }
+
             var v = Assembly.GetCallingAssembly().GetName().Version;
 
             Console.Write("SQLServerBackupTool ");
@@ -130,14 +190,24 @@ namespace SQLServerBackupTool
 
         private static void Exit(bool isClean)
         {
-#if DEBUG
-            Console.WriteLine("Press any key to exit...");
-            Console.ReadLine();
-#endif
+            if (ReadLine && !Silent)
+            {
+                Console.WriteLine();
+                Console.WriteLine("Press any key to exit...");
+                Console.ReadLine();
+            }
+
+            Environment.ExitCode = !isClean
+                ? 1
+                : 0;
         }
 
         private static void Log(int indent, OutputStatusType s, string text)
         {
+            if (Silent)
+            {
+                return;
+            }
             ConsoleHelper.WriteStatus(indent, s, text);
         }
 
