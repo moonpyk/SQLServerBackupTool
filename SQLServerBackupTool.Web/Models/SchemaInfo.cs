@@ -24,10 +24,16 @@ WHERE   sys.types.NAME NOT IN ( 'sysname' )
         AND sys.tables.NAME NOT IN ( 'sysdiagrams' );
 ";
 
+        public const string RowCountQuery = @"
+SELECT COUNT(*) FROM {0};
+";
+
         public string Table { get; set; }
         public string Column { get; set; }
         public string Type { get; set; }
         public int Length { get; set; }
         public string LengthString { get; set; }
+
+        public int RowCount { get; set; }
     }
 }

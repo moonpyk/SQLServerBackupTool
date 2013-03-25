@@ -1,9 +1,10 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using Dapper;
 using SQLServerBackupTool.Web.Lib.Mvc;
 using SQLServerBackupTool.Web.Models;
 using System.Configuration;
 using System.Data.SqlClient;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -39,7 +40,19 @@ namespace SQLServerBackupTool.Web.Controllers
                     return RedirectToAction("Index");
                 }
 
-                var schem = co.Query<SchemaInfo>(SchemaInfo.Query);
+                var schem = co.Query<SchemaInfo>(SchemaInfo.Query).ToList();
+                var tList = schem.Select(_ => _.Table).Distinct();
+
+                foreach (var t in tList)
+                {
+                    var rc = co.Query<int>(string.Format(SchemaInfo.RowCountQuery, t)).First();
+
+                    var __ = t;
+                    foreach (var c in schem.Where(_ => _.Table == __))
+                    {
+                        c.RowCount = rc;
+                    }
+                }
 
                 ViewBag.Database = id;
                 return View(schem);
