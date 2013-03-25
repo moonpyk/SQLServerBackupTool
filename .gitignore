@@ -36,6 +36,7 @@
 *_p.c
 .*crunch*.local.xml
 .builds
+.idea/
 .sass-cache
 /SQLServerBackupTool/App.config
 [Bb]in

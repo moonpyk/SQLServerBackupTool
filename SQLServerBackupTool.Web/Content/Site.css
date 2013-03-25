@@ -4859,3 +4859,12 @@ a.label:hover, a.label:focus, a.badge:hover, a.badge:focus {
 
 .table-vmiddle tr td, .table-vmiddle tr th {
   vertical-align: middle; }
+
+#nav {
+  margin: 12px 0 0; }
+
+.nav-pills > .active > a,
+.nav-pills > .active > a:hover,
+.nav-pills > .active > a:focus {
+  color: white;
+  background-color: #7a43b6; }

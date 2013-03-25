@@ -7,11 +7,17 @@
 </head>
 <body>
     <div class="container-fluid">
+        <ul id="nav" class="nav nav-pills pull-right">
+            <li class="active">
+                <a href="@Url.Action("Index", "Home")"><i class="icon-white icon-home"></i>&nbsp;Home</a>
+            </li>
+        </ul>
         <h1>
             <span class="ss">SS</span>BT<span class="purple">.web</span> - @ViewBag.Title
         </h1>
         @RenderBody()
     </div>
+
     @Scripts.Render("~/bundles/jquery", "~/bundles/ssbtw")
     @RenderSection("scripts", false)
 </body>

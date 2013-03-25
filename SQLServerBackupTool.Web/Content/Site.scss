@@ -1,26 +1,38 @@
-$iconSpritePath:      "img/glyphicons-halflings.png";
+$iconSpritePath: "img/glyphicons-halflings.png";
 $iconWhiteSpritePath: "img/glyphicons-halflings-white.png";
 
 @import "bootstrap/bootstrap";
 
 .ss {
-	color: $grayLight;
+    color: $grayLight;
 }
 
 .loginbox {
-	@include border-radius(4px);
-	border: 1px solid $tableBorder;
-	padding: 3px 3px 3px 5px;
+    @include border-radius(4px);
+    border: 1px solid $tableBorder;
+    padding: 3px 3px 3px 5px;
 }
 
 .purple {
-	color: $purple;
+    color: $purple;
 }
 
 .table-vmiddle {
-	tr {
-		td,th {
-			vertical-align: middle;
-		}
-	}
+    tr {
+        td, th {
+            vertical-align: middle;
+        }
+    }
+}
+
+#nav {
+    margin: 12px 0 0;
+}
+
+// Override default bootstrap
+.nav-pills > .active > a,
+.nav-pills > .active > a:hover,
+.nav-pills > .active > a:focus {
+    color: $white;
+    background-color: $purple;
 }
