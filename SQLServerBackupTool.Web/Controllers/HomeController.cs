@@ -1,4 +1,5 @@
-﻿using Dapper;
+﻿using System;
+using Dapper;
 using SQLServerBackupTool.Web.Lib.Mvc;
 using SQLServerBackupTool.Web.Models;
 using System.Configuration;
@@ -17,9 +18,31 @@ namespace SQLServerBackupTool.Web.Controllers
             using (var co = new SqlConnection(GetConnectionString()))
             {
                 co.Open();
-                var p = co.Query<DatabaseInfo>(DatabaseInfo.GetDatabasesNames);
+                var p = co.Query<DatabaseInfo>(DatabaseInfo.Query);
 
                 return View(p);
+            }
+        }
+
+        public ActionResult Schema(string id)
+        {
+            using (var co = new SqlConnection(GetConnectionString()))
+            {
+                co.Open();
+
+                try
+                {
+                    co.ChangeDatabase(id);
+                }
+                catch (SqlException) // Schema doesn't exists, usually
+                {
+                    return RedirectToAction("Index");
+                }
+
+                var schem = co.Query<SchemaInfo>(SchemaInfo.Query);
+
+                ViewBag.Database = id;
+                return View(schem);
             }
         }
 

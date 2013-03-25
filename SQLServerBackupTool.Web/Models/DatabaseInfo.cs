@@ -7,7 +7,7 @@ namespace SQLServerBackupTool.Web.Models
 {
     public class DatabaseInfo
     {
-        public const string GetDatabasesNames = @"
+        public const string Query = @"
 SELECT  database_id AS Id,
         name as Name
 FROM    sys.databases

@@ -24,7 +24,10 @@
                 <td>@di.Id</td>
                 <td>@di.Name</td>
                 <td>
-                    <a class="btn btn-inverse" href="#"><i class="icon-white icon-download"></i>&nbsp;Backup</a>
+                    <div class="btn-group">
+                        <a href="@Url.Action("Schema", new { id = di.Name })" class="btn"><i class="icon-eye-open"></i>&nbsp;Schema</a>
+                        <a class="btn btn-inverse" href="#"><i class="icon-white icon-download"></i>&nbsp;Backup</a>
+                    </div>
                 </td>
             </tr>
             }
