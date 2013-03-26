@@ -76,7 +76,8 @@ namespace SQLServerBackupTool.Web.Lib
                         }
                     }
                 }
-                catch (EntityCommandExecutionException, DbUpdateException)
+                catch (DbUpdateException) { }
+                catch (EntityCommandExecutionException)
                 {
                     // Weird Universal providers exception see : http://connect.microsoft.com/VisualStudio/feedback/details/751178/membership-getuser-and-membership-validateuser-deadlock
                 }
