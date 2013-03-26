@@ -4,11 +4,35 @@
     ViewBag.Title = string.Format("Schema of {0}", ViewBag.Database);
 }
 
-@*
 <table class="table table-bordered">
-    
+    <thead>
+        <tr>
+            <th>Table</th>
+            <th>Column</th>
+            <th>Data type</th>
+            <th>Row count</th>
+        </tr>
+    </thead>
+    @foreach (var t in Model.GroupBy(_ => _.Table))
+    {
+        var cols = t.ToList();
+        var f = cols.First();
+        <tr>
+            <td class="fullcenter" rowspan="@cols.Count">
+                <strong>@t.Key</strong>
+            </td>
+            <td>@f.Column</td>
+            <td>@f.Type (@f.LengthString)</td>
+            <td>@f.RowCount</td>
+        </tr>
+        foreach (var c in cols.Skip(1))
+        {
+        <tr>
+            <td>@c.Column</td>
+            <td>@c.Type (@c.LengthString)</td>
+            <td>@c.RowCount</td>
+        </tr>
+        }
+    }
+
 </table>
-<div class="well">
-    @ObjectInfo.Print(Model)
-</div>
-*@

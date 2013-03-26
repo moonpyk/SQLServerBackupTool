@@ -29,10 +29,41 @@ $linkColor: $purple;
     }
 }
 
+.vmiddle {
+    vertical-align: middle;
+}
+
+.fullcenter {
+    @extend .vmiddle;
+    text-align: center;
+}
+
+.table-bordered th, .table-bordered td {
+    &.fullcenter {
+        @extend .fullcenter;
+    }
+}
+
 .title {
     text-transform: lowercase;
 }
 
+#top-bar {
+    @include border-radius(0 0 6px 6px);
+    padding: 1px 10px;
+    margin-bottom: 10px;
+    background-color: #F7F7F7;
+    border: 1px solid $grayLighter;
+}
+
 #nav {
-    margin: 12px 0 0;
+    margin-top: 11px;
+}
+
+@media (max-width: 767px) {
+    #top-bar {
+        h1 {
+            font-size: 25px;
+        }
+    }
 }

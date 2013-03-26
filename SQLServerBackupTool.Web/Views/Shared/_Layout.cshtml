@@ -7,17 +7,19 @@
 </head>
 <body>
     <div class="container-fluid">
-        <ul id="nav" class="nav nav-pills pull-right">
-            <li class="@(ViewBag.ControllerName == "Home" ? "active" : null)">
-                <a href="@Url.Action("Index", "Home")"><i class="icon-home"></i>&nbsp;Home</a>
-            </li>
-            <li class="@(ViewBag.ControllerName == "Users" ? "active" : null)">
-                <a href="@Url.Action("Index", "Users")"><i class="icon-user"></i>&nbsp;Users</a>
-            </li>
-        </ul>
-        <h1>
-            <span class="ss">SS</span>BT<span class="purple">.web</span> - <span class="title">@ViewBag.Title</span>
-        </h1>
+        <div id="top-bar">
+            <ul id="nav" class="nav nav-pills pull-right">
+                <li class="@(ViewBag.ControllerName == "Home" ? "active" : null)">
+                    <a href="@Url.Action("Index", "Home")"><i class="icon-home"></i>&nbsp;Home</a>
+                </li>
+                <li class="@(ViewBag.ControllerName == "Users" ? "active" : null)">
+                    <a href="@Url.Action("Index", "Users")"><i class="icon-user"></i>&nbsp;Users</a>
+                </li>
+            </ul>
+            <h1>    
+                <span class="ss">SS</span>BT<span class="purple">.web</span> - <span class="title">@ViewBag.Title</span>
+            </h1>
+        </div>
         @RenderBody()
     </div>
     @Scripts.Render("~/bundles/jquery", "~/bundles/ssbtw")

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Data.Entity.Infrastructure;
 using System.Net.Http.Headers;
 using System.Security.Principal;
 using System.Text;
@@ -75,7 +76,7 @@ namespace SQLServerBackupTool.Web.Lib
                         }
                     }
                 }
-                catch (EntityCommandExecutionException)
+                catch (EntityCommandExecutionException, DbUpdateException)
                 {
                     // Weird Universal providers exception see : http://connect.microsoft.com/VisualStudio/feedback/details/751178/membership-getuser-and-membership-validateuser-deadlock
                 }

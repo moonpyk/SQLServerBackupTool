@@ -4860,8 +4860,27 @@ a.label:hover, a.label:focus, a.badge:hover, a.badge:focus {
 .table-vmiddle tr td, .table-vmiddle tr th {
   vertical-align: middle; }
 
+.vmiddle, .fullcenter, .table-bordered th.fullcenter, .table-bordered td.fullcenter {
+  vertical-align: middle; }
+
+.fullcenter, .table-bordered th.fullcenter, .table-bordered td.fullcenter {
+  text-align: center; }
+
 .title {
   text-transform: lowercase; }
 
+#top-bar {
+  -webkit-border-radius: 0 0 6px 6px;
+  -moz-border-radius: 0 0 6px 6px;
+  border-radius: 0 0 6px 6px;
+  padding: 1px 10px;
+  margin-bottom: 10px;
+  background-color: #F7F7F7;
+  border: 1px solid #eeeeee; }
+
 #nav {
-  margin: 12px 0 0; }
+  margin-top: 11px; }
+
+@media (max-width: 767px) {
+  #top-bar h1 {
+    font-size: 25px; } }
