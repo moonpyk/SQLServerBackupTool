@@ -50,6 +50,9 @@
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
+    <Reference Include="Ionic.Zip">
+      <HintPath>..\packages\DotNetZip.1.9.1.8\lib\net20\Ionic.Zip.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="PagedList">
       <HintPath>..\packages\PagedList.1.15.0.0\lib\net40\PagedList.dll</HintPath>
@@ -149,6 +152,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Lib\BasicMembershipAuthHttpModule.cs" />
+    <Compile Include="Models\BackupHistory.cs" />
     <Compile Include="Models\SchemaInfo.cs" />
     <Compile Include="Models\SSBTDbContext.cs" />
     <Compile Include="Models\UserDatabase.cs" />
@@ -159,6 +163,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Content Include="Backups\README.txt" />
     <Content Include="Content\img\glyphicons-halflings-white.png" />
     <Content Include="Content\img\glyphicons-halflings.png" />
     <Content Include="Content\PagedList.css" />

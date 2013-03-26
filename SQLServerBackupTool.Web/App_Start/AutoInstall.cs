@@ -1,13 +1,9 @@
-﻿using System;
-using System.Data.Entity;
-using System.Data.SqlClient;
-using System.Diagnostics;
-using System.Linq;
-using System.Web.Security;
-using Dapper;
-using SQLServerBackupTool.Web;
+﻿using SQLServerBackupTool.Web;
 using SQLServerBackupTool.Web.Lib;
 using SQLServerBackupTool.Web.Models;
+using System.Data.Entity;
+using System.Diagnostics;
+using System.Web.Security;
 
 [assembly: WebActivator.PreApplicationStartMethod(typeof(AutoInstall), "PreStart")]
 [assembly: WebActivator.PostApplicationStartMethod(typeof(AutoInstall), "PostStart")]
@@ -27,6 +23,7 @@ namespace SQLServerBackupTool.Web
             BasicMembershipAuthHttpModule.Realm = "SSBT.web";
 
             Database.SetInitializer(new DropCreateDatabaseIfModelChanges<SSBTDbContext>());
+
             using (var ddb = new SSBTDbContext())
             {
                 ddb.Database.Initialize(false);

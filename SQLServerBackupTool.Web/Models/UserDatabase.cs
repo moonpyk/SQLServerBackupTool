@@ -6,7 +6,7 @@ using System.Web;
 
 namespace SQLServerBackupTool.Web.Models
 {
-    public partial class UserDatabase
+    public class UserDatabase
     {
         [Key]
         public int Id { get; set; }

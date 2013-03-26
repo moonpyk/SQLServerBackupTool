@@ -1,9 +1,13 @@
-﻿using System.Collections.Generic;
-using Dapper;
+﻿using Dapper;
+using Ionic.Zip;
+using SQLServerBackupTool.Lib;
 using SQLServerBackupTool.Web.Lib.Mvc;
 using SQLServerBackupTool.Web.Models;
+using System;
 using System.Configuration;
 using System.Data.SqlClient;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -59,16 +63,78 @@ namespace SQLServerBackupTool.Web.Controllers
             }
         }
 
-        [HttpPost]
-        public async Task<ActionResult> Index(string id)
+        //[HttpPost, ValidateAntiForgeryToken]
+        public async Task<ActionResult> Backup(string id)
         {
-            // using (var bak = new SqlServerBackupProvider(GetConnectionString()))
-            // {
-            //     await bak.OpenAsync();
-            // 
-            // }
+            using (var bak = new SqlServerBackupProvider(GetConnectionString()))
+            {
+                await bak.OpenAsync();
+                var ts = DateTime.Now;
 
-            return new EmptyResult();
+                var backupsPath = Server.MapPath("~/Backups");
+
+                var fNameBase = string.Format(
+                    "{0}.{1}",
+                    id,
+                    ts.ToString("yyyyMMdd.HHmmss")
+                );
+
+                var backupName = string.Format("{0}.bak", fNameBase);
+
+                var fullBackupPath = Path.Combine(backupsPath, backupName);
+
+                try
+                {
+                    await bak.BackupDatabaseAsync(id, fullBackupPath, ts);
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex);
+                    return HttpNotFound(string.Format("Unable to backup database '{0}'", id));
+                }
+
+                var fullZipPath = Path.Combine(backupsPath, string.Format("{0}.zip", fNameBase));
+
+                try
+                {
+                    using (var z = new ZipFile(fullZipPath))
+                    {
+                        z.AddFile(fullBackupPath, string.Empty);
+
+                        await Task.Run(() => z.Save());
+                    }
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine(e);
+                    return HttpNotFound(string.Format("Error during backup zip creation"));
+                }
+
+                try
+                {
+                    System.IO.File.Delete(fullBackupPath);
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex);
+                }
+
+                var h = new BackupHistory
+                {
+                    Path     = fullZipPath,
+                    Url      = string.Format("~/{0}", fullZipPath.Replace(Server.MapPath("~/"), string.Empty).Replace('\\', '/')),
+                    Expires  = DateTime.Now.AddDays(1),
+                    Username = User.Identity.Name,
+                };
+
+                using (var ddb = new SSBTDbContext())
+                {
+                    ddb.History.Add(h);
+                    ddb.SaveChanges();
+                }
+
+                return Json(h, JsonRequestBehavior.AllowGet);
+            }
         }
 
         private static string GetConnectionString()

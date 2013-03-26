@@ -18,4 +18,4 @@ In my setup, the program is automatically started all nights by the Windows Task
 
 TBD, for now, take **App.exemple.config**, and copy it to **App.config**, the things are pretty easy, you should able to guess how things are working.
 
-A more detailled documentation/tutorial will come later.
+A more detailed documentation/tutorial will come later.
