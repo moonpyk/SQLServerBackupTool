@@ -89,7 +89,7 @@ namespace SQLServerBackupTool.Web.Controllers
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine(ex);
+                    Logger.ErrorException("During database backup", ex);
                     return HttpNotFound(string.Format("Unable to backup database '{0}'", id));
                 }
 
@@ -104,9 +104,9 @@ namespace SQLServerBackupTool.Web.Controllers
                         await Task.Run(() => z.Save());
                     }
                 }
-                catch (Exception e)
+                catch (Exception ex)
                 {
-                    Debug.WriteLine(e);
+                    Logger.ErrorException("Furing zip file creation", ex);
                     return HttpNotFound(string.Format("Error during backup zip creation"));
                 }
 
@@ -116,7 +116,7 @@ namespace SQLServerBackupTool.Web.Controllers
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine(ex);
+                    Logger.ErrorException("During original file deletion", ex);
                 }
 
                 var h = new BackupHistory
