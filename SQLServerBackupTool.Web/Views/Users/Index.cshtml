@@ -1,84 +1,63 @@
 ﻿@model PagedList.IPagedList<MembershipUser>
 @{
-    ViewBag.Title = "Users management";
+    var rolesEnabled = Roles.Enabled;
+    ViewBag.Title = "Users management";    
 }
 <table class="table table-bordered table-striped">
     <thead>
-        @*    <tr>
-            <th>
-                Username
+        <tr>
+            <th>Username
             </th>
-            <th>
-                Email
+            <th>Email
             </th>
-            <th>
-                @Html.DisplayNameFor(m => m.IsApproved)
-            </th>
-            <th>
-                @Html.DisplayNameFor(m => m.IsLockedOut)
-            </th>
-            <th>
-                @Html.DisplayNameFor(m => m.LastLockoutDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(m => m.CreationDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(m => m.LastLoginDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(m => m.LastActivityDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(m => m.LastPasswordChangedDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(m => m.IsOnline)
-            </th>
+            @if (rolesEnabled)
+            {
+                <th>Roles</th>
+            }
+            <th>Creation date</th>
+            <th>Last login date</th>
+            <th>Last activity date</th>
+            <th>Is approved</th>
+            <th>Is locked out</th>
             <th></th>
-        </tr>*@
+        </tr>
     </thead>
-
     <tbody>
         @foreach (var m in Model)
         {
             <tr>
+                <td>@m.UserName
+                </td>
+                <td><a href="mailto:@m.Email">@m.Email</a>
+                </td>
+                @if (rolesEnabled)
+                {
+                    <td>@string.Join(", ", Roles.GetRolesForUser(m.UserName))</td>
+                }
+                <td>@m.CreationDate.ToShortDateString()</td>
+                <td>@m.LastLoginDate.ToShortDateString()</td>
+                <td>@m.LastActivityDate.ToShortDateString()</td>
                 <td>
-                    @Html.DisplayFor(_ => m.UserName)
+                    @if (m.IsApproved)
+                    {
+                        <i class="icon-check"></i>
+                    }
                 </td>
                 <td>
-                    @Html.DisplayFor(_ => m.Email)
+                    @if (m.IsLockedOut)
+                    {
+                        <i class="icon-check"></i>
+                    }
                 </td>
                 <td>
-                    @Html.DisplayFor(_ => m.IsApproved)
-                </td>
-                <td>
-                    @Html.DisplayFor(_ => m.IsLockedOut)
-                </td>
-                <td>
-                    @Html.DisplayFor(_ => m.LastLockoutDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(_ => m.CreationDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(_ => m.LastLoginDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(_ => m.LastActivityDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(_ => m.LastPasswordChangedDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(_ => m.IsOnline)
-                </td>
-                <td>
-                    @*            
-                    @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-                    *@
+                    <div class="btn-group">
+                        <a class="btn" href="@Url.Action("Edit", new { id=m.UserName })">
+                            <i class="icon-edit"></i>&nbsp;Edit
+                        </a>
+                        <a href="@Url.Action("Delete")" class="btn btn-danger">
+                            <i class="icon-trash icon-white"></i>&nbsp;Delete
+                        </a>
+                    </div>
                 </td>
             </tr>
         }

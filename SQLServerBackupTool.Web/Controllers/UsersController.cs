@@ -37,5 +37,17 @@ namespace SQLServerBackupTool.Web.Controllers
         {
             get { return Membership.Provider; }
         }
+
+        public ActionResult Edit(string id)
+        {
+            var u = Membership.GetUser(id);
+
+            if (u == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(u);
+        }
     }
 }
