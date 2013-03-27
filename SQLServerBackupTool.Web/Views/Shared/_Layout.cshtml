@@ -16,10 +16,11 @@
                     <a href="@Url.Action("Index", "Users")"><i class="icon-user"></i>&nbsp;Users</a>
                 </li>
             </ul>
-            <h1>    
+            <h1>
                 <span class="ss">SS</span>BT<span class="purple">.web</span> - <span class="title">@ViewBag.Title</span>
             </h1>
         </div>
+        @Html.RenderFlashMessages()
         @RenderBody()
     </div>
     @Scripts.Render("~/bundles/jquery", "~/bundles/ssbtw")

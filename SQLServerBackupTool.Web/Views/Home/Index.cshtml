@@ -1,4 +1,4 @@
-﻿@model IEnumerable<DatabaseInfo>
+﻿@model IndexViewModel
 @{
     ViewBag.Title = "Databases list";
 }
@@ -6,27 +6,26 @@
 <div class="loginbox">
     <i class="icon-user"></i>&nbsp;@User.Identity.Name (@(string.Join(", ", Roles.GetRolesForUser())))
 </div>
-<br />
 <table class="table table-bordered table-striped table-vmiddle">
     <thead>
         <tr>
             <th>Id</th>
             <th>Database name</th>
-            <th style="width: 91px;"></th>
+            <th style="width: 70px;"></th>
         </tr>
     </thead>
     <tbody>
-        @if (Model.Any())
+        @if (Model.DatabaseInfo.Any())
         {
-            foreach (var di in Model)
+            foreach (var di in Model.DatabaseInfo)
             {
             <tr>
                 <td>@di.Id</td>
                 <td>@di.Name</td>
                 <td>
                     <div class="btn-group">
-                        <a href="@Url.Action("Schema", new { id = di.Name })" class="btn"><i class="icon-eye-open"></i>&nbsp;Schema</a>
-                        <a class="btn btn-inverse" href="#"><i class="icon-white icon-download"></i>&nbsp;Backup</a>
+                        <a href="@Url.Action("Schema", new { id = di.Name })" class="btn"><i class="icon-eye-open"></i><span>&nbsp;Schema</span></a>
+                        <a class="btn btn-inverse" href="#"><i class="icon-white icon-download"></i><span>&nbsp;Backup</span></a>
                     </div>
                 </td>
             </tr>

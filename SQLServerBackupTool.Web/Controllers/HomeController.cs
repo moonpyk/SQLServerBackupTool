@@ -3,10 +3,10 @@ using Ionic.Zip;
 using SQLServerBackupTool.Lib;
 using SQLServerBackupTool.Web.Lib.Mvc;
 using SQLServerBackupTool.Web.Models;
+using SQLServerBackupTool.Web.ViewModels;
 using System;
 using System.Configuration;
 using System.Data.SqlClient;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -20,18 +20,25 @@ namespace SQLServerBackupTool.Web.Controllers
         // GET: /Home/
         public ActionResult Index()
         {
-            using (var co = new SqlConnection(GetConnectionString()))
+            using (var co = new SqlConnection(GetBackupsConnectionString()))
             {
                 co.Open();
                 var p = co.Query<DatabaseInfo>(DatabaseInfo.Query);
 
-                return View(p);
+                IQueryable<BackupHistory> q = DbContext.History;
+
+                if (!User.IsInRole("Admin"))
+                {
+                    q = q.Where(_ => _.Username == User.Identity.Name);
+                }
+
+                return View(new IndexViewModel(p, q));
             }
         }
 
         public ActionResult Schema(string id)
         {
-            using (var co = new SqlConnection(GetConnectionString()))
+            using (var co = new SqlConnection(GetBackupsConnectionString()))
             {
                 co.Open();
 
@@ -66,7 +73,7 @@ namespace SQLServerBackupTool.Web.Controllers
         //[HttpPost, ValidateAntiForgeryToken]
         public async Task<ActionResult> Backup(string id)
         {
-            using (var bak = new SqlServerBackupProvider(GetConnectionString()))
+            using (var bak = new SqlServerBackupProvider(GetBackupsConnectionString()))
             {
                 await bak.OpenAsync();
                 var ts = DateTime.Now;
@@ -137,7 +144,66 @@ namespace SQLServerBackupTool.Web.Controllers
             }
         }
 
-        private static string GetConnectionString()
+        // [HttpPost, ValidateAntiForgeryToken, Authorize(Roles = "Admin")]
+        public ActionResult PurgeOldBackups()
+        {
+            if (PurgeOldBackupsImpl(DateTime.Now))
+            {
+                this.AddFlashMessage("Outdated backups successfully removed", FlashMessageType.Success);
+            }
+            else
+            {
+                this.AddFlashMessage("An error occured during purging", FlashMessageType.Error);
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        private bool PurgeOldBackupsImpl(DateTime from)
+        {
+            var oldBackups = DbContext.History
+                .Where(_ => from > _.Expires)
+                .ToList();
+
+            var didCrash = false;
+            var didChange = false;
+
+            foreach (var b in oldBackups)
+            {
+                try
+                {
+                    System.IO.File.Delete(b.Path);
+                }
+                catch (Exception ex)
+                {
+                    didCrash = true;
+                    Logger.ErrorException("During outdated backup file deletion", ex);
+                    continue;
+                }
+
+                didChange = true;
+                DbContext.History.Remove(b);
+            }
+
+            if (!didChange)
+            {
+                return !didCrash;
+            }
+
+            try
+            {
+                DbContext.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                didCrash = true;
+                Logger.ErrorException("While saving database changes", ex);
+            }
+
+            return !didCrash;
+        }
+
+        private static string GetBackupsConnectionString()
         {
             return ConfigurationManager.ConnectionStrings["BackupConnection"].ConnectionString;
         }
