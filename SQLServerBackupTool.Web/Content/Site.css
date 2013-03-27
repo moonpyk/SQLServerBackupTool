@@ -4852,7 +4852,8 @@ a.label:hover, a.label:focus, a.badge:hover, a.badge:focus {
   -moz-border-radius: 4px;
   border-radius: 4px;
   border: 1px solid #dddddd;
-  padding: 3px 3px 3px 5px; }
+  padding: 3px 3px 3px 5px;
+  margin-bottom: 10px; }
 
 .purple {
   color: #7a43b6; }
@@ -4878,9 +4879,26 @@ a.label:hover, a.label:focus, a.badge:hover, a.badge:focus {
   background-color: #F7F7F7;
   border: 1px solid #eeeeee; }
 
+.alert {
+  margin-bottom: 10px; }
+
 #nav {
   margin-top: 11px; }
 
 @media (max-width: 767px) {
   #top-bar h1 {
-    font-size: 25px; } }
+    font-size: 25px; }
+
+  .container-fluid {
+    padding-right: 10px;
+    padding-left: 10px; }
+
+  .btn span {
+    display: none; } }
+@media (max-width: 480px) {
+  #top-bar h1 {
+    font-size: 15px;
+    line-height: 28px; }
+
+  #nav {
+    margin-top: 6px; } }
