@@ -14,9 +14,10 @@ namespace SQLServerBackupTool.Web
                 "~/Scripts/jquery-{version}.js"
             ));
 
-            bundles.Add(new ScriptBundle("~/bundles/ssbtw")
-                .Include("~/Scripts/bootstrap.js")
-            );
+            bundles.Add(new ScriptBundle("~/bundles/ssbtw").Include(
+                "~/Scripts/bootstrap.js",
+                "~/Scripts/ssbtw.js"
+            ));
 
             // Styles
 
