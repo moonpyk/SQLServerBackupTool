@@ -11,25 +11,25 @@ namespace SQLServerBackupTool.Web.Lib.Mvc
         protected Logger Logger
         {
             get;
-            private set;
+            set;
         }
 
         protected SSBTDbContext DbContext
         {
             get;
-            private set;
+            set;
         }
 
-        protected override void Initialize(RequestContext requestContext)
+        protected override void Initialize(RequestContext r)
         {
-            var controllerName = requestContext.RouteData.Values["controller"] as string;
-            var actionName     = requestContext.RouteData.Values["action"] as string;
+            var controllerName = r.RouteData.GetRequiredString("controller");
+            var actionName     = r.RouteData.GetRequiredString("action");
 
             ViewBag.ControllerName = controllerName;
             Logger                 = LogManager.GetLogger(string.Format("{0}_{1}", controllerName, actionName));
             DbContext              = new SSBTDbContext();
 
-            base.Initialize(requestContext);
+            base.Initialize(r);
         }
 
         protected override void Dispose(bool disposing)

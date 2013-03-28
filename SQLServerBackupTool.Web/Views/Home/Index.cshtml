@@ -24,8 +24,12 @@
                 <td>@di.Name</td>
                 <td>
                     <div class="btn-group">
-                        <a href="@Url.Action("Schema", new { id = di.Name })" class="btn"><i class="icon-eye-open"></i><span>&nbsp;Schema</span></a>
-                        <a class="btn btn-inverse" href="#"><i class="icon-white icon-download"></i><span>&nbsp;Backup</span></a>
+                        <a href="@Url.Action("Schema", new { id = di.Name })" class="btn">
+                            <i class="icon-eye-open"></i><span>&nbsp;Schema</span>
+                        </a>
+                        <a class="btn btn-inverse backup" href="@Url.Action("Backup", new { di.Id })">
+                            <i class="icon-white icon-download"></i><span>&nbsp;Backup</span>
+                        </a>
                     </div>
                 </td>
             </tr>
@@ -41,3 +45,51 @@
         }
     </tbody>
 </table>
+<div>
+    <h4>Backups</h4>
+    <table class="table table-bordered table-striped table-vmiddle">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Database</th>
+                <th>User</th>
+                <th>Expiration</th>
+                <th style="width: 30px;"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Backups.Any())
+            {
+                foreach (var b in Model.Backups)
+                {
+                <tr>
+                    <td>@b.Id</td>
+                    <td></td>
+                    <td>@b.Username</td>
+                    <td>@b.Expires</td>
+                    <td>
+                        <div class="btn-group">
+                            <a class="btn" href="@Url.Content(b.Url)">
+                                <i class="icon-download"></i><span>&nbsp;Download</span>
+                            </a>
+                            <a href="#" class="btn btn-danger" onclick="return false;">
+                                <i class="icon-white icon-trash"></i><span>&nbsp;Delete</span>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td style="text-align: center;" colspan="5"><i>No available database backup</i></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "form-aft", style = "display:none;" }))
+{
+    @Html.AntiForgeryToken()
+}
