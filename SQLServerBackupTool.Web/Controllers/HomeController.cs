@@ -46,8 +46,12 @@ namespace SQLServerBackupTool.Web.Controllers
                 {
                     co.ChangeDatabase(id);
                 }
-                catch (SqlException) // Schema doesn't exists, usually
+                catch (SqlException ex) // Schema doesn't exists, usually
                 {
+                    var message = string.Format("An error occured while retrieving '{0}' schema.", id);
+                    this.AddFlashMessage(message, FlashMessageType.Error);
+                    Logger.ErrorException(message, ex);
+
                     return RedirectToAction("Index");
                 }
 
