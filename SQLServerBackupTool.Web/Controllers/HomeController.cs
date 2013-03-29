@@ -18,29 +18,29 @@ namespace SQLServerBackupTool.Web.Controllers
     {
         //
         // GET: /Home/
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
+            IQueryable<BackupHistory> q = DbContext.History;
+
+            if (!User.IsInRole("Admin"))
+            {
+                q = q.Where(_ => _.Username == User.Identity.Name);
+            }
+
             using (var co = new SqlConnection(GetBackupsConnectionString()))
             {
-                co.Open();
-                var p = co.Query<DatabaseInfo>(DatabaseInfo.Query);
-
-                IQueryable<BackupHistory> q = DbContext.History;
-
-                if (!User.IsInRole("Admin"))
-                {
-                    q = q.Where(_ => _.Username == User.Identity.Name);
-                }
+                await co.OpenAsync();
+                var p = await Task.Run(() => co.Query<DatabaseInfo>(DatabaseInfo.Query));
 
                 return View(new IndexViewModel(p, q));
             }
         }
 
-        public ActionResult Schema(string id)
+        public async Task<ActionResult> Schema(string id)
         {
             using (var co = new SqlConnection(GetBackupsConnectionString()))
             {
-                co.Open();
+                await co.OpenAsync();
 
                 try
                 {
@@ -51,14 +51,15 @@ namespace SQLServerBackupTool.Web.Controllers
                     return RedirectToAction("Index");
                 }
 
-                var schem = co.Query<SchemaInfo>(SchemaInfo.Query).ToList();
+                var schem = await Task.Run(() => co.Query<SchemaInfo>(SchemaInfo.Query).ToList());
                 var tList = schem.Select(_ => _.Table).Distinct();
 
                 foreach (var t in tList)
                 {
-                    var rc = co.Query<int>(string.Format(SchemaInfo.RowCountQuery, t)).First();
-
                     var __ = t;
+
+                    var rc = await Task.Run(() => co.Query<int>(string.Format(SchemaInfo.RowCountQuery, __)).First());
+
                     foreach (var c in schem.Where(_ => _.Table == __))
                     {
                         c.RowCount = rc;
