@@ -27,7 +27,7 @@
                         <a href="@Url.Action("Schema", new { id = di.Name })" class="btn">
                             <i class="icon-eye-open"></i><span>&nbsp;Schema</span>
                         </a>
-                        <a class="btn btn-inverse backup" href="@Url.Action("Backup", new { di.Id })">
+                        <a class="btn btn-inverse backup" href="@Url.Action("Backup", new { id=di.Name })">
                             <i class="icon-white icon-download"></i><span>&nbsp;Backup</span>
                         </a>
                     </div>
