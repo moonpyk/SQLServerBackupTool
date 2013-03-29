@@ -34,6 +34,13 @@ namespace SQLServerBackupTool.Web.Models
             set;
         }
 
+        [MaxLength(50)]
+        public string Database
+        {
+            get;
+            set;
+        }
+
         public DateTime Expires
         {
             get;

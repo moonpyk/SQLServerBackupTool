@@ -129,6 +129,7 @@ namespace SQLServerBackupTool.Web.Controllers
                 var h = new BackupHistory
                 {
                     Path     = fullZipPath,
+                    Database = id,
                     Url      = string.Format("~/{0}", fullZipPath.Replace(Server.MapPath("~/"), string.Empty).Replace('\\', '/')),
                     Expires  = DateTime.Now.AddDays(1),
                     Username = User.Identity.Name,
@@ -180,7 +181,7 @@ namespace SQLServerBackupTool.Web.Controllers
                     }
 
                     this.AddFlashMessage("Backup successfully deleted", FlashMessageType.Success);
-                    
+
                     return RedirectToAction("Index");
                 }
                 catch (Exception ex)
