@@ -159,7 +159,7 @@ namespace SQLServerBackupTool.Web.Controllers
             return RedirectToAction("Index");
         }
 
-        //[HttpPost, ValidateAntiForgeryToken]
+        [HttpPost, ValidateAntiForgeryToken]
         public ActionResult Delete(int id)
         {
             var bk = DbContext.History.Find(id);
@@ -174,8 +174,14 @@ namespace SQLServerBackupTool.Web.Controllers
                 try
                 {
                     DbContext.SaveChanges();
-                    return Content("OK", "text/plain");
+                    if (Request.IsAjaxRequest())
+                    {
+                        return Content("OK", "text/plain");
+                    }
 
+                    this.AddFlashMessage("Backup successfully deleted", FlashMessageType.Success);
+                    
+                    return RedirectToAction("Index");
                 }
                 catch (Exception ex)
                 {
@@ -183,7 +189,14 @@ namespace SQLServerBackupTool.Web.Controllers
                 }
             }
 
-            return Content("ERR", "text/plain");
+            if (Request.IsAjaxRequest())
+            {
+                return Content("ERR", "text/plain");
+            }
+
+            this.AddFlashMessage("An error occured while deleting backup.", FlashMessageType.Error);
+
+            return RedirectToAction("Index");
         }
 
         private bool PurgeOldBackupsImpl(DateTime from)
