@@ -1,10 +1,16 @@
 ﻿@model IndexViewModel
 @{
     ViewBag.Title = "Databases list";
+
+    var roles = Roles.GetRolesForUser();
 }
 
 <div class="userbox">
-    <i class="icon-user"></i>&nbsp;@User.Identity.Name (@(string.Join(", ", Roles.GetRolesForUser())))
+    <i class="icon-user"></i>&nbsp;@User.Identity.Name
+    @if (roles.Any())
+    {
+        <text>(@string.Join(", ", roles))</text>        
+    }
 </div>
 <table class="table table-bordered table-striped table-vmiddle">
     <thead>
@@ -27,7 +33,7 @@
                         <a href="@Url.Action("Schema", new { id = di.Name })" class="btn">
                             <i class="icon-eye-open"></i><span>&nbsp;Schema</span>
                         </a>
-                        <a class="btn btn-inverse backup" href="@Url.Action("Backup", new { id=di.Name })">
+                        <a class="btn btn-inverse backup-do" href="@Url.Action("Backup", new { id=di.Name })" onclick="return false;">
                             <i class="icon-white icon-download"></i><span>&nbsp;Backup</span>
                         </a>
                     </div>
@@ -72,7 +78,7 @@
                             <a class="btn" href="@Url.Content(b.Url)">
                                 <i class="icon-download"></i><span>&nbsp;Download</span>
                             </a>
-                            <a href="#" class="btn btn-danger" onclick="return false;">
+                            <a class="backup-delete btn btn-danger" href="@Url.Action("Delete", new { id = b.Id })" onclick="return false;">
                                 <i class="icon-white icon-trash"></i><span>&nbsp;Delete</span>
                             </a>
                         </div>

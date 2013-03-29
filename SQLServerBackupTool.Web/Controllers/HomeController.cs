@@ -159,35 +159,49 @@ namespace SQLServerBackupTool.Web.Controllers
             return RedirectToAction("Index");
         }
 
+        //[HttpPost, ValidateAntiForgeryToken]
+        public ActionResult Delete(int id)
+        {
+            var bk = DbContext.History.Find(id);
+
+            if (bk == null)
+            {
+                return HttpNotFound("Not a valid backup id");
+            }
+
+            if (DeleteBackup(bk))
+            {
+                try
+                {
+                    DbContext.SaveChanges();
+                    return Content("OK", "text/plain");
+
+                }
+                catch (Exception ex)
+                {
+                    Logger.ErrorException("While saving database changes", ex);
+                }
+            }
+
+            return Content("ERR", "text/plain");
+        }
+
         private bool PurgeOldBackupsImpl(DateTime from)
         {
             var oldBackups = DbContext.History
                 .Where(_ => from > _.Expires)
                 .ToList();
 
-            var didCrash = false;
             var didChange = false;
 
-            foreach (var b in oldBackups)
+            foreach (var b in oldBackups.Where(DeleteBackup))
             {
-                try
-                {
-                    System.IO.File.Delete(b.Path);
-                }
-                catch (Exception ex)
-                {
-                    didCrash = true;
-                    Logger.ErrorException("During outdated backup file deletion", ex);
-                    continue;
-                }
-
                 didChange = true;
-                DbContext.History.Remove(b);
             }
 
             if (!didChange)
             {
-                return !didCrash;
+                return true;
             }
 
             try
@@ -196,11 +210,27 @@ namespace SQLServerBackupTool.Web.Controllers
             }
             catch (Exception ex)
             {
-                didCrash = true;
                 Logger.ErrorException("While saving database changes", ex);
+                return false;
             }
 
-            return !didCrash;
+            return true;
+        }
+
+        private bool DeleteBackup(BackupHistory b)
+        {
+            try
+            {
+                System.IO.File.Delete(b.Path);
+            }
+            catch (Exception ex)
+            {
+                Logger.ErrorException(string.Format("During backup file deletion '{0}'", b.Path), ex);
+                return false;
+            }
+
+            DbContext.History.Remove(b);
+            return true;
         }
 
         private static string GetBackupsConnectionString()
