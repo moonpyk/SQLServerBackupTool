@@ -54,6 +54,9 @@
     <Compile Include="..\SQLServerBackupTool.Lib\ISqlBackupProvider.cs">
       <Link>Lib\ISqlBackupProvider.cs</Link>
     </Compile>
+    <Compile Include="..\SQLServerBackupTool.Lib\Utils.cs">
+      <Link>Lib\Utils.cs</Link>
+    </Compile>
     <Compile Include="Lib\ConsoleHelper.cs" />
     <Compile Include="Lib\Options.cs" />
     <Compile Include="Program.cs" />
