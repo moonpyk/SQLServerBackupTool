@@ -149,6 +149,7 @@
   <ItemGroup>
     <Compile Include="App_Start\AutoInstall.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="Lib\BackupsManager.cs" />
     <Compile Include="Lib\Mvc\FlashMessages.cs" />
     <Compile Include="ViewModels\IndexViewModel.cs" />
     <Compile Include="Lib\Mvc\ApplicationController.cs" />

@@ -1,6 +1,8 @@
 ﻿using Dapper;
 using Ionic.Zip;
+using NLog;
 using SQLServerBackupTool.Lib;
+using SQLServerBackupTool.Web.Lib;
 using SQLServerBackupTool.Web.Lib.Mvc;
 using SQLServerBackupTool.Web.Models;
 using SQLServerBackupTool.Web.ViewModels;
@@ -152,7 +154,7 @@ namespace SQLServerBackupTool.Web.Controllers
         // [HttpPost, ValidateAntiForgeryToken, Authorize(Roles = "Admin")]
         public ActionResult PurgeOldBackups()
         {
-            if (PurgeOldBackupsImpl(DateTime.Now))
+            if (BackupsManager.PurgeOldBackups(DbContext, DateTime.Now, Logger))
             {
                 AddFlashMessage("Outdated backups successfully removed", FlashMessageType.Success);
             }
@@ -174,7 +176,7 @@ namespace SQLServerBackupTool.Web.Controllers
                 return HttpNotFound("Not a valid backup id");
             }
 
-            if (DeleteBackup(bk))
+            if (BackupsManager.DeleteBackup(DbContext, bk, Logger))
             {
                 try
                 {
@@ -202,53 +204,6 @@ namespace SQLServerBackupTool.Web.Controllers
             AddFlashMessage("An error occured while deleting backup.", FlashMessageType.Error);
 
             return RedirectToAction("Index");
-        }
-
-        private bool PurgeOldBackupsImpl(DateTime from)
-        {
-            var oldBackups = DbContext.History
-                .Where(_ => from > _.Expires)
-                .ToList();
-
-            var didChange = false;
-
-            foreach (var b in oldBackups.Where(DeleteBackup))
-            {
-                didChange = true;
-            }
-
-            if (!didChange)
-            {
-                return true;
-            }
-
-            try
-            {
-                DbContext.SaveChanges();
-            }
-            catch (Exception ex)
-            {
-                Logger.ErrorException("While saving database changes", ex);
-                return false;
-            }
-
-            return true;
-        }
-
-        private bool DeleteBackup(BackupHistory b)
-        {
-            try
-            {
-                System.IO.File.Delete(b.Path);
-            }
-            catch (Exception ex)
-            {
-                Logger.ErrorException(string.Format("During backup file deletion '{0}'", b.Path), ex);
-                return false;
-            }
-
-            DbContext.History.Remove(b);
-            return true;
         }
     }
 }
