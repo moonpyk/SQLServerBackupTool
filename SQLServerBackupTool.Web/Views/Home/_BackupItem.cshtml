@@ -1,0 +1,18 @@
+﻿@model BackupHistory
+
+<tr>
+    <td>@Model.Id</td>
+    <td>@Model.Database</td>
+    <td>@Model.Username</td>
+    <td>@Model.Expires</td>
+    <td>
+        <div class="btn-group">
+            <a class="btn" href="@Url.Content(Model.Url)">
+                <i class="icon-download"></i><span>&nbsp;Download</span>
+            </a>
+            <a class="backup-delete btn btn-danger" href="@Url.Action("Delete", new { id = Model.Id })" onclick="return false;">
+                <i class="icon-white icon-trash"></i><span>&nbsp;Delete</span>
+            </a>
+        </div>
+    </td>
+</tr>

@@ -4901,6 +4901,9 @@ a.label:hover, a.label:focus, a.badge:hover, a.badge:focus {
 .backup-do {
   /**/ }
 
+.no-row td {
+  text-align: center; }
+
 @media (max-width: 767px) {
   #top-bar h1 {
     font-size: 25px; }

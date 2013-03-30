@@ -20,7 +20,7 @@
             <th style="width: 70px;"></th>
         </tr>
     </thead>
-    <tbody>
+    <tbody id="backups-container">
         @if (Model.DatabaseInfo.Any())
         {
             foreach (var di in Model.DatabaseInfo)
@@ -43,9 +43,9 @@
         }
         else
         {
-            <tr>
+            <tr class="no-row">
                 <td colspan="3">
-                    <i style="text-align: center;">No available database for backup</i>
+                    <i>No available database for backup</i>
                 </td>
             </tr>
         }
@@ -68,22 +68,7 @@
             {
                 foreach (var b in Model.Backups)
                 {
-                <tr>
-                    <td>@b.Id</td>
-                    <td>@b.Database</td>
-                    <td>@b.Username</td>
-                    <td>@b.Expires</td>
-                    <td>
-                        <div class="btn-group">
-                            <a class="btn" href="@Url.Content(b.Url)">
-                                <i class="icon-download"></i><span>&nbsp;Download</span>
-                            </a>
-                            <a class="backup-delete btn btn-danger" href="@Url.Action("Delete", new { id = b.Id })" onclick="return false;">
-                                <i class="icon-white icon-trash"></i><span>&nbsp;Delete</span>
-                            </a>
-                        </div>
-                    </td>
-                </tr>
+                @Html.Partial("_BackupItem", b)
                 }
             }
             else
