@@ -5,7 +5,6 @@ using SQLServerBackupTool.Web.Lib.Mvc;
 using SQLServerBackupTool.Web.Models;
 using SQLServerBackupTool.Web.ViewModels;
 using System;
-using System.Configuration;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
@@ -250,11 +249,6 @@ namespace SQLServerBackupTool.Web.Controllers
 
             DbContext.History.Remove(b);
             return true;
-        }
-
-        private static string GetBackupsConnectionString()
-        {
-            return ConfigurationManager.ConnectionStrings["BackupConnection"].ConnectionString;
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using NLog;
 using SQLServerBackupTool.Web.Models;
+using System.Configuration;
 using System.Web.Mvc;
 using System.Web.Routing;
 
@@ -36,6 +37,11 @@ namespace SQLServerBackupTool.Web.Lib.Mvc
         {
             DbContext.Dispose();
             base.Dispose(disposing);
+        }
+
+        protected static string GetBackupsConnectionString()
+        {
+            return ConfigurationManager.ConnectionStrings["BackupConnection"].ConnectionString;
         }
     }
 }
