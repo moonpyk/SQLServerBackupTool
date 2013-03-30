@@ -113,11 +113,7 @@ namespace SQLServerBackupTool
 
                     var ts = DateTime.Now;
 
-                    var fNameBase = string.Format(
-                        "{0}.{1}",
-                        ddb,
-                        ts.ToString("yyyyMMdd.HHmmss")
-                        );
+                    var fNameBase = Utils.GenerateBackupBaseName(ddb, ts);
 
                     var backupFullPath = Path.Combine(
                         s.BackupPath,
