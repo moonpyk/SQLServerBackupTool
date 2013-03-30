@@ -30,7 +30,7 @@ namespace SQLServerBackupTool.Web.Lib.Mvc
             container.Add(new FlashMessage
             {
                 Message = message,
-                Type = t,
+                Type    = t,
             });
         }
 
@@ -61,6 +61,16 @@ namespace SQLServerBackupTool.Web.Lib.Mvc
 
             return MvcHtmlString.Empty;
         }
+    }
+
+    public interface IFlashMessageProvider
+    {
+        void AddFlashMessage(string message, FlashMessageType t);
+
+        void FlashInfo(string message);
+        void FlashSuccess(string message);
+        void FlashWarning(string message);
+        void FlashError(string message);
     }
 
     public struct FlashMessage

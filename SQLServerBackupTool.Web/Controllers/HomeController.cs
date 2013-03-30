@@ -48,7 +48,7 @@ namespace SQLServerBackupTool.Web.Controllers
                 catch (SqlException ex) // Schema doesn't exists, usually
                 {
                     var message = string.Format("An error occured while retrieving '{0}' schema.", id);
-                    this.AddFlashMessage(message, FlashMessageType.Error);
+                    AddFlashMessage(message, FlashMessageType.Error);
                     Logger.ErrorException(message, ex);
 
                     return RedirectToAction("Index");
@@ -154,11 +154,11 @@ namespace SQLServerBackupTool.Web.Controllers
         {
             if (PurgeOldBackupsImpl(DateTime.Now))
             {
-                this.AddFlashMessage("Outdated backups successfully removed", FlashMessageType.Success);
+                AddFlashMessage("Outdated backups successfully removed", FlashMessageType.Success);
             }
             else
             {
-                this.AddFlashMessage("An error occured during purging", FlashMessageType.Error);
+                AddFlashMessage("An error occured during purging", FlashMessageType.Error);
             }
 
             return RedirectToAction("Index");
@@ -184,7 +184,7 @@ namespace SQLServerBackupTool.Web.Controllers
                         return Content("OK", "text/plain");
                     }
 
-                    this.AddFlashMessage("Backup successfully deleted", FlashMessageType.Success);
+                    AddFlashMessage("Backup successfully deleted", FlashMessageType.Success);
 
                     return RedirectToAction("Index");
                 }
@@ -199,7 +199,7 @@ namespace SQLServerBackupTool.Web.Controllers
                 return Content("ERR", "text/plain");
             }
 
-            this.AddFlashMessage("An error occured while deleting backup.", FlashMessageType.Error);
+            AddFlashMessage("An error occured while deleting backup.", FlashMessageType.Error);
 
             return RedirectToAction("Index");
         }

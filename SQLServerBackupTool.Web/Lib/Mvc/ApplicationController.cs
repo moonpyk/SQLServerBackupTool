@@ -7,7 +7,7 @@ using System.Web.Routing;
 namespace SQLServerBackupTool.Web.Lib.Mvc
 {
     [Authorize]
-    public class ApplicationController : Controller
+    public class ApplicationController : Controller, IFlashMessageProvider
     {
         protected Logger Logger
         {
@@ -19,6 +19,31 @@ namespace SQLServerBackupTool.Web.Lib.Mvc
         {
             get;
             set;
+        }
+
+        public void AddFlashMessage(string message, FlashMessageType t)
+        {
+            FlashMessagesHelper.AddFlashMessage(this, message, t);
+        }
+
+        public void FlashInfo(string message)
+        {
+            AddFlashMessage(message, FlashMessageType.Info);
+        }
+
+        public void FlashSuccess(string message)
+        {
+            AddFlashMessage(message, FlashMessageType.Success);
+        }
+
+        public void FlashWarning(string message)
+        {
+            AddFlashMessage(message, FlashMessageType.Warning);
+        }
+
+        public void FlashError(string message)
+        {
+            AddFlashMessage(message, FlashMessageType.Error);
         }
 
         protected override void Initialize(RequestContext r)
