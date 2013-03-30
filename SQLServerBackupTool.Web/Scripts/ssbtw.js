@@ -1,6 +1,7 @@
 window.ssbt = {
     messages: {
-        CONFIRM_DELETE_BACKUP: "Are you sure you want to delete this database backup ?"
+        CONFIRM_DELETE_BACKUP: "Are you sure you want to delete this database backup ?",
+        CONFIRM_PURGE_BACKUPS: "Are you sure you want to purge expired backups ?"
     }
 };
 
@@ -8,6 +9,19 @@ $(document).ready(function () {
     var $f = $('#form-aft');
 
     $('.pldr').pldr({ autostart: false });
+
+    $('#backup-purge').on('click', function (e) {
+        e.preventDefault();
+
+        if (!confirm(ssbt.messages.CONFIRM_PURGE_BACKUPS)) {
+            return;
+        }
+
+        var $me = $(this),
+            href = $me.attr('href');
+
+        $f.attr('action', href).submit();
+    });
 
     $('.backup-delete').on('click', function (e) {
         e.preventDefault();

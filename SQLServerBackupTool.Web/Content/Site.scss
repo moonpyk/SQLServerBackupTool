@@ -11,9 +11,14 @@ $linkColor: $purple;
     color: $grayLight;
 }
 
-.userbox {
+.boxed {
     @include border-radius(4px);
     border: 1px solid $tableBorder;
+    padding: 5px;
+}
+
+.userbox {
+    @extend .boxed;
     padding: 3px 3px 3px 5px;
     margin-bottom: 10px;
 }
@@ -63,6 +68,24 @@ $linkColor: $purple;
 
 #nav {
     margin-top: 11px;
+}
+
+.loading {
+    display: none;
+    .message {
+        text-align: center;
+    }
+    .pldr {
+        /**/
+    }
+}
+
+.backup-delete {
+    /**/
+}
+
+.backup-do {
+    /**/
 }
 
 @media (max-width: 767px) {

@@ -144,12 +144,12 @@ namespace SQLServerBackupTool.Web.Controllers
             }
         }
 
-        // [HttpPost, ValidateAntiForgeryToken, Authorize(Roles = "Admin")]
-        public ActionResult PurgeOldBackups()
+        [HttpPost, ValidateAntiForgeryToken, Authorize(Roles = "Admin")]
+        public ActionResult BackupsPurge()
         {
             if (BackupsManager.PurgeOldBackups(DbContext, DateTime.Now, Logger))
             {
-                AddFlashMessage("Outdated backups successfully removed", FlashMessageType.Success);
+                AddFlashMessage("Outdated backups successfully purged", FlashMessageType.Success);
             }
             else
             {

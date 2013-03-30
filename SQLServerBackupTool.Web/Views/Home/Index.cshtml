@@ -33,7 +33,7 @@
                         <a href="@Url.Action("Schema", new { id = di.Name })" class="btn">
                             <i class="icon-eye-open"></i><span>&nbsp;Schema</span>
                         </a>
-                        <a class="btn btn-inverse backup-do" href="@Url.Action("Backup", new { id=di.Name })" onclick="return false;">
+                        <a class="btn btn-inverse backup-do" href="@Url.Action("Backup", new { id=di.Name })">
                             <i class="icon-white icon-download"></i><span>&nbsp;Backup</span>
                         </a>
                     </div>
@@ -93,6 +93,30 @@
                 </tr>
             }
         </tbody>
+        @if (User.IsInRole("Admin") && Model.Backups.Any())
+        {
+            <tfoot>
+                <tr>
+                    <td colspan="5">
+                        <a id="backup-purge" href="@Url.Action("BackupsPurge")" onclick="return false;" class="btn btn-danger">
+                            <i class="icon-warning-sign icon-white"></i><span>&nbsp;Purge</span>
+                        </a>
+                    </td>
+                </tr>
+            </tfoot>
+        }
+    </table>
+</div>
+<div class="loading modal fade in">
+    <table>
+        <tr>
+            <td>
+                <div class="pldr"></div>
+            </td>
+            <td>
+                <div class="message"></div>
+            </td>
+        </tr>
     </table>
 </div>
 @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "form-aft", style = "display:none;" }))
