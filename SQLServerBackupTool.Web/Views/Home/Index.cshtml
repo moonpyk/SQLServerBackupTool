@@ -20,7 +20,7 @@
             <th style="width: 70px;"></th>
         </tr>
     </thead>
-    <tbody id="backups-container">
+    <tbody>
         @if (Model.DatabaseInfo.Any())
         {
             foreach (var di in Model.DatabaseInfo)
@@ -63,7 +63,7 @@
                 <th style="width: 30px;"></th>
             </tr>
         </thead>
-        <tbody>
+        <tbody id="backups-container">
             @if (Model.Backups.Any())
             {
                 foreach (var b in Model.Backups)
@@ -73,8 +73,8 @@
             }
             else
             {
-                <tr>
-                    <td style="text-align: center;" colspan="5"><i>No available database backup</i></td>
+                <tr class="no-row">
+                    <td colspan="5"><i>No available database backup</i></td>
                 </tr>
             }
         </tbody>

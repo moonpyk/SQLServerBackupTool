@@ -198,6 +198,7 @@
     <Content Include="Scripts\jquery-1.9.1.min.map" />
     <Content Include="Views\Users\Index.cshtml" />
     <Content Include="Views\Home\Schema.cshtml" />
+    <Content Include="Views\Home\_BackupItem.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -75,7 +75,7 @@ namespace SQLServerBackupTool.Web.Controllers
             }
         }
 
-        //[HttpPost, ValidateAntiForgeryToken]
+        [HttpPost, ValidateAntiForgeryToken]
         public async Task<ActionResult> Backup(string id)
         {
             using (var bak = new SqlServerBackupProvider(GetBackupsConnectionString()))
@@ -140,7 +140,7 @@ namespace SQLServerBackupTool.Web.Controllers
                     ddb.SaveChanges();
                 }
 
-                return Json(h, JsonRequestBehavior.AllowGet);
+                return PartialView("_BackupItem", h);
             }
         }
 

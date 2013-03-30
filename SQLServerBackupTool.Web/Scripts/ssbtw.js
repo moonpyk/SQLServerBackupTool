@@ -9,6 +9,21 @@ $(document).ready(function () {
     var $f = $('#form-aft');
 
     $('.pldr').pldr({ autostart: false });
+    $('.loading').modal({ show: false, keyboard: false });
+
+    var pleaseWait = function (message) {
+        var me = $('.loading');
+
+        me.find('.message').html(message);
+
+        me.off().on('show', function () {
+            me.find('.pldr').pldr('start');
+        }).on('hidden', function () {
+            me.find('.pldr').pldr('stop');
+        }).modal('show');
+
+        return me;
+    };
 
     $('#backup-purge').on('click', function (e) {
         e.preventDefault();
@@ -23,7 +38,26 @@ $(document).ready(function () {
         $f.attr('action', href).submit();
     });
 
-    $('.backup-delete').on('click', function (e) {
+    $('.backup-do').on('click', function (e) {
+        e.preventDefault();
+        var $me = $(this),
+            $bContainer = $('#backups-container');
+
+        var wait = pleaseWait('Please wait while your backup is done...');
+
+        $.ajax({
+            type: 'post',
+            url: $me.attr('href'),
+            data: $f.serialize()
+        }).done(function (html) {
+            $bContainer.find('.no-row').remove();
+            $bContainer.append(html);
+        }).always(function () {
+            wait.modal('hide');
+        });
+    });
+
+    $(document).on('click', '.backup-delete', function (e) {
         e.preventDefault();
 
         if (!confirm(ssbt.messages.CONFIRM_DELETE_BACKUP)) {
