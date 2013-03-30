@@ -182,6 +182,7 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Logs\empty" />
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
+    <Content Include="Scripts\jquery.pldr.js" />
     <Content Include="Scripts\jquery-1.9.1.js" />
     <Content Include="Scripts\jquery-1.9.1.min.js" />
     <Content Include="Scripts\ssbtw.js" />
