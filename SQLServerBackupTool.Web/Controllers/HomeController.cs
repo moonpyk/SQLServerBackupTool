@@ -1,6 +1,5 @@
 ﻿using Dapper;
 using Ionic.Zip;
-using NLog;
 using SQLServerBackupTool.Lib;
 using SQLServerBackupTool.Web.Lib;
 using SQLServerBackupTool.Web.Lib.Mvc;
@@ -86,15 +85,9 @@ namespace SQLServerBackupTool.Web.Controllers
 
                 var backupsPath = Server.MapPath("~/Backups");
 
-                var fNameBase = string.Format(
-                    "{0}.{1}",
-                    id,
-                    ts.ToString("yyyyMMdd.HHmmss")
-                );
+                var fNameBase = Utils.GenerateBackupBaseName(id, ts);
 
-                var backupName = string.Format("{0}.bak", fNameBase);
-
-                var fullBackupPath = Path.Combine(backupsPath, backupName);
+                var fullBackupPath = Path.Combine(backupsPath, string.Format("{0}.bak", fNameBase));
 
                 try
                 {
