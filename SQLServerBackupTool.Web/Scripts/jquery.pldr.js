@@ -1,4 +1,9 @@
-﻿(function ($) {
+﻿/*!
+ * jQuery pldr plugin
+ * Original author: @moonpyk
+ * Licensed under the MIT license
+ */
+(function ($) {
     var defaults = {
         speed: 9,
         width: 50,
@@ -6,7 +11,7 @@
         totalFrames: 8,
         frameWidth: 50,
         imageSrc: '/Content/img/loader.png',
-        autostart: true,
+        autostart: true
     };
 
     var methods = {
@@ -21,7 +26,7 @@
                 },
                 me = this;
 
-                $(me).data('ajl_settings', settings).data('ajl_state', state);
+                $(me).data('pldr_settings', settings).data('pldr_state', state);
 
                 me.style.backgroundImage = 'url(' + settings.imageSrc + ')';
                 me.style.width = settings.width + 'px';
@@ -38,6 +43,10 @@
                     $me = $(me),
                     settings = $me.data('pldr_settings'),
                     state = $me.data('pldr_state');
+
+                if (settings == null || state == null) {
+                    return;
+                }
 
                 state.sbf = 1 / (Math.round(100 / settings.speed));
 
@@ -62,7 +71,7 @@
                 var $me = $(this),
                     state = $me.data('pldr_state');
 
-                if (state.timer == null) {
+                if (state == null || state.timer == null) {
                     return;
                 }
 
