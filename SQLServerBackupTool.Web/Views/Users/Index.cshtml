@@ -3,6 +3,11 @@
     var rolesEnabled = Roles.Enabled;
     ViewBag.Title = "Users management";    
 }
+<div style="margin-bottom: 10px;">
+    <a href="@Url.Action("Create")" class="btn btn-success">
+        <i class="icon-white icon-plus-sign"></i><span>&nbsp;Create new user</span>
+    </a>
+</div>
 <table class="table table-bordered table-striped">
     <thead>
         <tr>
@@ -37,13 +42,13 @@
                 <td>@m.CreationDate.ToShortDateString()</td>
                 <td>@m.LastLoginDate.ToShortDateString()</td>
                 <td>@m.LastActivityDate.ToShortDateString()</td>
-                <td>
+                <td style="text-align: center;">
                     @if (m.IsApproved)
                     {
                         <i class="icon-check"></i>
                     }
                 </td>
-                <td>
+                <td style="text-align: center;">
                     @if (m.IsLockedOut)
                     {
                         <i class="icon-check"></i>

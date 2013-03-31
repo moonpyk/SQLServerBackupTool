@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using PagedList;
+using SQLServerBackupTool.Web.Lib.Mvc;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
-using PagedList;
-using SQLServerBackupTool.Web.Lib.Mvc;
 
 namespace SQLServerBackupTool.Web.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class UsersController : ApplicationController
     {
         private const int NumberItemsPerPage = 30;
@@ -28,14 +26,9 @@ namespace SQLServerBackupTool.Web.Controllers
 
             var users = Provider.GetAllUsers(pageIndex - 1, NumberItemsPerPage, out totalRecords);
 
-            var list = users.Cast<MembershipUser>().ToList();
+            var list = users.Cast<MembershipUser>();
 
             return View(list.ToPagedList(pageIndex, NumberItemsPerPage));
-        }
-
-        private static MembershipProvider Provider
-        {
-            get { return Membership.Provider; }
         }
 
         public ActionResult Edit(string id)
@@ -48,6 +41,17 @@ namespace SQLServerBackupTool.Web.Controllers
             }
 
             return View(u);
+        }
+
+        [ValidateAntiForgeryToken, HttpPost]
+        public ActionResult Edit(MembershipUser u)
+        {
+            return RedirectToAction("Index");
+        }
+
+        private static MembershipProvider Provider
+        {
+            get { return Membership.Provider; }
         }
     }
 }
