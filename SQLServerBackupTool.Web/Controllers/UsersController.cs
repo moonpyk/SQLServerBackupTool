@@ -31,6 +31,17 @@ namespace SQLServerBackupTool.Web.Controllers
             return View(list.ToPagedList(pageIndex, NumberItemsPerPage));
         }
 
+        public ActionResult Create()
+        {
+            return View();
+        }
+
+        [ValidateAntiForgeryToken, HttpPost]
+        public ActionResult Create(MembershipUser u)
+        {
+            return RedirectToAction("Edit", new { id=u.UserName });
+        }
+
         public ActionResult Edit(string id)
         {
             var u = Membership.GetUser(id);
