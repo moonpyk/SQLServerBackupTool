@@ -16,8 +16,14 @@ namespace SQLServerBackupTool.Web.Lib
 
         public static string Realm
         {
-            get { return _realm; }
-            set { _realm = value; }
+            get
+            {
+                return _realm;
+            }
+            set
+            {
+                _realm = value;
+            }
         }
 
         public void Init(HttpApplication context)

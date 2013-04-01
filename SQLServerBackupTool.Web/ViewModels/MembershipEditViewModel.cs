@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Web;
 using System.Web.Security;
-using SQLServerBackupTool.Web.Lib;
 
 namespace SQLServerBackupTool.Web.ViewModels
 {
@@ -27,28 +25,38 @@ namespace SQLServerBackupTool.Web.ViewModels
 
         public MembershipEditViewModel(MembershipUser u)
         {
-            UserName   = u.UserName;
-            Email      = u.Email;
-            Comment    = u.Comment;
-            IsApproved = u.IsApproved;
+            UserName    = u.UserName;
+            Email       = u.Email;
+            Comment     = u.Comment;
+            IsApproved  = u.IsApproved;
+            IsLockedOut = u.IsLockedOut;
+            IsOnline    = u.IsOnline;
+            InnerUser   = u;
         }
 
-        [Required]
+        [Required, Display(Name = "Username")]
         public string UserName
         {
             get;
             set;
         }
 
-        [EmailAddress]
+        [EmailAddress, Display(Name = "E-mail address")]
         public string Email
         {
             get;
             set;
         }
 
-        [MembershipPassword]
+        [MembershipPassword, Display(Name = "Password")]
         public string Password
+        {
+            get;
+            set;
+        }
+
+        [Compare("Password", ErrorMessage = "Password confirmation and password must be the same")]
+        public string PasswordConfirmation
         {
             get;
             set;
@@ -66,7 +74,13 @@ namespace SQLServerBackupTool.Web.ViewModels
             set;
         }
 
-        public IEnumerable<string> Roles
+        public bool IsLockedOut
+        {
+            get;
+            set;
+        }
+
+        public bool IsOnline
         {
             get;
             set;
@@ -76,6 +90,18 @@ namespace SQLServerBackupTool.Web.ViewModels
         {
             get;
             set;
+        }
+
+        public IEnumerable<string> Roles
+        {
+            get;
+            set;
+        }
+
+        public MembershipUser InnerUser
+        {
+            get;
+            private set;
         }
 
         public static List<string> AvailableRoles
