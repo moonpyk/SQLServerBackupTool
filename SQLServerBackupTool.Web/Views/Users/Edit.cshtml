@@ -1,43 +1,13 @@
-﻿@model MembershipUser
+﻿@model MembershipEditViewModel
 
 @{
     ViewBag.Title = string.Format("User : {0}", Model.UserName);
 }
 
-@*@Html.EditorForModel()*@
 <div class="form-horizontal">
     @using (Html.BeginForm())
     {
-        @Html.AntiForgeryToken()
-        @Html.HiddenFor(m => m.ProviderUserKey)
-        <div class="control-group">
-            @Html.LabelFor(m => m.UserName, "Username", new { @class="control-label" })
-            <div class="controls">
-                @Html.TextBoxFor(m => m.UserName, new { @readonly="readonly" })
-            </div>
-        </div>
-        <div class="control-group">
-            @Html.LabelFor(m => m.Email, "Email", new { @class="control-label" })
-            <div class="controls">
-                @Html.TextBoxFor(m => m.Email)
-                @Html.ValidationMessageFor(m => m.Email)
-            </div>
-        </div>
-        <div class="control-group">
-            @Html.LabelFor(m => m.Comment, "Comment", new { @class="control-label" })
-            <div class="controls">
-                @Html.TextAreaFor(m => m.Comment)
-                @Html.ValidationMessageFor(m => m.Comment)
-            </div>
-        </div>
-        <div class="control-group">
-            <div class="controls">
-                <label class="checkbox">
-                    @Html.CheckBoxFor(m => m.IsApproved) Approved
-                </label>
-            </div>
-        </div>
-
+        @Html.Partial("_Form", Model)
         <div class="form-actions">
             <input type="submit" class="btn btn-primary" value="Save" />
             <a href="@Url.Action("Index")" class="btn"><i class="icon-list"></i>
@@ -46,3 +16,8 @@
         </div>
     }
 </div>
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+}

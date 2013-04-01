@@ -48,14 +48,16 @@ namespace SQLServerBackupTool.Web.ViewModels
             set;
         }
 
-        [MembershipPassword, Display(Name = "Password")]
+        [MembershipPassword, DataType(DataType.Password), Display(Name = "Password")]
         public string Password
         {
             get;
             set;
         }
 
+        [Display(Name = "Password confirmation")]
         [Compare("Password", ErrorMessage = "Password confirmation and password must be the same")]
+        [DataType(DataType.Password)]
         public string PasswordConfirmation
         {
             get;

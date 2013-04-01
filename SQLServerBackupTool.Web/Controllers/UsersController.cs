@@ -3,6 +3,7 @@ using SQLServerBackupTool.Web.Lib.Mvc;
 using System.Linq;
 using System.Web.Mvc;
 using System.Web.Security;
+using SQLServerBackupTool.Web.ViewModels;
 
 namespace SQLServerBackupTool.Web.Controllers
 {
@@ -31,6 +32,10 @@ namespace SQLServerBackupTool.Web.Controllers
             return View(list.ToPagedList(pageIndex, NumberItemsPerPage));
         }
 
+        /**
+         * Create
+         */
+
         public ActionResult Create()
         {
             return View();
@@ -42,21 +47,45 @@ namespace SQLServerBackupTool.Web.Controllers
             return RedirectToAction("Edit", new { id=u.UserName });
         }
 
+        /**
+         * Edit
+         */
+
         public ActionResult Edit(string id)
         {
             var u = Membership.GetUser(id);
 
             if (u == null)
             {
-                return HttpNotFound();
+                return HttpNotFound(string.Format("User : {0} not found", u.UserName));
             }
 
-            return View(u);
+            return View(new MembershipEditViewModel(u)
+            {
+                ForEdit = true,
+            });
         }
 
         [ValidateAntiForgeryToken, HttpPost]
-        public ActionResult Edit(MembershipUser u)
+        public ActionResult Edit(MembershipEditViewModel u)
         {
+            var mem = Membership.GetUser(u.UserName);
+
+            if (mem == null)
+            {
+                return HttpNotFound(string.Format("User : {0} not found", u.UserName));
+            }
+
+            if (!string.IsNullOrWhiteSpace(u.Password) && u.Password == u.PasswordConfirmation)
+            {
+                mem.ChangePassword(mem.ResetPassword(), u.Password);
+            }
+
+            mem.Comment = u.Comment;
+            Provider.UpdateUser(mem);
+
+            AddFlashMessage("User successfuly modified", FlashMessageType.Success);
+
             return RedirectToAction("Index");
         }
 
