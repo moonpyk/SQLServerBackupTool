@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using System.Web.Security;
+using SQLServerBackupTool.Web.Lib;
 
 namespace SQLServerBackupTool.Web.ViewModels
 {
@@ -46,6 +47,7 @@ namespace SQLServerBackupTool.Web.ViewModels
             set;
         }
 
+        [MembershipPassword]
         public string Password
         {
             get;

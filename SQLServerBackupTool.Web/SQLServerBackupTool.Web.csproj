@@ -150,7 +150,6 @@
     <Compile Include="Lib\BackupsManager.cs" />
     <Compile Include="Lib\Mvc\FlashMessages.cs" />
     <Compile Include="Lib\Interfaces\IMembershipUser.cs" />
-    <Compile Include="Lib\MembershipPasswordValidationAttribute.cs" />
     <Compile Include="ViewModels\IndexViewModel.cs" />
     <Compile Include="Lib\Mvc\ApplicationController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
