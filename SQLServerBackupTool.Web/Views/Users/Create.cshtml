@@ -1,9 +1,21 @@
 ﻿@model MembershipEditViewModel
 
 @{
-    ViewBag.Title = "New user";
+    ViewBag.Title = "create new user";
 }
 
+<div class="form-horizontal">
+    @using (Html.BeginForm())
+    {
+        @Html.Partial("_Form", Model)
+        <div class="form-actions">
+            <input type="submit" class="btn btn-primary" value="Create" />
+            <a href="@Url.Action("Index")" class="btn"><i class="icon-list"></i>
+                <span>&nbsp;Return to list</span>
+            </a>
+        </div>
+    }
+</div>
 
 @section scripts
 {

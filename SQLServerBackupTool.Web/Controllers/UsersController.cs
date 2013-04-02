@@ -1,9 +1,12 @@
 ﻿using PagedList;
 using SQLServerBackupTool.Web.Lib.Mvc;
+using SQLServerBackupTool.Web.ViewModels;
+using System;
+using System.Configuration;
 using System.Linq;
 using System.Web.Mvc;
+using System.Web.Routing;
 using System.Web.Security;
-using SQLServerBackupTool.Web.ViewModels;
 
 namespace SQLServerBackupTool.Web.Controllers
 {
@@ -11,6 +14,23 @@ namespace SQLServerBackupTool.Web.Controllers
     public class UsersController : ApplicationController
     {
         private const int NumberItemsPerPage = 30;
+
+        private static MembershipProvider Provider
+        {
+            get { return Membership.Provider; }
+        }
+
+        protected override void Initialize(RequestContext r)
+        {
+            base.Initialize(r);
+
+            if (!Provider.EnablePasswordReset || Provider.RequiresQuestionAndAnswer)
+            {
+                throw new ConfigurationErrorsException(
+                    "UsersController requires membership configuration options : enablePasswordReset -> true and requiresQuestionAndAnswer -> false"
+                );
+            }
+        }
 
         //
         // GET: /Users/
@@ -38,7 +58,10 @@ namespace SQLServerBackupTool.Web.Controllers
 
         public ActionResult Create()
         {
-            return View();
+            return View(new MembershipEditViewModel
+            {
+                IsApproved = true,
+            });
         }
 
         [ValidateAntiForgeryToken, HttpPost]
@@ -57,7 +80,7 @@ namespace SQLServerBackupTool.Web.Controllers
 
             if (u == null)
             {
-                return HttpNotFound(string.Format("User : {0} not found", u.UserName));
+                return HttpNotFound(string.Format("User : {0} not found", id));
             }
 
             return View(new MembershipEditViewModel(u)
@@ -76,22 +99,47 @@ namespace SQLServerBackupTool.Web.Controllers
                 return HttpNotFound(string.Format("User : {0} not found", u.UserName));
             }
 
-            if (!string.IsNullOrWhiteSpace(u.Password) && u.Password == u.PasswordConfirmation)
+            try
             {
-                mem.ChangePassword(mem.ResetPassword(), u.Password);
+                if (!string.IsNullOrWhiteSpace(u.Password) && u.Password == u.PasswordConfirmation)
+                {
+                    mem.ChangePassword(mem.ResetPassword(), u.Password);
+                }
+                mem.Comment = u.Comment;
+                Provider.UpdateUser(mem);
+
+                AddFlashMessage("User successfuly modified", FlashMessageType.Success);
+
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                Logger.ErrorException("", ex);
             }
 
-            mem.Comment = u.Comment;
-            Provider.UpdateUser(mem);
-
-            AddFlashMessage("User successfuly modified", FlashMessageType.Success);
-
-            return RedirectToAction("Index");
+            u.ForEdit = true;
+            return View(u);
         }
 
-        private static MembershipProvider Provider
+        [HttpPost, ValidateAntiForgeryToken]
+        public ActionResult Delete()
         {
-            get { return Membership.Provider; }
+            throw new NotImplementedException();
+        }
+
+        /**
+         * Ramdom password generator
+         */
+
+        public ActionResult GeneratePassword()
+        {
+            return Content(
+                Membership.GeneratePassword(
+                    Membership.MinRequiredPasswordLength,
+                    Membership.MinRequiredNonAlphanumericCharacters
+                ),
+                "text/plain"
+            );
         }
     }
 }

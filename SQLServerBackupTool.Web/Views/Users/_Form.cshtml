@@ -10,7 +10,8 @@ else
     <div class="control-group">
         @Html.LabelFor(m => m.UserName, new { @class="control-label" })
         <div class="controls">
-            @Html.TextBoxFor(m => m.UserName, new { @readonly="readonly" })
+            @Html.TextBoxFor(m => m.UserName)
+            @Html.ValidationMessageFor(m => m.UserName)
         </div>
     </div>
 }
@@ -22,25 +23,48 @@ else
         @Html.ValidationMessageFor(m => m.Email)
     </div>
 </div>
-<div class="control-group">
-    @Html.LabelFor(m => m.Password, new { @class="control-label" })
-    <div class="controls">
-        @Html.EditorFor(m => m.Password)
-        @Html.ValidationMessageFor(m => m.Password)
+@if (Model.ForEdit)
+{
+    <div class="control-group">
+        <div class="controls">
+            <a id="btn-changepw" class="btn" href="#" onclick="return false;">
+                <i class="icon-wrench"></i><span>&nbsp;Change password </span>
+            </a>
+        </div>
+    </div>
+}
+<div class="changepw" style="@(Model.ForEdit ? "display: none;" : null)">
+    <div class="control-group">
+        @Html.LabelFor(m => m.Password, new { @class="control-label" })
+        <div class="controls">
+            <div class="input-append">
+                @Html.TextBoxFor(m => m.Password, new { @type="password", @class="pw" })
+                <a class="btn" id="password-generate" href="#">Generate password</a>
+            </div>
+            @Html.ValidationMessageFor(m => m.Password)
+        </div>
+    </div>
+    <div class="control-group">
+        @Html.LabelFor(m => m.PasswordConfirmation, new { @class="control-label" })
+        <div class="controls">
+            @Html.TextBoxFor(m => m.PasswordConfirmation, new { @type="password", @class="pw" })
+            @Html.ValidationMessageFor(m => m.PasswordConfirmation)
+        </div>
     </div>
 </div>
-<div class="control-group">
-    @Html.LabelFor(m => m.PasswordConfirmation, new { @class="control-label" })
-    <div class="controls">
-        @Html.EditorFor(m => m.PasswordConfirmation)
-        @Html.ValidationMessageFor(m => m.PasswordConfirmation)
-    </div>
-</div>
+
 <div class="control-group">
     @Html.LabelFor(m => m.Comment, new { @class="control-label" })
     <div class="controls">
         @Html.TextAreaFor(m => m.Comment)
         @Html.ValidationMessageFor(m => m.Comment)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(m => m.Roles, new { @class="control-label" })
+    <div class="controls">
+        @Html.ListBoxFor(_ => _.Roles, new MultiSelectList(MembershipEditViewModel.AvailableRoles, Model.Roles))
+        @Html.ValidationMessageFor(m => m.Roles)
     </div>
 </div>
 <div class="control-group">

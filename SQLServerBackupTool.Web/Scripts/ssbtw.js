@@ -6,6 +6,10 @@ window.ssbt = {
 };
 
 $(document).ready(function () {
+    /**
+     * Index page, with backups
+     */
+
     var $f = $('#form-aft');
 
     $('.pldr').pldr({ autostart: false });
@@ -82,5 +86,24 @@ $(document).ready(function () {
                 $me.parents('tr').remove();
             }
         });
+    });
+
+    /**
+     * Users management
+     */
+
+    $('#password-generate').on('click', function (e) {
+        e.preventDefault();
+        $.ajax({
+            url: '/Users/GeneratePassword'
+        }).done(function (pw) {
+            $('input.pw').attr('type', 'text').val(pw);
+        });
+    });
+
+    $('#btn-changepw').on('click', function (e) {
+        e.preventDefault();
+        $(this).toggleClass('active');
+        $('.changepw').slideToggle();
     });
 });

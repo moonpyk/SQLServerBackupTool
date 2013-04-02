@@ -32,6 +32,11 @@ namespace SQLServerBackupTool.Web.ViewModels
             IsLockedOut = u.IsLockedOut;
             IsOnline    = u.IsOnline;
             InnerUser   = u;
+
+            if (System.Web.Security.Roles.Enabled)
+            {
+                Roles = System.Web.Security.Roles.GetRolesForUser(UserName);
+            }
         }
 
         [Required, Display(Name = "Username")]
@@ -79,7 +84,7 @@ namespace SQLServerBackupTool.Web.ViewModels
         public bool IsLockedOut
         {
             get;
-            set;
+            private set;
         }
 
         public bool IsOnline
