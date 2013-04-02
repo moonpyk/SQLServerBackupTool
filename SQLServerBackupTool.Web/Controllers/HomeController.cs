@@ -9,11 +9,14 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using System.Xml.Serialization;
 
 namespace SQLServerBackupTool.Web.Controllers
 {
     public class HomeController : ApplicationController
     {
+        private static readonly XmlSerializer BackupHistoryXmlSerializer = new XmlSerializer(typeof(BackupHistory));
+
         //
         // GET: /Home/
         public async Task<ActionResult> Index()
@@ -73,6 +76,10 @@ namespace SQLServerBackupTool.Web.Controllers
             }
         }
 
+        /**
+         * Backup entry points
+         */
+
         [HttpPost, ValidateAntiForgeryToken]
         public async Task<ActionResult> Backup(string id)
         {
@@ -90,6 +97,47 @@ namespace SQLServerBackupTool.Web.Controllers
             return PartialView("_BackupItem", bk);
         }
 
+        // [HttpPost]
+        public async Task<ActionResult> Backup_Fmt(string id, string format = "json")
+        {
+            var bk = await BackupsManager.BackupDatabase(
+                GetBackupsConnectionString(),
+                id,
+                Logger
+            );
+
+            if (string.IsNullOrWhiteSpace(format))
+            {
+                return new HttpStatusCodeResult(406, "No format specified"); // Not acceptable
+            }
+
+            if (bk == null)
+            {
+                return HttpNotFound(string.Format("Unable to create database backup for '{0}'", id));
+            }
+
+            switch (format.ToLowerInvariant())
+            {
+                case "xml":
+                    var t = new MemoryStream();
+                    BackupHistoryXmlSerializer.Serialize(t, bk);
+                    t.Position = 0;
+                    return File(t, "application/xml");
+
+                case "json":
+                    return Json(bk, JsonRequestBehavior.AllowGet);
+
+                case "zip":
+                    var path     = bk.Path;
+                    var fileName = Path.GetFileName(path);
+
+                    return File(path, "application/zip", fileName);
+
+                default:
+                    return new HttpStatusCodeResult(406, "Unknown format");
+            }
+        }
+
         public ActionResult Download(int id)
         {
             var bk = DbContext.History.Find(id);
@@ -99,7 +147,7 @@ namespace SQLServerBackupTool.Web.Controllers
                 return HttpNotFound();
             }
 
-            var path = bk.Path;
+            var path     = bk.Path;
             var fileName = Path.GetFileName(path);
 
             return File(path, "application/zip", fileName);

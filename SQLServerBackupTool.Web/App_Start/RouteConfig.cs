@@ -13,10 +13,26 @@ namespace SQLServerBackupTool.Web
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+            // Backup routes
+
+            routes.MapRoute(
+                name: "BackupJson",
+                url: "Backup/{id}.{format}",
+                defaults: new { controller="Home", action = "Backup_Fmt", }
+            );
+
+            routes.MapRoute(
+                name: "Backup",
+                url: "Backup/{id}",
+                defaults: new { controller = "Home", action= "Backup", }
+            );
+
+            // Default route
+
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
+                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional, }
             );
         }
     }
