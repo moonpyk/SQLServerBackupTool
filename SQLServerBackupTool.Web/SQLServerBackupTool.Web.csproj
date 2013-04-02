@@ -181,7 +181,8 @@
     <Content Include="Global.asax" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="Logs\empty" />
+    <Content Include="Backups\web.config" />
+    <Content Include="Logs\web.config" />
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
     <Content Include="Scripts\jquery.pldr.js" />
     <Content Include="Scripts\jquery-1.9.1.js" />

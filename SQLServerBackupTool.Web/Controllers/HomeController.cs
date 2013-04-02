@@ -144,6 +144,25 @@ namespace SQLServerBackupTool.Web.Controllers
             }
         }
 
+        public ActionResult Download(int id)
+        {
+            var bk = DbContext.History.Find(id);
+
+            if (bk == null)
+            {
+                return HttpNotFound();
+            }
+
+            var path = bk.Path;
+            var fileName = Path.GetFileName(path);
+
+            return File(path, "application/zip", fileName);
+        }
+
+        /**
+         * Deletion / Purge
+         */
+
         [HttpPost, ValidateAntiForgeryToken, Authorize(Roles = "Admin")]
         public ActionResult BackupsPurge()
         {

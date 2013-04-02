@@ -7,7 +7,7 @@
     <td>@Model.Expires</td>
     <td>
         <div class="btn-group">
-            <a class="btn" href="@Url.Content(Model.Url)">
+            <a class="btn" href="@Url.Action("Download", new { id=Model.Id })">
                 <i class="icon-download"></i><span>&nbsp;Download</span>
             </a>
             <a class="backup-delete btn btn-danger" href="@Url.Action("Delete", new { id = Model.Id })" onclick="return false;">
