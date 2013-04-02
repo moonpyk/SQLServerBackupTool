@@ -1,6 +1,4 @@
 ﻿using Dapper;
-using Ionic.Zip;
-using SQLServerBackupTool.Lib;
 using SQLServerBackupTool.Web.Lib;
 using SQLServerBackupTool.Web.Lib.Mvc;
 using SQLServerBackupTool.Web.Models;
@@ -78,70 +76,18 @@ namespace SQLServerBackupTool.Web.Controllers
         [HttpPost, ValidateAntiForgeryToken]
         public async Task<ActionResult> Backup(string id)
         {
-            using (var bak = new SqlServerBackupProvider(GetBackupsConnectionString()))
+            var bk = await BackupsManager.BackupDatabase(
+                GetBackupsConnectionString(),
+                id,
+                Logger
+            );
+
+            if (bk == null)
             {
-                await bak.OpenAsync();
-                var ts = DateTime.Now;
-
-                var backupsPath = Server.MapPath("~/Backups");
-
-                var fNameBase = Utils.GenerateBackupBaseName(id, ts);
-
-                var fullBackupPath = Path.Combine(backupsPath, string.Format("{0}.bak", fNameBase));
-
-                try
-                {
-                    await bak.BackupDatabaseAsync(id, fullBackupPath, ts);
-                }
-                catch (Exception ex)
-                {
-                    Logger.ErrorException("During database backup", ex);
-                    return HttpNotFound(string.Format("Unable to backup database '{0}'", id));
-                }
-
-                var fullZipPath = Path.Combine(backupsPath, string.Format("{0}.zip", fNameBase));
-
-                try
-                {
-                    using (var z = new ZipFile(fullZipPath))
-                    {
-                        z.AddFile(fullBackupPath, string.Empty);
-
-                        await Task.Run(() => z.Save());
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Logger.ErrorException("Furing zip file creation", ex);
-                    return HttpNotFound(string.Format("Error during backup zip creation"));
-                }
-
-                try
-                {
-                    System.IO.File.Delete(fullBackupPath);
-                }
-                catch (Exception ex)
-                {
-                    Logger.ErrorException("During original file deletion", ex);
-                }
-
-                var h = new BackupHistory
-                {
-                    Path     = fullZipPath,
-                    Database = id,
-                    Url      = string.Format("~/{0}", fullZipPath.Replace(Server.MapPath("~/"), string.Empty).Replace('\\', '/')),
-                    Expires  = DateTime.Now.AddDays(1),
-                    Username = User.Identity.Name,
-                };
-
-                using (var ddb = new SSBTDbContext())
-                {
-                    ddb.History.Add(h);
-                    ddb.SaveChanges();
-                }
-
-                return PartialView("_BackupItem", h);
+                return HttpNotFound(string.Format("Unable to create database backup for '{0}'", id));
             }
+
+            return PartialView("_BackupItem", bk);
         }
 
         public ActionResult Download(int id)
