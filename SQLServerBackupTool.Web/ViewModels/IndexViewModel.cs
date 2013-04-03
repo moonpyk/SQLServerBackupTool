@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using SQLServerBackupTool.Web.Models;
 
 namespace SQLServerBackupTool.Web.ViewModels
@@ -8,7 +9,7 @@ namespace SQLServerBackupTool.Web.ViewModels
         public IndexViewModel(IEnumerable<DatabaseInfo> d, IEnumerable<BackupHistory> b)
         {
             DatabaseInfo = d;
-            Backups = b;
+            Backups = b.ToList();
         }
 
         public IEnumerable<BackupHistory> Backups

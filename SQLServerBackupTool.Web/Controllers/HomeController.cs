@@ -28,10 +28,12 @@ namespace SQLServerBackupTool.Web.Controllers
                 q = q.Where(_ => _.Username == User.Identity.Name);
             }
 
+            q = q.OrderBy(_ => _.Id);
+
             using (var co = new SqlConnection(GetBackupsConnectionString()))
             {
                 await co.OpenAsync();
-                var p = await Task.Run(() => co.Query<DatabaseInfo>(DatabaseInfo.Query));
+                var p = await Task.Run(() => co.Query<DatabaseInfo>(DatabaseInfo.Query).OrderBy(_ => _.Id));
 
                 return View(new IndexViewModel(p, q));
             }

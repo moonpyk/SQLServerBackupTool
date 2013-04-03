@@ -28,16 +28,23 @@
             <tr>
                 <td>@di.Id</td>
                 <td>@di.Name</td>
-                <td>
-                    <div class="btn-group">
-                        <a href="@Url.Action("Schema", new { id = di.Name })" class="btn">
-                            <i class="icon-eye-open"></i><span>&nbsp;Schema</span>
-                        </a>
-                        <a class="btn btn-inverse backup-do" href="@Url.Action("Backup", new { id=di.Name })">
-                            <i class="icon-white icon-download"></i><span>&nbsp;Backup</span>
-                        </a>
-                    </div>
-                </td>
+                @if (di.Online)
+                {
+                    <td>
+                        <div class="btn-group">
+                            <a href="@Url.Action("Schema", new { id = di.Name })" class="btn">
+                                <i class="icon-eye-open"></i><span>&nbsp;Schema</span>
+                            </a>
+                            <a class="btn btn-inverse backup-do" href="@Url.Action("Backup", new { id = di.Name })">
+                                <i class="icon-white icon-download"></i><span>&nbsp;Backup</span>
+                            </a>
+                        </div>
+                    </td>
+                }
+                else
+                {
+                    <td><span class="muted">Offline</span></td>   
+                }
             </tr>
             }
         }

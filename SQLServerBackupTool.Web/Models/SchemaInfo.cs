@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using SQLServerBackupTool.Lib.Annotations;
 
 namespace SQLServerBackupTool.Web.Models
 {
+    [UsedImplicitly]
     public class SchemaInfo
     {
         public const string Query = @"
@@ -28,12 +26,40 @@ WHERE   sys.types.NAME NOT IN ( 'sysname' )
 SELECT COUNT(*) FROM {0};
 ";
 
-        public string Table { get; set; }
-        public string Column { get; set; }
-        public string Type { get; set; }
-        public int Length { get; set; }
-        public string LengthString { get; set; }
+        public string Table
+        {
+            get;
+            set;
+        }
 
-        public int RowCount { get; set; }
+        public string Column
+        {
+            get;
+            set;
+        }
+
+        public string Type
+        {
+            get;
+            set;
+        }
+
+        public int Length
+        {
+            get;
+            set;
+        }
+
+        public string LengthString
+        {
+            get;
+            set;
+        }
+
+        public int RowCount
+        {
+            get;
+            set;
+        }
     }
 }
