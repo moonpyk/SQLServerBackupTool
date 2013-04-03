@@ -1,7 +1,8 @@
 window.ssbt = {
     messages: {
-        CONFIRM_DELETE_BACKUP: "Are you sure you want to delete this database backup ?",
-        CONFIRM_PURGE_BACKUPS: "Are you sure you want to purge expired backups ?"
+        CONFIRM_DELETE_BACKUP: 'Are you sure you want to delete this database backup ?',
+        CONFIRM_PURGE_BACKUPS: 'Are you sure you want to purge expired backups ?',
+        WAIT_WHILE_BACKUP: 'Please wait while your backup is beeing done...'
     }
 };
 
@@ -16,17 +17,17 @@ $(document).ready(function () {
     $('.loading').modal({ show: false, keyboard: false });
 
     var pleaseWait = function (message) {
-        var me = $('.loading');
+        var $me = $('.loading');
 
-        me.find('.message').html(message);
+        $me.find('.message').html(message);
 
-        me.off().on('show', function () {
-            me.find('.pldr').pldr('start');
+        $me.off().on('show', function () {
+            $me.find('.pldr').pldr('start');
         }).on('hidden', function () {
-            me.find('.pldr').pldr('stop');
+            $me.find('.pldr').pldr('stop');
         }).modal('show');
 
-        return me;
+        return $me;
     };
 
     $('#backup-purge').on('click', function (e) {
@@ -47,7 +48,7 @@ $(document).ready(function () {
         var $me = $(this),
             $bContainer = $('#backups-container');
 
-        var wait = pleaseWait('Please wait while your backup is done...');
+        var wait = pleaseWait(ssbt.messages.WAIT_WHILE_BACKUP);
 
         $.ajax({
             type: 'post',
