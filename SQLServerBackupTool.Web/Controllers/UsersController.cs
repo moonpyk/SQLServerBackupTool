@@ -105,8 +105,12 @@ namespace SQLServerBackupTool.Web.Controllers
                 {
                     mem.ChangePassword(mem.ResetPassword(), u.Password);
                 }
-                mem.Comment = u.Comment;
-                Provider.UpdateUser(mem);
+
+                if (mem.Comment != u.Comment)
+                {
+                    mem.Comment = u.Comment;
+                    Provider.UpdateUser(mem);
+                }
 
                 AddFlashMessage("User successfuly modified", FlashMessageType.Success);
 
@@ -114,7 +118,8 @@ namespace SQLServerBackupTool.Web.Controllers
             }
             catch (Exception ex)
             {
-                Logger.ErrorException("", ex);
+                AddFlashMessage("An error occured during user modification", FlashMessageType.Error);
+                Logger.ErrorException("An error occured", ex);
             }
 
             u.ForEdit = true;
@@ -122,9 +127,26 @@ namespace SQLServerBackupTool.Web.Controllers
         }
 
         [HttpPost, ValidateAntiForgeryToken]
-        public ActionResult Delete()
+        public ActionResult Delete(string id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (Provider.DeleteUser(id, true))
+                {
+                    AddFlashMessage(string.Format("User '{0}' successfully deleted", id), FlashMessageType.Success);
+                }
+                else
+                {
+                    AddFlashMessage(string.Format("Unable to delete user '{0}'", id), FlashMessageType.Warning);
+                }
+            }
+            catch (Exception ex)
+            {
+                AddFlashMessage(string.Format("An error occured while deleting user {0}", id), FlashMessageType.Error);
+                Logger.ErrorException("An error occured", ex);
+            }
+
+            return RedirectToAction("Index");
         }
 
         /**
