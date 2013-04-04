@@ -84,7 +84,8 @@ WITH NOFORMAT, NOINIT, NAME = N'{0} - {2}', SKIP, NOREWIND, NOUNLOAD, STATS = 10
 
             var q = _co.CreateCommand();
 
-            q.CommandText = string.Format(
+            q.CommandTimeout = 0; // Backups can take a long time for big databases
+            q.CommandText    = string.Format(
                 BackupCommandTemplate,
                 databaseName,
                 backupPath,
