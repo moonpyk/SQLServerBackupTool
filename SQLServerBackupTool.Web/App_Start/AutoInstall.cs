@@ -1,11 +1,10 @@
-﻿using SQLServerBackupTool.Web;
+﻿using SQLServerBackupTool.Lib.Annotations;
+using SQLServerBackupTool.Web;
 using SQLServerBackupTool.Web.Lib;
 using SQLServerBackupTool.Web.Models;
 using System.Data.Entity;
-using System.Diagnostics;
 using System.Web.Security;
 
-[assembly: WebActivator.PreApplicationStartMethod(typeof(AutoInstall), "PreStart")]
 [assembly: WebActivator.PostApplicationStartMethod(typeof(AutoInstall), "PostStart")]
 
 namespace SQLServerBackupTool.Web
@@ -13,11 +12,7 @@ namespace SQLServerBackupTool.Web
 
     public static class AutoInstall
     {
-        public static void PreStart()
-        {
-            Debug.WriteLine("PreStart");
-        }
-
+        [UsedImplicitly]
         public static void PostStart()
         {
             BasicMembershipAuthHttpModule.Realm = "SSBT.web";
