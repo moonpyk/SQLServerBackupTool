@@ -175,9 +175,13 @@
     <Content Include="Content\img\glyphicons-halflings.png" />
     <Content Include="Content\img\loader.png" />
     <Content Include="Content\PagedList.css" />
+    <None Include="Content\_select2.scss" />
+    <Content Include="Content\img\select2.png" />
+    <Content Include="Content\img\select2x2.png" />
     <Content Include="Content\Site.css">
       <DependentUpon>Site.scss</DependentUpon>
     </Content>
+    <Content Include="Content\img\spinner.gif" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -192,6 +196,8 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\select2.js" />
+    <Content Include="Scripts\select2.min.js" />
     <Content Include="Scripts\ssbtw.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>

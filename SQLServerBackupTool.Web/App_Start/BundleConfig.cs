@@ -22,6 +22,7 @@ namespace SQLServerBackupTool.Web
             bundles.Add(new ScriptBundle("~/bundles/ssbtw").Include(
                 "~/Scripts/bootstrap.js",
                 "~/Scripts/jquery.pldr.js",
+                "~/Scripts/select2.js",
                 "~/Scripts/ssbtw.js"
             ));
 
