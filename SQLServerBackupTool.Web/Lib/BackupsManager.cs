@@ -1,10 +1,10 @@
-﻿using System.Data.Entity;
-using Ionic.Zip;
+﻿using Ionic.Zip;
 using NLog;
 using SQLServerBackupTool.Lib;
 using SQLServerBackupTool.Lib.Annotations;
 using SQLServerBackupTool.Web.Models;
 using System;
+using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -21,7 +21,9 @@ namespace SQLServerBackupTool.Web.Lib
         /// <param name="dbName">Name of the database to backup</param>
         /// <param name="logger">Optional instance of a <see cref="Logger"/></param>
         /// <returns>An instance of <see cref="BackupHistory"/> on success, null otherwise</returns>
-        /// <remarks>If deletion of the original backup file fails for any reason, only a log entry will be done, the backup won't be considered as failed</remarks>
+        /// <remarks>If deletion of the original backup file fails for any reason, only a log entry will be done, the backup won't be considered as failed.
+        /// This methods needs to be run in a valid <see cref="HttpContext"/>.
+        /// </remarks>
         public static async Task<BackupHistory> BackupDatabase([NotNull] string backupConnectionString, [NotNull] string dbName, [CanBeNull] Logger logger)
         {
             if (string.IsNullOrWhiteSpace(backupConnectionString))
