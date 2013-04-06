@@ -44,6 +44,11 @@ namespace SQLServerBackupTool.Web
                     Roles.AddUserToRole(defaultUser.UserName, "Admin");
                 }
             }
+
+            if (!Roles.RoleExists("Operator"))
+            {
+                Roles.CreateRole("Operator");
+            }
         }
     }
 }
