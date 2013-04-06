@@ -55,7 +55,7 @@ namespace SQLServerBackupTool.Web.Controllers
                 }
                 catch (SqlException ex) // Schema doesn't exists, usually
                 {
-                    var message = string.Format("An error occured while retrieving '{0}' schema.", id);
+                    var message = string.Format("An error occurred while retrieving '{0}' schema.", id);
                     AddFlashMessage(message, FlashMessageType.Error);
                     Logger.ErrorException(message, ex);
 
@@ -172,7 +172,7 @@ namespace SQLServerBackupTool.Web.Controllers
             }
             else
             {
-                AddFlashMessage("An error occured during purging", FlashMessageType.Error);
+                AddFlashMessage("An error occurred during purging", FlashMessageType.Error);
             }
 
             return RedirectToAction("Index");
@@ -213,7 +213,7 @@ namespace SQLServerBackupTool.Web.Controllers
                 return Content("ERR", "text/plain");
             }
 
-            AddFlashMessage("An error occured while deleting backup.", FlashMessageType.Error);
+            AddFlashMessage("An error occurred while deleting backup.", FlashMessageType.Error);
 
             return RedirectToAction("Index");
         }

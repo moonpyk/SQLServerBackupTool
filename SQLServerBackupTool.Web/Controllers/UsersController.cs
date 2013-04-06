@@ -95,11 +95,12 @@ namespace SQLServerBackupTool.Web.Controllers
         [ValidateAntiForgeryToken, HttpPost]
         public ActionResult Edit(MembershipEditViewModel u)
         {
-            var mem = Membership.GetUser(u.UserName);
+            var username = u.UserName;
+            var mem = Membership.GetUser(username);
 
             if (mem == null)
             {
-                return HttpNotFound(string.Format("User : {0} not found", u.UserName));
+                return HttpNotFound(string.Format("User : {0} not found", username));
             }
 
             try
@@ -123,8 +124,8 @@ namespace SQLServerBackupTool.Web.Controllers
             }
             catch (Exception ex)
             {
-                AddFlashMessage("An error occured during user modification", FlashMessageType.Error);
-                Logger.ErrorException("An error occured", ex);
+                AddFlashMessage("An error occurred during user modification", FlashMessageType.Error);
+                Logger.ErrorException("An error occurred", ex);
             }
 
             u.ForEdit = true;
@@ -151,8 +152,8 @@ namespace SQLServerBackupTool.Web.Controllers
             }
             catch (Exception ex)
             {
-                AddFlashMessage(string.Format("An error occured while deleting user {0}", id), FlashMessageType.Error);
-                Logger.ErrorException("An error occured", ex);
+                AddFlashMessage(string.Format("An error occurred while deleting user {0}", id), FlashMessageType.Error);
+                Logger.ErrorException("An error occurred", ex);
             }
 
             return RedirectToAction("Index");
