@@ -9,16 +9,16 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-using System.Xml.Serialization;
 
 namespace SQLServerBackupTool.Web.Controllers
 {
     public class HomeController : ApplicationController
     {
-        private static readonly XmlSerializer BackupHistoryXmlSerializer = new XmlSerializer(typeof(BackupHistory));
 
-        //
-        // GET: /Home/
+        /**
+         * Index
+         */
+
         public async Task<ActionResult> Index()
         {
             IQueryable<BackupHistory> q = DbContext.History;
@@ -38,6 +38,10 @@ namespace SQLServerBackupTool.Web.Controllers
                 return View(new IndexViewModel(p, q));
             }
         }
+
+        /**
+         * Schema
+         */
 
         public async Task<ActionResult> Schema(string id)
         {
@@ -122,7 +126,7 @@ namespace SQLServerBackupTool.Web.Controllers
             {
                 case "xml":
                     var t = new MemoryStream();
-                    BackupHistoryXmlSerializer.Serialize(t, bk);
+                    BackupsManager.XmlSerializer.Serialize(t, bk);
                     t.Position = 0;
                     return File(t, "application/xml");
 

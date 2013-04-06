@@ -9,11 +9,14 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
+using System.Xml.Serialization;
 
 namespace SQLServerBackupTool.Web.Lib
 {
     public static class BackupsManager
     {
+        public static readonly XmlSerializer XmlSerializer = new XmlSerializer(typeof(BackupHistory));
+
         /// <summary>
         /// Backup implementation logic, asks SQLServer to make a backup, of <see cref="dbName"/>, creates a Zip archive on success, tries to delete the original backup file.
         /// </summary>
