@@ -111,7 +111,4 @@
         </tr>
     </table>
 </div>
-@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "form-aft", style = "display:none;" }))
-{
-    @Html.AntiForgeryToken()
-}
+@Html.Partial("_FormAntiforgeryToken")

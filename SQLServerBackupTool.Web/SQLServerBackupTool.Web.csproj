@@ -213,10 +213,10 @@
     <Content Include="Views\Users\Index.cshtml" />
     <Content Include="Views\Home\Schema.cshtml" />
     <Content Include="Views\Home\_BackupItem.cshtml" />
-    <Content Include="Views\Home\Schema.cshtml" />
     <Content Include="Views\Users\Edit.cshtml" />
     <Content Include="Views\Users\Create.cshtml" />
     <Content Include="Views\Users\_Form.cshtml" />
+    <Content Include="Views\Shared\_FormAntiforgeryToken.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -5,7 +5,7 @@
 }
 
 <div class="form-horizontal">
-    @using (Html.BeginForm())
+    @using (Html.BeginForm(null, null, new { id="" }, FormMethod.Post))
     {
         @Html.Partial("_Form", Model)
         <div class="form-actions">

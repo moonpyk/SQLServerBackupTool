@@ -16,7 +16,7 @@ $(document).ready(function () {
     $('.pldr').pldr({ autostart: false });
     $('.loading').modal({ show: false, keyboard: false });
 
-    $('.select2').each(function() {
+    $('.select2').each(function () {
         var $me = $(this);
 
         $me.select2({
@@ -101,6 +101,15 @@ $(document).ready(function () {
     /**
      * Users management
      */
+
+    $('.user-delete').on('click', function (e) {
+        e.preventDefault();
+
+        var $me = $(this),
+            href = $me.attr('href');
+
+        $f.attr('action', href).submit();
+    });
 
     $('#password-generate').on('click', function (e) {
         e.preventDefault();

@@ -39,7 +39,7 @@ else
         <div class="controls">
             <div class="input-append">
                 @Html.TextBoxFor(m => m.Password, new { @type="password", @class="pw" })
-                <a class="btn" id="password-generate" href="#">Generate password</a>
+                <a class="btn" href="#" id="password-generate" tabindex="9999">Generate password</a>
             </div>
             @Html.ValidationMessageFor(m => m.Password)
         </div>
@@ -63,7 +63,7 @@ else
 <div class="control-group">
     @Html.LabelFor(m => m.Roles, new { @class="control-label" })
     <div class="controls">
-        @Html.ListBoxFor(_ => _.Roles, new MultiSelectList(MembershipEditViewModel.AvailableRoles.Select(_ => new {Value=_, Label=_}), "Value", "Label", Model.Roles.Select(_ => new {Value=_, Label=_})), new { @class="select2", data_placeholder="Select roles" })
+        @Html.ListBoxFor(_ => _.Roles, new MultiSelectList(MembershipEditViewModel.AvailableRoles.Select(_ => new { Value=_, Label=_ }), "Value", "Label", Model.Roles.Select(_ => new { Value=_, Label=_ })), new { @class="select2", data_placeholder="Select roles" })
         @Html.ValidationMessageFor(m => m.Roles)
     </div>
 </div>

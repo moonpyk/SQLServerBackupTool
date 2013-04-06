@@ -56,10 +56,10 @@
                 </td>
                 <td>
                     <div class="btn-group">
-                        <a class="btn" href="@Url.Action("Edit", new { id=m.UserName })">
+                        <a class="btn" href="@Url.Action("Edit", new { id=m.ProviderUserKey })">
                             <i class="icon-edit"></i>&nbsp;Edit
                         </a>
-                        <a href="@Url.Action("Delete")" class="btn btn-danger">
+                        <a href="@Url.Action("Delete", new { id=m.ProviderUserKey })" class="btn btn-danger user-delete">
                             <i class="icon-trash icon-white"></i>&nbsp;Delete
                         </a>
                     </div>
@@ -72,3 +72,4 @@
 <div style="text-align: center;">
     @PagedList.Mvc.HtmlHelper.PagedListPager(Html, Model, i => Url.Action("Index", new { page = i }))
 </div>
+@Html.Partial("_FormAntiforgeryToken")

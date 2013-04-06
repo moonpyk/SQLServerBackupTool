@@ -1,6 +1,8 @@
 ﻿using NLog;
 using SQLServerBackupTool.Web.Models;
 using System.Configuration;
+using System.Diagnostics;
+using System.Linq;
 using System.Web.Mvc;
 using System.Web.Routing;
 
@@ -56,6 +58,21 @@ namespace SQLServerBackupTool.Web.Lib.Mvc
             DbContext              = new SSBTDbContext();
 
             base.Initialize(r);
+        }
+
+        [Conditional("DEBUG")]
+        protected void DebugModelStateErrors()
+        {
+            var errs = ModelState.Where(_ => _.Value.Errors.Any());
+
+            foreach (var e in errs)
+            {
+                Debug.WriteLine(
+                    "[ModelStateError] : '{0}' -> {1}",
+                    e.Key,
+                    string.Join(", ", e.Value.Errors.Select(_ => string.Format("'{0}'", _.ErrorMessage)))
+                );
+            }
         }
 
         protected override void Dispose(bool disposing)
