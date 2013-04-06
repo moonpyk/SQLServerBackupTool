@@ -14,6 +14,9 @@ namespace SQLServerBackupTool.Web.Lib
     {
         private static string _realm = "Access restricted area";
 
+        /// <summary>
+        /// Informational string indicating why the user is asked identification
+        /// </summary>
         public static string Realm
         {
             get

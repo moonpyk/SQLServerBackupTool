@@ -22,7 +22,7 @@ WITH NOFORMAT, NOINIT, NAME = N'{0} - {2}', SKIP, NOREWIND, NOUNLOAD, STATS = 10
         }
 
         /// <summary>
-        /// Indicates if the underlaying SQL Connection is opened
+        /// Indicates if the underlying SQL Connection is opened
         /// </summary>
         public bool IsConnectionOpened
         {
@@ -31,7 +31,7 @@ WITH NOFORMAT, NOINIT, NAME = N'{0} - {2}', SKIP, NOREWIND, NOUNLOAD, STATS = 10
         }
 
         /// <summary>
-        /// Opens the underlaying SQL Connection
+        /// Opens the underlying SQL Connection
         /// </summary>
         public void Open()
         {
@@ -56,7 +56,7 @@ WITH NOFORMAT, NOINIT, NAME = N'{0} - {2}', SKIP, NOREWIND, NOUNLOAD, STATS = 10
         }
 
         /// <summary>
-        /// Closes the underlaying SQL Connecion
+        /// Closes the underlaying SQL Connection
         /// </summary>
         public void Close()
         {

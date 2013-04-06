@@ -1,4 +1,5 @@
-﻿using Ionic.Zip;
+﻿using System.Data.Entity;
+using Ionic.Zip;
 using NLog;
 using SQLServerBackupTool.Lib;
 using SQLServerBackupTool.Lib.Annotations;
@@ -13,6 +14,14 @@ namespace SQLServerBackupTool.Web.Lib
 {
     public static class BackupsManager
     {
+        /// <summary>
+        /// Backup implementation logic, asks SQLServer to make a backup, of <see cref="dbName"/>, creates a Zip archive on success, tries to delete the original backup file.
+        /// </summary>
+        /// <param name="backupConnectionString">Connection string to use to instruct SQLServer to make the backup</param>
+        /// <param name="dbName">Name of the database to backup</param>
+        /// <param name="logger">Optional instance of a <see cref="Logger"/></param>
+        /// <returns>An instance of <see cref="BackupHistory"/> on success, null otherwise</returns>
+        /// <remarks>If deletion of the original backup file fails for any reason, only a log entry will be done, the backup won't be considered as failed</remarks>
         public static async Task<BackupHistory> BackupDatabase([NotNull] string backupConnectionString, [NotNull] string dbName, [CanBeNull] Logger logger)
         {
             if (string.IsNullOrWhiteSpace(backupConnectionString))
@@ -74,7 +83,7 @@ namespace SQLServerBackupTool.Web.Lib
                 {
                     if (logger != null)
                     {
-                        logger.ErrorException("Furing zip file creation", ex);
+                        logger.ErrorException("During zip file creation", ex);
                     }
                     return null;
                 }
@@ -110,6 +119,14 @@ namespace SQLServerBackupTool.Web.Lib
             }
         }
 
+        /// <summary>
+        /// Backup purging deletion logic. Each backup is created with an <see cref="BackupHistory.Expires"/> DateTime, all backups 
+        /// that reached the expiration date will be deleted, their <see cref="SSBTDbContext.History"/> entry deleted too.
+        /// </summary>
+        /// <param name="ddb">An instance of <see cref="SSBTDbContext"/> </param>
+        /// <param name="from">Reference date to compare <see cref="BackupHistory.Expires"/> with</param>
+        /// <param name="logger">Optional instance of a <see cref="Logger"/></param>
+        /// <returns>true if nothing was expired, or if everything went good during purge. false if <see cref="DbContext.SaveChanges"/> encountered an exception.</returns>
         public static bool PurgeOldBackups([NotNull] SSBTDbContext ddb, DateTime from, [CanBeNull] Logger logger)
         {
             if (ddb == null)
@@ -144,6 +161,15 @@ namespace SQLServerBackupTool.Web.Lib
             return true;
         }
 
+        /// <summary>
+        /// Backup deletion logic, deletes a database backup represented as a <see cref="BackupHistory"/>.
+        /// Deletes the recorded archive file then marks the <see cref="BackupHistory"/> entity for deletion in <see cref="ddb"/>
+        /// </summary>
+        /// <param name="ddb">An instance of <see cref="SSBTDbContext"/></param>
+        /// <param name="b">The <see cref="BackupHistory"/> instance to delete</param>
+        /// <param name="logger">Optional instance of a <see cref="Logger"/></param>
+        /// <returns>true if everything went good, false otherwise.</returns>
+        /// <remarks>If the database backup archive fails to be deleted for any reason, a log will be written but the <see cref="b"/> won't be marked for deletion.</remarks>
         public static bool DeleteBackup([NotNull] SSBTDbContext ddb, BackupHistory b, [CanBeNull] Logger logger)
         {
             if (ddb == null)

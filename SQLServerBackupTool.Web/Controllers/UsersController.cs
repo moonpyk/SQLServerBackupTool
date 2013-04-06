@@ -112,7 +112,7 @@ namespace SQLServerBackupTool.Web.Controllers
                     Provider.UpdateUser(mem);
                 }
 
-                AddFlashMessage("User successfuly modified", FlashMessageType.Success);
+                AddFlashMessage("User successfully modified", FlashMessageType.Success);
 
                 return RedirectToAction("Index");
             }
@@ -150,7 +150,7 @@ namespace SQLServerBackupTool.Web.Controllers
         }
 
         /**
-         * Ramdom password generator
+         * Random password generator
          */
 
         public ActionResult GeneratePassword()
