@@ -42,7 +42,7 @@ namespace SQLServerBackupTool.Web
 
             c.AddTarget("file", fileTarget);
 
-            c.LoggingRules.Add(new LoggingRule("*", LogLevel.Error, fileTarget));
+            c.LoggingRules.Add(new LoggingRule("*", LogLevel.Debug, fileTarget));
 
             LogManager.Configuration = c;
         }
