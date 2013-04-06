@@ -63,7 +63,7 @@ else
 <div class="control-group">
     @Html.LabelFor(m => m.Roles, new { @class="control-label" })
     <div class="controls">
-        @Html.ListBoxFor(_ => _.Roles, new MultiSelectList(MembershipEditViewModel.AvailableRoles, Model.Roles))
+        @Html.ListBoxFor(_ => _.Roles, new MultiSelectList(MembershipEditViewModel.AvailableRoles.Select(_ => new {Value=_, Label=_}), "Value", "Label", Model.Roles.Select(_ => new {Value=_, Label=_})), new { @class="select2", data_placeholder="Select roles" })
         @Html.ValidationMessageFor(m => m.Roles)
     </div>
 </div>

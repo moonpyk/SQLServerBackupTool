@@ -16,6 +16,15 @@ $(document).ready(function () {
     $('.pldr').pldr({ autostart: false });
     $('.loading').modal({ show: false, keyboard: false });
 
+    $('.select2').each(function() {
+        var $me = $(this);
+
+        $me.select2({
+            placeholder: $me.data('placeholder'),
+            width: '220px'
+        });
+    });
+
     var pleaseWait = function (message) {
         var $me = $('.loading');
 

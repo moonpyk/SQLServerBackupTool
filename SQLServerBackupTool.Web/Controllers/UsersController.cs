@@ -1,4 +1,5 @@
 ﻿using PagedList;
+using SQLServerBackupTool.Lib.Annotations;
 using SQLServerBackupTool.Web.Lib.Mvc;
 using SQLServerBackupTool.Web.ViewModels;
 using System;
@@ -32,8 +33,10 @@ namespace SQLServerBackupTool.Web.Controllers
             }
         }
 
-        //
-        // GET: /Users/
+        /**
+         * Index
+         */
+
         public ActionResult Index()
         {
             int pageIndex;
@@ -112,6 +115,8 @@ namespace SQLServerBackupTool.Web.Controllers
                     Provider.UpdateUser(mem);
                 }
 
+                HandleRoles(u);
+
                 AddFlashMessage("User successfully modified", FlashMessageType.Success);
 
                 return RedirectToAction("Index");
@@ -125,6 +130,10 @@ namespace SQLServerBackupTool.Web.Controllers
             u.ForEdit = true;
             return View(u);
         }
+
+        /**
+         * User delete
+         */
 
         [HttpPost, ValidateAntiForgeryToken]
         public ActionResult Delete(string id)
@@ -162,6 +171,30 @@ namespace SQLServerBackupTool.Web.Controllers
                 ),
                 "text/plain"
             );
+        }
+
+        /// <summary>
+        /// When roles are enabled adds/removes roles
+        /// </summary>
+        /// <param name="u"><see cref="MembershipEditViewModel"/> to get the roles from</param>
+        protected static void HandleRoles([NotNull] MembershipEditViewModel u)
+        {
+            if (u == null)
+            {
+                throw new ArgumentNullException("u");
+            }
+
+            if (!Roles.Enabled)
+            {
+                return;
+            }
+
+            Roles.RemoveUserFromRoles(u.UserName, Roles.GetRolesForUser(u.UserName));
+
+            if (u.Roles != null && u.Roles.Any())
+            {
+                Roles.AddUserToRoles(u.UserName, u.Roles.ToArray());
+            }
         }
     }
 }
