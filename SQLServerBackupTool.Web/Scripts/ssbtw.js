@@ -7,11 +7,12 @@ window.ssbt = {
 };
 
 $(document).ready(function () {
+    // Multiusage antiforgery token protected form
+    var $f = $('#form-aft');
+
     /**
      * Index page, with backups
      */
-
-    var $f = $('#form-aft');
 
     $('.pldr').pldr({ autostart: false });
     $('.loading').modal({ show: false, keyboard: false });

@@ -9,11 +9,17 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using System.Web.Routing;
 
 namespace SQLServerBackupTool.Web.Controllers
 {
     public class HomeController : ApplicationController
     {
+        protected override void Initialize(RequestContext r)
+        {
+            base.Initialize(r);
+            DatabaseSizeInfo.BindType();
+        }
 
         /**
          * Index
@@ -23,20 +29,16 @@ namespace SQLServerBackupTool.Web.Controllers
         {
             IQueryable<BackupHistory> q = DbContext.History;
 
-            if (!User.IsInRole("Admin"))
+            if (!User.IsInRole("Admin") || !User.IsInRole("Operator"))
             {
                 q = q.Where(_ => _.Username == User.Identity.Name);
             }
 
             q = q.OrderBy(_ => _.Id);
 
-            using (var co = new SqlConnection(GetBackupsConnectionString()))
-            {
-                await co.OpenAsync();
-                var p = await Task.Run(() => co.Query<DatabaseInfo>(DatabaseInfo.Query).OrderBy(_ => _.Id));
+            var dbInfo = await BackupsManager.GetDatabasesInfo(User);
 
-                return View(new IndexViewModel(p, q));
-            }
+            return View(new IndexViewModel(dbInfo, q));
         }
 
         /**
@@ -63,6 +65,7 @@ namespace SQLServerBackupTool.Web.Controllers
                 }
 
                 var schem = await Task.Run(() => co.Query<SchemaInfo>(SchemaInfo.Query).ToList());
+
                 var tList = schem.Select(_ => _.Table).Distinct();
 
                 foreach (var t in tList)

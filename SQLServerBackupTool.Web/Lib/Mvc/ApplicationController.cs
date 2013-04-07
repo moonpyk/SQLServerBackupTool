@@ -1,6 +1,5 @@
 ﻿using NLog;
 using SQLServerBackupTool.Web.Models;
-using System.Configuration;
 using System.Diagnostics;
 using System.Linq;
 using System.Web.Mvc;
@@ -75,15 +74,15 @@ namespace SQLServerBackupTool.Web.Lib.Mvc
             }
         }
 
+        protected static string GetBackupsConnectionString()
+        {
+            return BackupsManager.GetBackupsConnectionString();
+        }
+
         protected override void Dispose(bool disposing)
         {
             DbContext.Dispose();
             base.Dispose(disposing);
-        }
-
-        protected static string GetBackupsConnectionString()
-        {
-            return ConfigurationManager.ConnectionStrings["BackupConnection"].ConnectionString;
         }
     }
 }

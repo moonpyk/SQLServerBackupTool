@@ -10,7 +10,7 @@ SELECT  database_id AS Id ,
         name AS Name ,
         ( CASE WHEN state = 0 THEN 1
                ELSE 0
-          END ) AS Online
+          END ) AS IsOnline
 FROM    sys.databases
 WHERE   name NOT IN ( 'master', 'tempdb', 'model', 'msdb', 'sysdb' );
 ";
@@ -27,7 +27,13 @@ WHERE   name NOT IN ( 'master', 'tempdb', 'model', 'msdb', 'sysdb' );
             set;
         }
 
-        public bool Online
+        public bool IsOnline
+        {
+            get;
+            set;
+        }
+
+        public string Size
         {
             get;
             set;

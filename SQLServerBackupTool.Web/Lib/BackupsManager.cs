@@ -1,12 +1,17 @@
-﻿using Ionic.Zip;
+﻿using System.Configuration;
+using Dapper;
+using Ionic.Zip;
 using NLog;
 using SQLServerBackupTool.Lib;
 using SQLServerBackupTool.Lib.Annotations;
 using SQLServerBackupTool.Web.Models;
 using System;
+using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
+using System.Security.Principal;
 using System.Threading.Tasks;
 using System.Web;
 using System.Xml.Serialization;
@@ -16,6 +21,32 @@ namespace SQLServerBackupTool.Web.Lib
     public static class BackupsManager
     {
         public static readonly XmlSerializer XmlSerializer = new XmlSerializer(typeof(BackupHistory));
+
+        /// <summary>
+        /// Fetches the list of databases available on SQLServer, with additional information.
+        /// </summary>
+        /// <param name="user"><see cref="IPrincipal"/> used to filter final results with authorized databases</param>
+        /// <returns>A list of <see cref="DatabaseInfo"/></returns>
+        public static async Task<IList<DatabaseInfo>> GetDatabasesInfo(IPrincipal user)
+        {
+            using (var co = new SqlConnection(GetBackupsConnectionString()))
+            {
+                await co.OpenAsync();
+                var p = await Task.Run(() => co.Query<DatabaseInfo>(DatabaseInfo.Query).OrderBy(_ => _.Id).ToList());
+
+                foreach (var info in p.Where(_ => _.IsOnline))
+                {
+                    co.ChangeDatabase(info.Name);
+                    var size = await Task.Run(() => co.Query<DatabaseSizeInfo>(DatabaseSizeInfo.Query).First());
+
+                    if (size != null && !string.IsNullOrEmpty(size.DatabaseSize))
+                    {
+                        info.Size = size.DatabaseSize;
+                    }
+                }
+                return p;
+            }
+        }
 
         /// <summary>
         /// Backup implementation logic, asks SQLServer to make a backup, of <see cref="dbName"/>, creates a Zip archive on success, tries to delete the original backup file.
@@ -197,6 +228,11 @@ namespace SQLServerBackupTool.Web.Lib
 
             ddb.History.Remove(b);
             return true;
+        }
+
+        public static string GetBackupsConnectionString()
+        {
+            return ConfigurationManager.ConnectionStrings["BackupConnection"].ConnectionString;
         }
     }
 }

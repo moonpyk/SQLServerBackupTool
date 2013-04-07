@@ -17,6 +17,7 @@
         <tr>
             <th>Id</th>
             <th>Database name</th>
+            <th>Size</th>
             <th style="width: 70px;"></th>
         </tr>
     </thead>
@@ -28,8 +29,10 @@
             <tr>
                 <td>@di.Id</td>
                 <td>@di.Name</td>
-                @if (di.Online)
+
+                @if (di.IsOnline)
                 {
+                    <td>@di.Size</td>
                     <td>
                         <div class="btn-group">
                             <a href="@Url.Action("Schema", new { id = di.Name })" class="btn">
@@ -43,7 +46,7 @@
                 }
                 else
                 {
-                    <td><span class="muted">Offline</span></td>   
+                    <td colspan="2"><span class="muted">Offline</span></td>   
                 }
             </tr>
             }
