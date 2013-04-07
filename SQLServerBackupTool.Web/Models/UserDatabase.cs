@@ -1,20 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using SQLServerBackupTool.Lib.Annotations;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
 
 namespace SQLServerBackupTool.Web.Models
 {
+    [UsedImplicitly]
     public class UserDatabase
     {
         [Key]
-        public int Id { get; set; }
+        public int Id
+        {
+            get;
+            set;
+        }
 
         [MaxLength(50), Required]
-        public string Username { get; set; }
+        public string Username
+        {
+            get;
+            set;
+        }
 
         [MaxLength(50), Required]
-        public string DatabaseName { get; set; }
+        public string DatabaseName
+        {
+            get;
+            set;
+        }
     }
 }

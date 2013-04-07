@@ -1,5 +1,4 @@
-﻿using System.Configuration;
-using Dapper;
+﻿using Dapper;
 using Ionic.Zip;
 using NLog;
 using SQLServerBackupTool.Lib;
@@ -7,6 +6,7 @@ using SQLServerBackupTool.Lib.Annotations;
 using SQLServerBackupTool.Web.Models;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data.Entity;
 using System.Data.SqlClient;
 using System.IO;
