@@ -1,20 +1,25 @@
 ﻿using Dapper;
+using SQLServerBackupTool.Lib.Annotations;
 using SQLServerBackupTool.Web.Lib;
 using SQLServerBackupTool.Web.Lib.Mvc;
 using SQLServerBackupTool.Web.Models;
 using SQLServerBackupTool.Web.ViewModels;
 using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using System.Web.Routing;
+using System.Xml.Serialization;
 
 namespace SQLServerBackupTool.Web.Controllers
 {
     public class HomeController : ApplicationController
     {
+        private static readonly Dictionary<Type, XmlSerializer> Serializers = new Dictionary<Type, XmlSerializer>();
+
         protected override void Initialize(RequestContext r)
         {
             base.Initialize(r);
@@ -42,6 +47,17 @@ namespace SQLServerBackupTool.Web.Controllers
         }
 
         /**
+         * Database list as a service
+         */
+
+        public async Task<ActionResult> List_Fmt(string format = "json")
+        {
+            var dbInfo = await BackupsManager.GetDatabasesInfo(User);
+
+            return FormatResult(format, dbInfo);
+        }
+
+        /**
          * Schema
          */
 
@@ -64,9 +80,9 @@ namespace SQLServerBackupTool.Web.Controllers
                     return RedirectToAction("Index");
                 }
 
-                var schem = await Task.Run(() => co.Query<SchemaInfo>(SchemaInfo.Query).ToList());
+                var sch = await Task.Run(() => co.Query<SchemaInfo>(SchemaInfo.Query).ToList());
 
-                var tList = schem.Select(_ => _.Table).Distinct();
+                var tList = sch.Select(_ => _.Table).Distinct();
 
                 foreach (var t in tList)
                 {
@@ -74,14 +90,14 @@ namespace SQLServerBackupTool.Web.Controllers
 
                     var rc = await Task.Run(() => co.Query<int>(string.Format(SchemaInfo.RowCountQuery, __)).First());
 
-                    foreach (var c in schem.Where(_ => _.Table == __))
+                    foreach (var c in sch.Where(_ => _.Table == __))
                     {
                         c.RowCount = rc;
                     }
                 }
 
                 ViewBag.Database = id;
-                return View(schem);
+                return View(sch);
             }
         }
 
@@ -117,7 +133,7 @@ namespace SQLServerBackupTool.Web.Controllers
 
             if (string.IsNullOrWhiteSpace(format))
             {
-                return new HttpStatusCodeResult(406, "No format specified"); // Not acceptable
+                return HttpNotAcceptable("No format specified");
             }
 
             if (bk == null)
@@ -125,26 +141,15 @@ namespace SQLServerBackupTool.Web.Controllers
                 return HttpNotFound(string.Format("Unable to create database backup for '{0}'", id));
             }
 
-            switch (format.ToLowerInvariant())
+            if (format.ToLowerInvariant() == "zip")
             {
-                case "xml":
-                    var t = new MemoryStream();
-                    BackupsManager.XmlSerializer.Serialize(t, bk);
-                    t.Position = 0;
-                    return File(t, "application/xml");
+                var path = bk.Path;
+                var fileName = Path.GetFileName(path);
 
-                case "json":
-                    return Json(bk, JsonRequestBehavior.AllowGet);
-
-                case "zip":
-                    var path     = bk.Path;
-                    var fileName = Path.GetFileName(path);
-
-                    return File(path, "application/zip", fileName);
-
-                default:
-                    return new HttpStatusCodeResult(406, "Unknown format");
+                return File(path, "application/zip", fileName);
             }
+
+            return FormatResult(format, bk);
         }
 
         public ActionResult Download(int id)
@@ -219,6 +224,59 @@ namespace SQLServerBackupTool.Web.Controllers
             AddFlashMessage("An error occurred while deleting backup.", FlashMessageType.Error);
 
             return RedirectToAction("Index");
+        }
+
+        /// <summary>
+        /// Creates an API like result from a format and a given type 
+        /// </summary>
+        /// <typeparam name="T">Any type</typeparam>
+        /// <param name="f">Format string</param>
+        /// <param name="o">Object to serialize</param>
+        /// <returns>
+        /// An <see cref="ActionResult"/> depending of the asked format. 
+        /// Returns <see cref="HttpStatusCodeResult"/> 406 if not valid format was asked for.
+        /// </returns>
+        protected ActionResult FormatResult<T>([NotNull] string f, T o)
+        {
+            if (string.IsNullOrWhiteSpace(f))
+            {
+                throw new ArgumentNullException("f");
+            }
+
+            switch (f.ToLowerInvariant())
+            {
+                case "xml":
+                    var t = new MemoryStream();
+                    var s = GetXmlSerializerFor(typeof(T));
+                    s.Serialize(t, o);
+                    t.Position = 0;
+                    return File(t, "application/xml");
+
+                case "json":
+                    return Json(o, JsonRequestBehavior.AllowGet);
+
+                default:
+                    return HttpNotAcceptable("Unknown format");
+            }
+        }
+
+        /// <summary>
+        /// Creates or get a cached version of an <see cref="XmlSerializer"/> for type <see cref="t"/>
+        /// </summary>
+        /// <param name="t">Type to create the <see cref="XmlSerializer"/> for</param>
+        /// <returns>An <see cref="XmlSerializer"/> instance</returns>
+        protected static XmlSerializer GetXmlSerializerFor(Type t)
+        {
+            if (Serializers.ContainsKey(t))
+            {
+                return Serializers[t];
+            }
+
+            var ret = new XmlSerializer(t);
+
+            Serializers[t] = ret;
+
+            return ret;
         }
     }
 }

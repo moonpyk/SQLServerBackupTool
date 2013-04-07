@@ -20,14 +20,12 @@ namespace SQLServerBackupTool.Web.Lib
 {
     public static class BackupsManager
     {
-        public static readonly XmlSerializer XmlSerializer = new XmlSerializer(typeof(BackupHistory));
-
         /// <summary>
         /// Fetches the list of databases available on SQLServer, with additional information.
         /// </summary>
         /// <param name="user"><see cref="IPrincipal"/> used to filter final results with authorized databases</param>
         /// <returns>A list of <see cref="DatabaseInfo"/></returns>
-        public static async Task<IList<DatabaseInfo>> GetDatabasesInfo(IPrincipal user)
+        public static async Task<List<DatabaseInfo>> GetDatabasesInfo(IPrincipal user)
         {
             using (var co = new SqlConnection(GetBackupsConnectionString()))
             {

@@ -74,6 +74,11 @@ namespace SQLServerBackupTool.Web.Lib.Mvc
             }
         }
 
+        protected static ActionResult HttpNotAcceptable(string message = null)
+        {
+            return new HttpStatusCodeResult(406); // Not acceptable
+        }
+
         protected static string GetBackupsConnectionString()
         {
             return BackupsManager.GetBackupsConnectionString();

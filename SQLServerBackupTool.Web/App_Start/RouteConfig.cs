@@ -1,25 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using System.Web.Routing;
 
 namespace SQLServerBackupTool.Web
 {
-    public class RouteConfig
+    public static class RouteConfig
     {
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
-            // Backup routes
+            // Pseudo API routes
 
             routes.MapRoute(
-                name: "BackupJson",
-                url: "Backup/{id}.{format}",
+                name: "BackupFmt",
+                url: "api/Backup/{id}.{format}",
                 defaults: new { controller="Home", action = "Backup_Fmt", }
             );
+
+            routes.MapRoute(
+                name: "ListFmt",
+                url: "api/List.{format}",
+                defaults: new { controller = "Home", action = "List_Fmt", }
+            );
+
+            // Backup route
 
             routes.MapRoute(
                 name: "Backup",

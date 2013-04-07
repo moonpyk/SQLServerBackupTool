@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using NLog;
+using NLog.Config;
+using NLog.Targets;
 using System.IO;
-using System.Linq;
-using System.Web;
-using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
-using NLog;
-using NLog.Config;
-using NLog.Targets;
 
 namespace SQLServerBackupTool.Web
 {
@@ -21,9 +16,9 @@ namespace SQLServerBackupTool.Web
         {
             AreaRegistration.RegisterAllAreas();
 
-            WebApiConfig.Register(GlobalConfiguration.Configuration);
-            FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
+            // WebApiConfig.Register(GlobalConfiguration.Configuration);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
+            FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
             ConfigureLogging(Server.MapPath("~"));
