@@ -24,8 +24,13 @@ namespace SQLServerBackupTool.Web.Lib
         /// </summary>
         /// <param name="user"><see cref="IPrincipal"/> used to filter final results with authorized databases</param>
         /// <returns>A list of <see cref="DatabaseInfo"/></returns>
-        public static async Task<List<DatabaseInfo>> GetDatabasesInfo(IPrincipal user)
+        public static async Task<List<DatabaseInfo>> GetDatabasesInfo([NotNull] IPrincipal user)
         {
+            if (user == null)
+            {
+                throw new ArgumentNullException("user");
+            }
+
             using (var co = new SqlConnection(GetBackupsConnectionString()))
             {
                 await co.OpenAsync();
@@ -41,6 +46,12 @@ namespace SQLServerBackupTool.Web.Lib
                         info.Size = size.DatabaseSize;
                     }
                 }
+
+                if (!user.IsInRole("Admin") || !user.IsInRole("Operator"))
+                {
+                    // Apply filter
+                }
+
                 return p;
             }
         }
@@ -48,18 +59,19 @@ namespace SQLServerBackupTool.Web.Lib
         /// <summary>
         /// Backup implementation logic, asks SQLServer to make a backup, of <see cref="dbName"/>, creates a Zip archive on success, tries to delete the original backup file.
         /// </summary>
-        /// <param name="backupConnectionString">Connection string to use to instruct SQLServer to make the backup</param>
+        /// <param name="coString">Connection string to use to instruct SQLServer to make the backup</param>
         /// <param name="dbName">Name of the database to backup</param>
+        /// <param name="principal"></param>
         /// <param name="logger">Optional instance of a <see cref="Logger"/></param>
         /// <returns>An instance of <see cref="BackupHistory"/> on success, null otherwise</returns>
         /// <remarks>If deletion of the original backup file fails for any reason, only a log entry will be done, the backup won't be considered as failed.
         /// This methods needs to be run in a valid <see cref="HttpContext"/>.
         /// </remarks>
-        public static async Task<BackupHistory> BackupDatabase([NotNull] string backupConnectionString, [NotNull] string dbName, [CanBeNull] Logger logger)
+        public static async Task<BackupHistory> BackupDatabase([NotNull] string coString, [NotNull] string dbName, [CanBeNull] Logger logger)
         {
-            if (string.IsNullOrWhiteSpace(backupConnectionString))
+            if (string.IsNullOrWhiteSpace(coString))
             {
-                throw new ArgumentNullException("backupConnectionString");
+                throw new ArgumentNullException("coString");
             }
 
             if (string.IsNullOrWhiteSpace(dbName))
@@ -77,7 +89,7 @@ namespace SQLServerBackupTool.Web.Lib
             var server = httpContext.Server;
             var user   = httpContext.User;
 
-            using (var bak = new SqlServerBackupProvider(backupConnectionString))
+            using (var bak = new SqlServerBackupProvider(coString))
             {
                 await bak.OpenAsync();
                 var ts = DateTime.Now;
