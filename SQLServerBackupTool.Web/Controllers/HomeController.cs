@@ -141,7 +141,7 @@ namespace SQLServerBackupTool.Web.Controllers
                 return HttpNotFound(string.Format("Unable to create database backup for '{0}'", id));
             }
 
-            if (format.ToLowerInvariant() == "zip")
+            if (format.ToLowerInvariant() == @"zip")
             {
                 var path = bk.Path;
                 var fileName = Path.GetFileName(path);
@@ -171,7 +171,7 @@ namespace SQLServerBackupTool.Web.Controllers
          * Deletion / Purge
          */
 
-        [HttpPost, ValidateAntiForgeryToken, Authorize(Roles = "Admin")]
+        [HttpPost, ValidateAntiForgeryToken, Authorize(Roles = @"Admin")]
         public ActionResult BackupsPurge()
         {
             if (BackupsManager.PurgeOldBackups(DbContext, DateTime.Now, Logger))
@@ -203,7 +203,7 @@ namespace SQLServerBackupTool.Web.Controllers
                     DbContext.SaveChanges();
                     if (Request.IsAjaxRequest())
                     {
-                        return Content("OK", "text/plain");
+                        return Content(@"OK", "text/plain");
                     }
 
                     AddFlashMessage("Backup successfully deleted", FlashMessageType.Success);
@@ -218,7 +218,7 @@ namespace SQLServerBackupTool.Web.Controllers
 
             if (Request.IsAjaxRequest())
             {
-                return Content("ERR", "text/plain");
+                return Content(@"ERR", "text/plain");
             }
 
             AddFlashMessage("An error occurred while deleting backup.", FlashMessageType.Error);

@@ -11,7 +11,7 @@ using System.Web.Security;
 
 namespace SQLServerBackupTool.Web.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = @"Admin")]
     public class UsersController : ApplicationController
     {
         private const int NumberItemsPerPage = 30;
@@ -46,7 +46,7 @@ namespace SQLServerBackupTool.Web.Controllers
         {
             int pageIndex;
 
-            if (!int.TryParse(Request.Params["page"], out pageIndex))
+            if (!int.TryParse(Request.Params[@"page"], out pageIndex))
             {
                 pageIndex = 1;
             }

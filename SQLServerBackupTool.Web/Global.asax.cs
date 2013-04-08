@@ -1,6 +1,7 @@
 ﻿using NLog;
 using NLog.Config;
 using NLog.Targets;
+using System.ComponentModel;
 using System.IO;
 using System.Web.Mvc;
 using System.Web.Optimization;
@@ -10,6 +11,7 @@ namespace SQLServerBackupTool.Web
 {
     // Remarque : pour obtenir des instructions sur l'activation du mode classique IIS6 ou IIS7, 
     // visitez http://go.microsoft.com/?LinkId=9394801
+    [Localizable(false)]
     public class MvcApplication : System.Web.HttpApplication
     {
         protected void Application_Start()

@@ -1,8 +1,10 @@
-﻿using System.Web.Mvc;
+﻿using System.ComponentModel;
+using System.Web.Mvc;
 using System.Web.Routing;
 
 namespace SQLServerBackupTool.Web
 {
+    [Localizable(false)]
     public static class RouteConfig
     {
         public static void RegisterRoutes(RouteCollection routes)

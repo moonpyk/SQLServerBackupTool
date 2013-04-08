@@ -2,7 +2,7 @@
 
 namespace SQLServerBackupTool.Lib
 {
-    public class ConsoleHelper
+    public static class ConsoleHelper
     {
         /// <summary>
         /// Enable/disable all coloring while using those helpers

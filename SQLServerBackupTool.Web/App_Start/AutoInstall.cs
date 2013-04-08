@@ -2,6 +2,7 @@
 using SQLServerBackupTool.Web;
 using SQLServerBackupTool.Web.Lib;
 using SQLServerBackupTool.Web.Models;
+using System.ComponentModel;
 using System.Data.Entity;
 using System.Web.Security;
 
@@ -9,7 +10,7 @@ using System.Web.Security;
 
 namespace SQLServerBackupTool.Web
 {
-
+    [Localizable(false)]
     public static class AutoInstall
     {
         [UsedImplicitly]

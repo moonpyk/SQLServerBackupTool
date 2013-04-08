@@ -1,7 +1,9 @@
-﻿using System.Data.Entity;
+﻿using System.ComponentModel;
+using System.Data.Entity;
 
 namespace SQLServerBackupTool.Web.Models
 {
+    [Localizable(false)]
     public class SSBTDbContext : DbContext
     {
         public SSBTDbContext()
