@@ -5,6 +5,7 @@
     <td>@Model.Database</td>
     <td>@Model.Username</td>
     <td>@Model.Expires</td>
+    <td>@Model.Size.BytesToString(2)</td>
     <td>
         <div class="btn-group">
             <a class="btn" href="@Url.Action("Download", new { id=Model.Id })">

@@ -148,6 +148,7 @@
     <Compile Include="App_Start\AutoInstall.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="Lib\BackupsManager.cs" />
+    <Compile Include="Lib\Extensions\NumberExtensions.cs" />
     <Compile Include="Lib\Mvc\FlashMessages.cs" />
     <Compile Include="Lib\Interfaces\IMembershipUser.cs" />
     <Compile Include="Models\DatabaseSizeInfo.cs" />

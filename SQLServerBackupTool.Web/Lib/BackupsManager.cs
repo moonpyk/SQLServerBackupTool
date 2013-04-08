@@ -14,7 +14,6 @@ using System.Linq;
 using System.Security.Principal;
 using System.Threading.Tasks;
 using System.Web;
-using System.Xml.Serialization;
 
 namespace SQLServerBackupTool.Web.Lib
 {
@@ -134,6 +133,8 @@ namespace SQLServerBackupTool.Web.Lib
                     }
                 }
 
+                var fInfo = new FileInfo(fullZipPath);
+
                 var h = new BackupHistory
                 {
                     Path     = fullZipPath,
@@ -141,6 +142,7 @@ namespace SQLServerBackupTool.Web.Lib
                     Url      = string.Format("~/{0}", fullZipPath.Replace(server.MapPath("~/"), string.Empty).Replace('\\', '/')),
                     Expires  = DateTime.Now.AddDays(1),
                     Username = user.Identity.Name,
+                    Size     = fInfo.Length,
                 };
 
                 using (var ddb = new SSBTDbContext())

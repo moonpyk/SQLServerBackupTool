@@ -70,6 +70,7 @@
                 <th>Database</th>
                 <th>User</th>
                 <th>Expiration</th>
+                <th style="width: 50px;">Size</th>
                 <th style="width: 30px;"></th>
             </tr>
         </thead>
@@ -84,7 +85,7 @@
             else
             {
                 <tr class="no-row">
-                    <td colspan="5"><i>No available database backup</i></td>
+                    <td colspan="6"><i>No available database backup</i></td>
                 </tr>
             }
         </tbody>
@@ -92,7 +93,7 @@
         {
             <tfoot>
                 <tr>
-                    <td colspan="5">
+                    <td colspan="6">
                         <a id="backup-purge" href="@Url.Action("BackupsPurge")" onclick="return false;" class="btn btn-danger">
                             <i class="icon-warning-sign icon-white"></i><span>&nbsp;Purge</span>
                         </a>

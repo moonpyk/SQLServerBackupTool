@@ -46,5 +46,11 @@ namespace SQLServerBackupTool.Web.Models
             get;
             set;
         }
+
+        public long Size
+        {
+            get;
+            set;
+        }
     }
 }
