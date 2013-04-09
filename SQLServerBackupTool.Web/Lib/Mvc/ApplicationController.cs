@@ -3,6 +3,7 @@ using SQLServerBackupTool.Web.Models;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using System.Web.Mvc;
 using System.Web.Routing;
 
@@ -78,6 +79,11 @@ namespace SQLServerBackupTool.Web.Lib.Mvc
         protected static ActionResult HttpNotAcceptable(string message = null)
         {
             return new HttpStatusCodeResult(406); // Not acceptable
+        }
+
+        protected static ActionResult HttpNotAuthorized()
+        {
+            return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
         }
 
         protected static string GetBackupsConnectionString()

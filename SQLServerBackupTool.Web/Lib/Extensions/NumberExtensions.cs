@@ -25,7 +25,11 @@ namespace SQLServerBackupTool.Web.Lib.Extensions
             var place = Convert.ToInt32(Math.Floor(Math.Log(bytes, 1024)));
             var num   = Math.Round(bytes / Math.Pow(1024, place), decimals);
 
-            return (Math.Sign(byteCount) * num).ToString(CultureInfo.InvariantCulture) + SizeUnits[place];
+            return string.Format(
+                "{0} {1}",
+                (Math.Sign(byteCount) * num).ToString(CultureInfo.InvariantCulture),
+                SizeUnits[place]
+            );
         }
     }
 }

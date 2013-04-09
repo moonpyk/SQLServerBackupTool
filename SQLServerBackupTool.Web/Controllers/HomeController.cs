@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
+using System.Security.Principal;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using System.Web.Routing;
@@ -18,6 +19,8 @@ namespace SQLServerBackupTool.Web.Controllers
 {
     public class HomeController : ApplicationController
     {
+        private const string MessageUnauthorizedDatabase = "You are not authorized to access this database";
+
         private static readonly Dictionary<Type, XmlSerializer> Serializers = new Dictionary<Type, XmlSerializer>();
 
         protected override void Initialize(RequestContext r)
@@ -32,18 +35,14 @@ namespace SQLServerBackupTool.Web.Controllers
 
         public async Task<ActionResult> Index()
         {
-            IQueryable<BackupHistory> q = DbContext.History;
-
-            if (!User.IsInRole("Admin") || !User.IsInRole("Operator"))
-            {
-                q = q.Where(_ => _.Username == User.Identity.Name);
-            }
-
-            q = q.OrderBy(_ => _.Id);
+            var bks = DbContext.History
+                .AsEnumerable()
+                .Where(_ => IsAuthorized(User, _.Database))
+                .OrderBy(_ => _.Id);
 
             var dbInfo = await BackupsManager.GetDatabasesInfo(User);
 
-            return View(new IndexViewModel(dbInfo, q));
+            return View(new IndexViewModel(dbInfo, bks));
         }
 
         /**
@@ -63,6 +62,12 @@ namespace SQLServerBackupTool.Web.Controllers
 
         public async Task<ActionResult> Schema(string id)
         {
+            if (!IsAuthorized(User, id))
+            {
+                AddFlashMessage(MessageUnauthorizedDatabase, FlashMessageType.Error);
+                return RedirectToAction("Index");
+            }
+
             using (var co = new SqlConnection(GetBackupsConnectionString()))
             {
                 await co.OpenAsync();
@@ -108,6 +113,12 @@ namespace SQLServerBackupTool.Web.Controllers
         [HttpPost, ValidateAntiForgeryToken]
         public async Task<ActionResult> Backup(string id)
         {
+            if (!IsAuthorized(User, id))
+            {
+                AddFlashMessage(MessageUnauthorizedDatabase, FlashMessageType.Error);
+                return RedirectToAction("Index");
+            }
+
             var bk = await BackupsManager.BackupDatabase(
                 GetBackupsConnectionString(),
                 id,
@@ -136,6 +147,11 @@ namespace SQLServerBackupTool.Web.Controllers
                 return HttpNotAcceptable("No format specified");
             }
 
+            if (!IsAuthorized(User, id))
+            {
+                return HttpNotAuthorized();
+            }
+
             if (bk == null)
             {
                 return HttpNotFound(string.Format("Unable to create database backup for '{0}'", id));
@@ -159,6 +175,11 @@ namespace SQLServerBackupTool.Web.Controllers
             if (bk == null)
             {
                 return HttpNotFound();
+            }
+
+            if (!IsAuthorized(User, bk.Database))
+            {
+                return HttpNotAuthorized();
             }
 
             var path     = bk.Path;
@@ -194,6 +215,16 @@ namespace SQLServerBackupTool.Web.Controllers
             if (bk == null)
             {
                 return HttpNotFound("Not a valid backup id");
+            }
+
+            if (!User.IsInRole("Admin") && !User.IsInRole("Operator"))
+            {
+                var bkName = bk.Username;
+                var uName  = User.Identity.Name;
+                if (bkName == null || uName == null || (bkName.ToLowerInvariant() != User.Identity.Name.ToLowerInvariant()))
+                {
+                    return HttpNotAuthorized();
+                }
             }
 
             if (BackupsManager.DeleteBackup(DbContext, bk, Logger))
@@ -277,6 +308,16 @@ namespace SQLServerBackupTool.Web.Controllers
             Serializers[t] = ret;
 
             return ret;
+        }
+
+        protected bool IsAuthorized(IPrincipal user, string databaseName)
+        {
+            if (user.IsInRole("Admin") || user.IsInRole("Operator"))
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }
