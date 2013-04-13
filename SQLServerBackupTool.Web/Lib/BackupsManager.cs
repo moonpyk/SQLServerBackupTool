@@ -47,9 +47,9 @@ namespace SQLServerBackupTool.Web.Lib
                     }
                 }
 
-                if (!user.IsInRole("Admin") || !user.IsInRole("Operator"))
+                using (var ddb = new SSBTDbContext())
                 {
-                    // Apply filter
+                    p = p.Where(_ => IsDatabaseAuthorized(ddb, user, _.Name)).ToList();
                 }
 
                 return p;
@@ -242,6 +242,55 @@ namespace SQLServerBackupTool.Web.Lib
             return true;
         }
 
+        /// <summary>
+        /// Determines if the given <see cref="user"/> is allowed to make any action on the database named <see cref="databaseName"/>
+        /// If the <see cref="user"/> is an admin or an operator, returns true. In any other case the table UserDatabase table is checked
+        /// </summary>
+        /// <param name="ddb">A valid <see cref="SSBTDbContext"/> db context</param>
+        /// <param name="user">The <see cref="IPrincipal"/> to test</param>
+        /// <param name="databaseName">The name of the database to tes</param>
+        /// <returns>true or false</returns>
+        public static bool IsDatabaseAuthorized([NotNull] SSBTDbContext ddb, [CanBeNull] IPrincipal user, [CanBeNull] string databaseName)
+        {
+            if (ddb == null)
+            {
+                throw new ArgumentNullException("ddb");
+            }
+
+            if (user == null)
+            {
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(databaseName))
+            {
+                return false;
+            }
+
+            if (user.IsInRole("Admin") || user.IsInRole("Operator"))
+            {
+                return true;
+            }
+
+            var uname = user.Identity.Name;
+
+            if (string.IsNullOrWhiteSpace(uname))
+            {
+                return false;
+            }
+
+            var isAuthorized = ddb.UserDatabases.Any(_ =>
+                _.Username.Trim().ToLowerInvariant() == uname.Trim().ToLowerInvariant() &&
+                _.DatabaseName.Trim().ToLowerInvariant() == databaseName.Trim().ToLowerInvariant()
+            );
+
+            return isAuthorized;
+        }
+
+        /// <summary>
+        /// Returns the connection string that has to be used to make backups.
+        /// <remarks>The underlying user has to have the db_backupoperator role on the databases</remarks>
+        /// </summary>
         public static string GetBackupsConnectionString()
         {
             return ConfigurationManager.ConnectionStrings["BackupConnection"].ConnectionString;

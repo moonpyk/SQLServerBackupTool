@@ -37,7 +37,7 @@ namespace SQLServerBackupTool.Web.Controllers
         {
             var bks = DbContext.History
                 .AsEnumerable()
-                .Where(_ => IsAuthorized(User, _.Database))
+                .Where(_ => IsDatabaseAuthorized(User, _.Database))
                 .OrderBy(_ => _.Id);
 
             var dbInfo = await BackupsManager.GetDatabasesInfo(User);
@@ -62,7 +62,7 @@ namespace SQLServerBackupTool.Web.Controllers
 
         public async Task<ActionResult> Schema(string id)
         {
-            if (!IsAuthorized(User, id))
+            if (!IsDatabaseAuthorized(User, id))
             {
                 AddFlashMessage(MessageUnauthorizedDatabase, FlashMessageType.Error);
                 return RedirectToAction("Index");
@@ -113,7 +113,7 @@ namespace SQLServerBackupTool.Web.Controllers
         [HttpPost, ValidateAntiForgeryToken]
         public async Task<ActionResult> Backup(string id)
         {
-            if (!IsAuthorized(User, id))
+            if (!IsDatabaseAuthorized(User, id))
             {
                 AddFlashMessage(MessageUnauthorizedDatabase, FlashMessageType.Error);
                 return RedirectToAction("Index");
@@ -147,7 +147,7 @@ namespace SQLServerBackupTool.Web.Controllers
                 return HttpNotAcceptable("No format specified");
             }
 
-            if (!IsAuthorized(User, id))
+            if (!IsDatabaseAuthorized(User, id))
             {
                 return HttpNotAuthorized();
             }
@@ -157,6 +157,7 @@ namespace SQLServerBackupTool.Web.Controllers
                 return HttpNotFound(string.Format("Unable to create database backup for '{0}'", id));
             }
 
+            // Zip hook, direct backup and return result
             if (format.ToLowerInvariant() == @"zip")
             {
                 var path = bk.Path;
@@ -177,7 +178,7 @@ namespace SQLServerBackupTool.Web.Controllers
                 return HttpNotFound();
             }
 
-            if (!IsAuthorized(User, bk.Database))
+            if (!IsDatabaseAuthorized(User, bk.Database))
             {
                 return HttpNotAuthorized();
             }
@@ -310,14 +311,15 @@ namespace SQLServerBackupTool.Web.Controllers
             return ret;
         }
 
-        protected bool IsAuthorized(IPrincipal user, string databaseName)
+        /// <summary>
+        /// Is the current <see cref="user"/> authorized to access the database ?
+        /// </summary>
+        /// <param name="user"><see cref="IPrincipal"/> to test</param>
+        /// <param name="database">Database name</param>
+        /// <returns>true or false</returns>
+        protected bool IsDatabaseAuthorized(IPrincipal user, string database)
         {
-            if (user.IsInRole("Admin") || user.IsInRole("Operator"))
-            {
-                return true;
-            }
-
-            return false;
+            return BackupsManager.IsDatabaseAuthorized(DbContext, user, database);
         }
     }
 }
