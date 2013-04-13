@@ -4,119 +4,146 @@ $iconSpritePath: "img/glyphicons-halflings.png";
 $iconWhiteSpritePath: "img/glyphicons-halflings-white.png";
 
 $linkColor: $purple;
+$footerHeight: 30px;
 
 @import "bootstrap/bootstrap";
 
+html, body {
+  height: 100%;
+}
+
+#wrap {
+  min-height: 100%;
+  height: auto !important;
+  height: 100%;
+  //Negative indent footer by it's height
+  margin: 0 auto #{-1* $footerHeight};
+}
+
+#push,
+#footer {
+  height: $footerHeight;
+}
+
+#footer {
+  background-color: $grayLighter;
+  div {
+    font-size: 85%;
+    padding-left: 5px;
+    padding-top: 5px;
+  }
+}
+
 .ss {
-    color: $grayLight;
+  color: $grayLight;
 }
 
 .boxed {
-    @include border-radius(4px);
-    border: 1px solid $tableBorder;
-    padding: 5px;
+  @include border-radius(4px);
+  border: 1px solid $tableBorder;
+  padding: 5px;
 }
 
 .userbox {
-    @extend .boxed;
-    padding: 3px 3px 3px 5px;
-    margin-bottom: 10px;
+  @extend .boxed;
+  padding: 3px 3px 3px 5px;
+  margin-bottom: 10px;
 }
 
 .purple {
-    color: $purple;
+  color: $purple;
 }
 
 .table-vmiddle {
-    tr {
-        td, th {
-            vertical-align: middle;
-        }
+  tr {
+    td, th {
+      vertical-align: middle;
     }
+  }
 }
 
 .vmiddle {
-    vertical-align: middle;
+  vertical-align: middle;
 }
 
 .fullcenter {
-    @extend .vmiddle;
-    text-align: center;
+  @extend .vmiddle;
+  text-align: center;
 }
 
 .table-bordered th, .table-bordered td {
-    &.fullcenter {
-        @extend .fullcenter;
-    }
+  &.fullcenter {
+    @extend .fullcenter;
+  }
 }
 
 .title {
-    text-transform: lowercase;
+  text-transform: lowercase;
 }
 
 #top-bar {
-    @include border-radius(0 0 6px 6px);
-    padding: 1px 10px;
-    margin-bottom: 10px;
-    background-color: #F7F7F7;
-    border: 1px solid $grayLighter;
+  @include border-radius(0 0 6px 6px);
+  padding: 1px 10px;
+  margin-bottom: 10px;
+  background-color: #F7F7F7;
+  border: 1px solid $grayLighter;
 }
 
 .alert {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 
 #nav {
-    margin-top: 11px;
+  margin-top: 11px;
 }
 
 .loading {
-    display: none;
-    .message {
-        text-align: center;
-    }
-    .pldr {
-        /**/
-    }
+  display: none;
+  .message {
+    text-align: center;
+  }
+  .pldr {
+    /**/
+  }
 }
 
 .backup-delete {
-    /**/
+  /**/
 }
 
 .backup-do {
-    /**/
+  /**/
 }
 
 .no-row td {
-    text-align: center;
+  text-align: center;
 }
 
 @media (max-width: 767px) {
-    #top-bar {
-        h1 {
-            font-size: 25px;
-        }
+  #top-bar {
+    h1 {
+      font-size: 25px;
     }
-    .container-fluid {
-        padding-right: 10px;
-        padding-left: 10px;
-    }
-    .btn span {
-        display: none;
-    }
+  }
+  .container-fluid {
+    padding-right: 10px;
+    padding-left: 10px;
+  }
+  .btn span {
+    display: none;
+  }
 }
 
 @media (max-width: 480px) {
-    #top-bar {
-        h1 {
-            font-size: 15px;
-            line-height: 28px;
-        }
+  #top-bar {
+    h1 {
+      font-size: 15px;
+      line-height: 28px;
     }
-    #nav {
-        margin-top: 6px;
-    }
+  }
+  #nav {
+    margin-top: 6px;
+  }
 }
 
 @import "select2";
