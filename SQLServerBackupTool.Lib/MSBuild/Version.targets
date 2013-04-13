@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <AssemblyVersionBase>0.1</AssemblyVersionBase>
+    <MSBuildCommunityTasksPath>.</MSBuildCommunityTasksPath>
+  </PropertyGroup>
+  <Import Project="..\..\Build\MSBuild.Community.Tasks.targets" />
+  <PropertyGroup>
+    <BuildDependsOn>
+      GenerateAssemblyInfo;
+      $(BuildDependsOn)
+    </BuildDependsOn>
+  </PropertyGroup>
+
+  <Target Name="ExtractRevision">
+    <GitVersion LocalPath="..\..">
+      <Output TaskParameter="CommitHash" PropertyName="Revision" />
+    </GitVersion>
+    <Message Text="Version : $(Revision)" />
+  </Target>
+
+  <Target Name="GenerateAssemblyInfo"
+          DependsOnTargets="ExtractRevision">
+    <PropertyGroup Condition="'$(Revision)' == ''">
+      <Revision>0000000</Revision>
+    </PropertyGroup>
+    <CreateProperty Value="$(MSBuildProjectDirectory)\..\..">
+      <Output TaskParameter="Value" PropertyName="SolutionDirectory"/>
+    </CreateProperty>
+    <CreateProperty Value="$(AssemblyVersionBase).*">
+      <Output TaskParameter="Value" PropertyName="AssemblyVersion" />
+    </CreateProperty>
+    <CreateProperty Value="$(Revision)">
+      <Output TaskParameter="Value" PropertyName="AssemblyVersionCommitHash"/>
+    </CreateProperty>
+    
+    <AssemblyInfo CodeLanguage="CS"
+              OutputFile="$(SolutionDirectory)\SQLServerBackupTool\Properties\AssemblyInfo.Generated.cs"
+              AssemblyVersion="$(AssemblyVersion)"
+              AssemblyInformationalVersion="$(AssemblyVersionCommitHash)" />
+    
+    <AssemblyInfo CodeLanguage="CS"
+              OutputFile="$(SolutionDirectory)\SQLServerBackupTool.Lib\Properties\AssemblyInfo.Generated.cs"
+              AssemblyVersion="$(AssemblyVersion)"
+              AssemblyInformationalVersion="$(AssemblyVersionCommitHash)" />
+    
+    <AssemblyInfo CodeLanguage="CS"
+                  OutputFile="$(SolutionDirectory)\SQLServerBackupTool.Web\Properties\AssemblyInfo.Generated.cs"
+                  AssemblyVersion="$(AssemblyVersion)"
+                  AssemblyInformationalVersion="$(AssemblyVersionCommitHash)" />
+  </Target>
+</Project>

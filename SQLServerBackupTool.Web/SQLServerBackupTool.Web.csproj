@@ -152,6 +152,7 @@
     <Compile Include="Lib\Mvc\FlashMessages.cs" />
     <Compile Include="Lib\Interfaces\IMembershipUser.cs" />
     <Compile Include="Models\DatabaseSizeInfo.cs" />
+    <Compile Include="Properties\AssemblyInfo.Generated.cs" />
     <Compile Include="ViewModels\IndexViewModel.cs" />
     <Compile Include="Lib\Mvc\ApplicationController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -390,6 +391,9 @@
     </VisualStudio>
   </ProjectExtensions>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>$(MSBuildBinPath)\MSBuild.exe "$(SolutionDir)\SQLServerBackupTool.Lib\MSBuild\Version.targets" /t:GenerateAssemblyInfo</PreBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
