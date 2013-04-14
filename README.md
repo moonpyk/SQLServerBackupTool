@@ -12,6 +12,7 @@ In my setup, the program is automatically started all nights by the Windows Task
 
 - Backup any number of databases
 - Automatic zip creation of backups
+- **WIP** A web interface allowing users to make backups online and download them (SQLServerBackupTool.Web)
 - **TBD** Automatic copy of each backup to a configured Network share / FTP Server / Cloud service
 
 ## Configuration ##
