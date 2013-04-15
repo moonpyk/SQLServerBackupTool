@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SQLServerBackupTool.Lib.Annotations;
+using System;
 using System.Data;
 using System.Data.Entity.Infrastructure;
 using System.Net.Http.Headers;
@@ -10,6 +11,7 @@ using System.Web.Security;
 
 namespace SQLServerBackupTool.Web.Lib
 {
+    [UsedImplicitly]
     public class BasicMembershipAuthHttpModule : IHttpModule
     {
         private static string _realm = "Access restricted area";
