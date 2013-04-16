@@ -38,7 +38,16 @@ namespace SQLServerBackupTool.Web.Lib
 
                 foreach (var info in p.Where(_ => _.IsOnline))
                 {
-                    co.ChangeDatabase(info.Name);
+                    try
+                    {
+                        co.ChangeDatabase(info.Name);
+                    }
+                    catch (SqlException) // Security problem, user is usually not authorized to access the database
+                    {
+                        info.IsOnline = false;
+                        continue;
+                    }
+
                     var size = await Task.Run(() => co.Query<DatabaseSizeInfo>(DatabaseSizeInfo.Query).First());
 
                     if (size != null && !string.IsNullOrEmpty(size.DatabaseSize))
