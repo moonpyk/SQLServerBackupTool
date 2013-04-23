@@ -20,3 +20,7 @@ In my setup, the program is automatically started all nights by the Windows Task
 TBD, for now, take **App.exemple.config**, and copy it to **App.config**, the things are pretty easy, you should able to guess how things are working.
 
 A more detailed documentation/tutorial will come later.
+
+## License ##
+
+Released under the terms of the Apache 2.0 license.
