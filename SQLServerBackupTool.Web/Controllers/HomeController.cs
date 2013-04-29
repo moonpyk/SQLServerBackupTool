@@ -46,6 +46,15 @@ namespace SQLServerBackupTool.Web.Controllers
         }
 
         /**
+         * API Documentation entry point
+         */
+
+        public ActionResult ApiDoc()
+        {
+            return View();
+        }
+
+        /**
          * Database list as a service
          */
 
