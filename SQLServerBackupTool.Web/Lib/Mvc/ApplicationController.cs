@@ -10,7 +10,7 @@ using System.Web.Routing;
 namespace SQLServerBackupTool.Web.Lib.Mvc
 {
     [Authorize, Localizable(false)]
-    public class ApplicationController : Controller, IFlashMessageProvider
+    public partial class ApplicationController : Controller, IFlashMessageProvider
     {
         protected Logger Logger
         {
