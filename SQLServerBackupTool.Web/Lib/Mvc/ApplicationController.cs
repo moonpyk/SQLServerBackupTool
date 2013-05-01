@@ -1,6 +1,5 @@
 ﻿using NLog;
 using SQLServerBackupTool.Web.Models;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
@@ -9,7 +8,7 @@ using System.Web.Routing;
 
 namespace SQLServerBackupTool.Web.Lib.Mvc
 {
-    [Authorize, Localizable(false)]
+    [Authorize]
     public abstract partial class ApplicationController : Controller, IFlashMessageProvider
     {
         protected Logger Logger

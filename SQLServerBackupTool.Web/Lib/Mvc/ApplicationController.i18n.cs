@@ -8,7 +8,7 @@ namespace SQLServerBackupTool.Web.Lib.Mvc
     {
         private static readonly ILocalizingService LocaleService = new LocalizingService();
 
-        public string _(string text)
+        public string __(string text)
         {
             if (Request == null)
             {
@@ -26,9 +26,9 @@ namespace SQLServerBackupTool.Web.Lib.Mvc
             return LocaleService.GetText(text, Request.UserLanguages);
         }
 
-        IHtmlString ILocalizing._(string text)
+        public IHtmlString _(string text)
         {
-            return new MvcHtmlString(_(text));
+            return new MvcHtmlString(__(text));
         }
     }
 }
