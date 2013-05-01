@@ -19,9 +19,15 @@ namespace SQLServerBackupTool.Web.Controllers
 {
     public class HomeController : ApplicationController
     {
-        private const string MessageUnauthorizedDatabase = "You are not authorized to access this database";
+        private readonly string MessageUnauthorizedDatabase;
 
         private static readonly Dictionary<Type, XmlSerializer> Serializers = new Dictionary<Type, XmlSerializer>();
+
+        public HomeController()
+            : base()
+        {
+            MessageUnauthorizedDatabase = _("You are not authorized to access this database");
+        }
 
         protected override void Initialize(RequestContext r)
         {
@@ -87,7 +93,7 @@ namespace SQLServerBackupTool.Web.Controllers
                 }
                 catch (SqlException ex) // Schema doesn't exists, usually
                 {
-                    var message = string.Format("An error occurred while retrieving '{0}' schema.", id);
+                    var message = string.Format(_("An error occurred while retrieving '{0}' schema."), id);
                     AddFlashMessage(message, FlashMessageType.Error);
                     Logger.ErrorException(message, ex);
 
@@ -136,7 +142,7 @@ namespace SQLServerBackupTool.Web.Controllers
 
             if (bk == null)
             {
-                return HttpNotFound(string.Format("Unable to create database backup for '{0}'", id));
+                return HttpNotFound(string.Format(_("Unable to create database backup for '{0}'"), id));
             }
 
             return PartialView("_BackupItem", bk);
@@ -153,7 +159,7 @@ namespace SQLServerBackupTool.Web.Controllers
 
             if (string.IsNullOrWhiteSpace(format))
             {
-                return HttpNotAcceptable("No format specified");
+                return HttpNotAcceptable(_("No format specified"));
             }
 
             if (!IsDatabaseAuthorized(User, id))
@@ -163,7 +169,7 @@ namespace SQLServerBackupTool.Web.Controllers
 
             if (bk == null)
             {
-                return HttpNotFound(string.Format("Unable to create database backup for '{0}'", id));
+                return HttpNotFound(string.Format(_("Unable to create database backup for '{0}'"), id));
             }
 
             // Zip hook, direct backup and return result
@@ -207,11 +213,11 @@ namespace SQLServerBackupTool.Web.Controllers
         {
             if (BackupsManager.PurgeOldBackups(DbContext, DateTime.Now, Logger))
             {
-                AddFlashMessage("Outdated backups successfully purged", FlashMessageType.Success);
+                AddFlashMessage(_("Outdated backups successfully purged"), FlashMessageType.Success);
             }
             else
             {
-                AddFlashMessage("An error occurred during purging", FlashMessageType.Error);
+                AddFlashMessage(_("An error occurred during purging"), FlashMessageType.Error);
             }
 
             return RedirectToAction("Index");
@@ -224,7 +230,7 @@ namespace SQLServerBackupTool.Web.Controllers
 
             if (bk == null)
             {
-                return HttpNotFound("Not a valid backup id");
+                return HttpNotFound(_("Not a valid backup id"));
             }
 
             if (!User.IsInRole("Admin") && !User.IsInRole("Operator"))
@@ -247,13 +253,13 @@ namespace SQLServerBackupTool.Web.Controllers
                         return Content(@"OK", "text/plain");
                     }
 
-                    AddFlashMessage("Backup successfully deleted", FlashMessageType.Success);
+                    AddFlashMessage(_("Backup successfully deleted"), FlashMessageType.Success);
 
                     return RedirectToAction("Index");
                 }
                 catch (Exception ex)
                 {
-                    Logger.ErrorException("While saving database changes", ex);
+                    Logger.ErrorException(_("While saving database changes"), ex);
                 }
             }
 
@@ -262,7 +268,7 @@ namespace SQLServerBackupTool.Web.Controllers
                 return Content(@"ERR", "text/plain");
             }
 
-            AddFlashMessage("An error occurred while deleting backup.", FlashMessageType.Error);
+            AddFlashMessage(_("An error occurred while deleting backup."), FlashMessageType.Error);
 
             return RedirectToAction("Index");
         }
@@ -297,7 +303,7 @@ namespace SQLServerBackupTool.Web.Controllers
                     return Json(o, JsonRequestBehavior.AllowGet);
 
                 default:
-                    return HttpNotAcceptable("Unknown format");
+                    return HttpNotAcceptable(_("Unknown format"));
             }
         }
 
