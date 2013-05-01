@@ -9,16 +9,27 @@ namespace SQLServerBackupTool.Web.Lib.Mvc
         private readonly ILocalizingService _service = new LocalizingService();
         public IHtmlString _(string text)
         {
-            return MvcHtmlString.Create(_service.GetText(text, Request.UserLanguages));
+            return MvcHtmlString.Create(__(text));
+        }
+
+        public string __(string text)
+        {
+            return _service.GetText(text, Request.UserLanguages);
         }
     }
 
     public abstract class SsbtWebViewPage<T> : WebViewPage<T>, ILocalizing
     {
         private readonly ILocalizingService _service = new LocalizingService();
+
         public IHtmlString _(string text)
         {
-            return MvcHtmlString.Create(_service.GetText(text, Request.UserLanguages));
+            return MvcHtmlString.Create(__(text));
+        }
+
+        public string __(string text)
+        {
+            return _service.GetText(text, Request.UserLanguages);
         }
     }
 }
