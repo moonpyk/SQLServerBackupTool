@@ -208,6 +208,8 @@
     <Content Include="Backups\web.config" />
     <Content Include="Logs\web.config" />
     <Content Include="Locale\messages.pot" />
+    <Content Include="Locale\web.config" />
+    <Content Include="Locale\fr\messages.po" />
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
     <Content Include="Scripts\jquery.pldr.js" />
     <Content Include="Scripts\jquery-1.9.1.js" />
