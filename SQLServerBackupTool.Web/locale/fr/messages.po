@@ -1,0 +1,186 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: Clément Bourgeois <moonpyk@gmail.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.5\n"
+
+#: C:\Users\moonpyk\Documents\Visual Studio
+#: 2012\Projects\ssbt\SQLServerBackupTool.Web\Controllers\HomeController.cs:31
+msgid "You are not authorized to access this database"
+msgstr "Vous n'êtes pas autorisé(e) à acceder à cette base de données"
+
+#: C:\Users\moonpyk\Documents\Visual Studio
+#: 2012\Projects\ssbt\SQLServerBackupTool.Web\Controllers\HomeController.cs:92
+#, csharp-format
+msgid "An error occurred while retrieving '{0}' schema."
+msgstr "Une erreur est survenue pendant la récupération du schéma de '{0}'"
+
+#: C:\Users\moonpyk\Documents\Visual Studio
+#: 2012\Projects\ssbt\SQLServerBackupTool.Web\Controllers\HomeController.cs:141
+#: 2012\Projects\ssbt\SQLServerBackupTool.Web\Controllers\HomeController.cs:168
+#, csharp-format
+msgid "Unable to create database backup for '{0}'"
+msgstr "Impossible de faire une sauvegarde de la base '{0}'"
+
+#: C:\Users\moonpyk\Documents\Visual Studio
+#: 2012\Projects\ssbt\SQLServerBackupTool.Web\Controllers\HomeController.cs:158
+msgid "No format specified"
+msgstr "Aucun format spécifié"
+
+#: C:\Users\moonpyk\Documents\Visual Studio
+#: 2012\Projects\ssbt\SQLServerBackupTool.Web\Controllers\HomeController.cs:212
+msgid "Outdated backups successfully purged"
+msgstr "Les anciennes sauvegardes ont été purgées"
+
+#: C:\Users\moonpyk\Documents\Visual Studio
+#: 2012\Projects\ssbt\SQLServerBackupTool.Web\Controllers\HomeController.cs:216
+msgid "An error occurred during purging"
+msgstr "Une erreur est survenue pendant la purge"
+
+#: C:\Users\moonpyk\Documents\Visual Studio
+#: 2012\Projects\ssbt\SQLServerBackupTool.Web\Controllers\HomeController.cs:229
+msgid "Not a valid backup id"
+msgstr "Id de sauvegarde invalide"
+
+#: C:\Users\moonpyk\Documents\Visual Studio
+#: 2012\Projects\ssbt\SQLServerBackupTool.Web\Controllers\HomeController.cs:252
+msgid "Backup successfully deleted"
+msgstr "Sauvegarde supprimée avec succès"
+
+#: C:\Users\moonpyk\Documents\Visual Studio
+#: 2012\Projects\ssbt\SQLServerBackupTool.Web\Controllers\HomeController.cs:258
+msgid "While saving database changes"
+msgstr "Pendant la sauvegarde des changements"
+
+#: C:\Users\moonpyk\Documents\Visual Studio
+#: 2012\Projects\ssbt\SQLServerBackupTool.Web\Controllers\HomeController.cs:267
+msgid "An error occurred while deleting backup."
+msgstr "Une erreur est survenue pendant la suppression de la sauvegarde"
+
+#: C:\Users\moonpyk\Documents\Visual Studio
+#: 2012\Projects\ssbt\SQLServerBackupTool.Web\Controllers\HomeController.cs:302
+msgid "Unknown format"
+msgstr "Format inconnu"
+
+#: C:\Users\moonpyk\Documents\Visual Studio
+#: 2012\Projects\ssbt\SQLServerBackupTool.Web\Views\Home\Index.cshtml:3
+msgid "Databases list"
+msgstr "Liste des bases de données"
+
+#: C:\Users\moonpyk\Documents\Visual Studio
+#: 2012\Projects\ssbt\SQLServerBackupTool.Web\Views\Home\Index.cshtml:18
+msgid "Id"
+msgstr "Id"
+
+#: C:\Users\moonpyk\Documents\Visual Studio
+#: 2012\Projects\ssbt\SQLServerBackupTool.Web\Views\Home\Index.cshtml:19
+msgid "Database name"
+msgstr "Nom"
+
+#: C:\Users\moonpyk\Documents\Visual Studio
+#: 2012\Projects\ssbt\SQLServerBackupTool.Web\Views\Home\Index.cshtml:20
+#: 2012\Projects\ssbt\SQLServerBackupTool.Web\Views\Home\Index.cshtml:73
+msgid "Size"
+msgstr "Taille"
+
+#: C:\Users\moonpyk\Documents\Visual Studio
+#: 2012\Projects\ssbt\SQLServerBackupTool.Web\Views\Home\Index.cshtml:39
+msgid "Schema"
+msgstr "Schéma"
+
+#: C:\Users\moonpyk\Documents\Visual Studio
+#: 2012\Projects\ssbt\SQLServerBackupTool.Web\Views\Home\Index.cshtml:42
+msgid "Backup"
+msgstr "Sauvegarder"
+
+#: C:\Users\moonpyk\Documents\Visual Studio
+#: 2012\Projects\ssbt\SQLServerBackupTool.Web\Views\Home\Index.cshtml:49
+msgid "Offline"
+msgstr "Hors ligne"
+
+#: C:\Users\moonpyk\Documents\Visual Studio
+#: 2012\Projects\ssbt\SQLServerBackupTool.Web\Views\Home\Index.cshtml:58
+msgid "No available database for backup"
+msgstr "Aucune base n'est disponible pour sauvegarde"
+
+#: C:\Users\moonpyk\Documents\Visual Studio
+#: 2012\Projects\ssbt\SQLServerBackupTool.Web\Views\Home\Index.cshtml:70
+msgid "Database"
+msgstr "Base de données"
+
+#: C:\Users\moonpyk\Documents\Visual Studio
+#: 2012\Projects\ssbt\SQLServerBackupTool.Web\Views\Home\Index.cshtml:71
+msgid "User"
+msgstr "Utilisateur"
+
+#: C:\Users\moonpyk\Documents\Visual Studio
+#: 2012\Projects\ssbt\SQLServerBackupTool.Web\Views\Home\Index.cshtml:72
+msgid "Expiration"
+msgstr "Expiration"
+
+#: C:\Users\moonpyk\Documents\Visual Studio
+#: 2012\Projects\ssbt\SQLServerBackupTool.Web\Views\Home\Index.cshtml:88
+msgid "No available database backup"
+msgstr "Aucune sauvegarde n'est disponible"
+
+#: C:\Users\moonpyk\Documents\Visual Studio
+#: 2012\Projects\ssbt\SQLServerBackupTool.Web\Views\Home\Index.cshtml:98
+msgid "Purge"
+msgstr "Purger"
+
+#: C:\Users\moonpyk\Documents\Visual Studio
+#: 2012\Projects\ssbt\SQLServerBackupTool.Web\Views\Home\Schema.cshtml:4
+#, csharp-format
+msgid "Schema of {0}"
+msgstr "Schéma de {0}"
+
+#: C:\Users\moonpyk\Documents\Visual Studio
+#: 2012\Projects\ssbt\SQLServerBackupTool.Web\Views\Home\Schema.cshtml:10
+msgid "Table"
+msgstr "Table"
+
+#: C:\Users\moonpyk\Documents\Visual Studio
+#: 2012\Projects\ssbt\SQLServerBackupTool.Web\Views\Home\Schema.cshtml:11
+msgid "Column"
+msgstr "Colonne"
+
+#: C:\Users\moonpyk\Documents\Visual Studio
+#: 2012\Projects\ssbt\SQLServerBackupTool.Web\Views\Home\Schema.cshtml:12
+msgid "Data type"
+msgstr "Type de données"
+
+#: C:\Users\moonpyk\Documents\Visual Studio
+#: 2012\Projects\ssbt\SQLServerBackupTool.Web\Views\Home\Schema.cshtml:13
+msgid "Row count"
+msgstr "Nombre de lignes"
+
+#: C:\Users\moonpyk\Documents\Visual Studio
+#: 2012\Projects\ssbt\SQLServerBackupTool.Web\Views\Home\_BackupItem.cshtml:12
+msgid "Download"
+msgstr "Télécharger"
+
+#: C:\Users\moonpyk\Documents\Visual Studio
+#: 2012\Projects\ssbt\SQLServerBackupTool.Web\Views\Home\_BackupItem.cshtml:15
+msgid "Delete"
+msgstr "Supprimer"
+
+#: C:\Users\moonpyk\Documents\Visual Studio
+#: 2012\Projects\ssbt\SQLServerBackupTool.Web\Views\Shared\_Layout.cshtml:16
+msgid "Home"
+msgstr "Accueil"
+
+#: C:\Users\moonpyk\Documents\Visual Studio
+#: 2012\Projects\ssbt\SQLServerBackupTool.Web\Views\Shared\_Layout.cshtml:21
+msgid "Users"
+msgstr "Utilisateurs"
+
+#: C:\Users\moonpyk\Documents\Visual Studio
+#: 2012\Projects\ssbt\SQLServerBackupTool.Web\Views\Shared\_Layout.cshtml:36
+msgid "Baked with love by"
+msgstr "Codé avec amour par"

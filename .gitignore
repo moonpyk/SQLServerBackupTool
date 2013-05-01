@@ -71,3 +71,4 @@ sql
 TestResults
 UpgradeLog*.XML
 AssemblyInfo.Generated.cs
+*~
