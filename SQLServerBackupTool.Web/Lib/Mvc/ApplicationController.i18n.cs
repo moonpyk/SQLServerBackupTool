@@ -10,6 +10,11 @@ namespace SQLServerBackupTool.Web.Lib.Mvc
 
         public string _(string text)
         {
+            if (Request == null)
+            {
+                return text;
+            }
+
             // // Prefer a stored value to browser-supplied preferences
             // var stored = LanguageSession.GetLanguageFromSession(ControllerContext.HttpContext);
             // if (stored != null)
@@ -18,8 +23,7 @@ namespace SQLServerBackupTool.Web.Lib.Mvc
             // }
 
             // Find the most appropriate fit from the user's browser settings
-            var languages = HttpContext.Request.UserLanguages;
-            return LocaleService.GetText(text, languages);
+            return LocaleService.GetText(text, Request.UserLanguages);
         }
 
         IHtmlString ILocalizing._(string text)

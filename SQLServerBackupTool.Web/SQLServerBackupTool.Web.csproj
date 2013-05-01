@@ -165,6 +165,7 @@
     <Compile Include="Lib\Mvc\ApplicationController.i18n.cs" />
     <Compile Include="Lib\Mvc\FlashMessages.cs" />
     <Compile Include="Lib\Interfaces\IMembershipUser.cs" />
+    <Compile Include="Lib\Mvc\SsbtWebViewPage.cs" />
     <Compile Include="Models\DatabaseSizeInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.Generated.cs" />
     <Compile Include="ViewModels\IndexViewModel.cs" />
