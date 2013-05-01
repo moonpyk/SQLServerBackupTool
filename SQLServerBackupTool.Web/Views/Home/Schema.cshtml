@@ -1,19 +1,19 @@
 ﻿@model IEnumerable<SchemaInfo>
 
 @{
-    ViewBag.Title = string.Format("Schema of {0}", ViewBag.Database);
+    ViewBag.Title = string.Format(__("Schema of {0}"), ViewBag.Database);
 }
 
 <table class="table table-bordered">
     <thead>
         <tr>
-            <th>Table</th>
-            <th>Column</th>
-            <th>Data type</th>
-            <th>Row count</th>
+            <th>@_("Table")</th>
+            <th>@_("Column")</th>
+            <th>@_("Data type")</th>
+            <th>@_("Row count")</th>
         </tr>
     </thead>
-    @foreach (var t in Model.GroupBy(_ => _.Table))
+    @foreach (var t in Model.GroupBy(tt => tt.Table))
     {
         var cols = t.ToList();
         var f = cols.First();

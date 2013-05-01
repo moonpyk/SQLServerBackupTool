@@ -9,10 +9,10 @@
     <td>
         <div class="btn-group">
             <a class="btn" href="@Url.Action("Download", new { id=Model.Id })">
-                <i class="icon-download"></i><span>&nbsp;Download</span>
+                <i class="icon-download"></i><span>&nbsp;@_("Download")</span>
             </a>
             <a class="backup-delete btn btn-danger" href="@Url.Action("Delete", new { id = Model.Id })" onclick="return false;">
-                <i class="icon-white icon-trash"></i><span>&nbsp;Delete</span>
+                <i class="icon-white icon-trash"></i><span>&nbsp;@_("Delete")</span>
             </a>
         </div>
     </td>

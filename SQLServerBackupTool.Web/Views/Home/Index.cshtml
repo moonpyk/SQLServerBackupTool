@@ -1,6 +1,6 @@
 ﻿@model IndexViewModel
 @{
-    ViewBag.Title = "Databases list";
+    ViewBag.Title = __("Databases list");
 
     var roles = Roles.GetRolesForUser();
 }
@@ -15,9 +15,9 @@
 <table class="table table-bordered table-striped table-vmiddle">
     <thead>
         <tr>
-            <th>Id</th>
-            <th>Database name</th>
-            <th>Size</th>
+            <th>@_("Id")</th>
+            <th>@_("Database name")</th>
+            <th>@_("Size")</th>
             <th style="width: 70px;"></th>
         </tr>
     </thead>
@@ -36,17 +36,17 @@
                     <td>
                         <div class="btn-group">
                             <a href="@Url.Action("Schema", new { id = di.Name })" class="btn">
-                                <i class="icon-eye-open"></i><span>&nbsp;Schema</span>
+                                <i class="icon-eye-open"></i><span>&nbsp;@_("Schema")</span>
                             </a>
                             <a class="btn btn-inverse backup-do" href="@Url.Action("Backup", new { id = di.Name })">
-                                <i class="icon-white icon-download"></i><span>&nbsp;Backup</span>
+                                <i class="icon-white icon-download"></i><span>&nbsp;@_("Backup")</span>
                             </a>
                         </div>
                     </td>
                 }
                 else
                 {
-                    <td colspan="2"><span class="muted">Offline</span></td>   
+                    <td colspan="2"><span class="muted">@_("Offline")</span></td>   
                 }
             </tr>
             }
@@ -55,7 +55,7 @@
         {
             <tr class="no-row">
                 <td colspan="3">
-                    <i>No available database for backup</i>
+                    <i>@_("No available database for backup")</i>
                 </td>
             </tr>
         }
@@ -67,10 +67,10 @@
         <thead>
             <tr>
                 <th>#</th>
-                <th>Database</th>
-                <th>User</th>
-                <th>Expiration</th>
-                <th style="width: 50px;">Size</th>
+                <th>@_("Database")</th>
+                <th>@_("User")</th>
+                <th>@_("Expiration")</th>
+                <th style="width: 50px;">@_("Size")</th>
                 <th style="width: 30px;"></th>
             </tr>
         </thead>
@@ -85,7 +85,7 @@
             else
             {
                 <tr class="no-row">
-                    <td colspan="6"><i>No available database backup</i></td>
+                    <td colspan="6"><i>@_("No available database backup")</i></td>
                 </tr>
             }
         </tbody>
@@ -95,7 +95,7 @@
                 <tr>
                     <td colspan="6">
                         <a id="backup-purge" href="@Url.Action("BackupsPurge")" onclick="return false;" class="btn btn-danger">
-                            <i class="icon-warning-sign icon-white"></i><span>&nbsp;Purge</span>
+                            <i class="icon-warning-sign icon-white"></i><span>&nbsp;@_("Purge")</span>
                         </a>
                     </td>
                 </tr>
