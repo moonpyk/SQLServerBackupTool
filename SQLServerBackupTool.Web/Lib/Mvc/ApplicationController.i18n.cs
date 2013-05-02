@@ -1,4 +1,5 @@
 ﻿using i18n;
+using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
@@ -10,7 +11,7 @@ namespace SQLServerBackupTool.Web.Lib.Mvc
 
         public string __(string text)
         {
-            if (Request == null)
+            if (Request == null || Request.UserLanguages == null || !Request.UserLanguages.Any())
             {
                 return text;
             }
