@@ -34,6 +34,7 @@
 *.vssscc
 *_i.c
 *_p.c
+*~
 .*crunch*.local.xml
 .builds
 .idea/
@@ -52,6 +53,7 @@ _ReSharper*/
 _UpgradeReport_Files/
 ~$*
 App_Data*/
+AssemblyInfo.Generated.cs
 Backup*/
 build/
 ClientBin
@@ -65,10 +67,12 @@ DocProject/Help/html
 DocProject/Help/Html2
 Generated_Code #added for RIA/Silverlight projects
 ipch/
+locale/en-US/
+locale/fr-FR/
 packages/
 publish
 sql
+SQLServerBackupTool.Web/locale/en-US/
+SQLServerBackupTool.Web/locale/fr-FR/
 TestResults
 UpgradeLog*.XML
-AssemblyInfo.Generated.cs
-*~
