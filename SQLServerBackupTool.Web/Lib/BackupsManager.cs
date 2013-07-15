@@ -195,7 +195,15 @@ namespace SQLServerBackupTool.Web.Lib
                 .Where(_ => from > _.Expires)
                 .ToList();
 
-            var didChange = oldBackups.Any(_ => DeleteBackup(ddb, _, logger));
+            var didChange = false;
+
+            foreach (var b in oldBackups)
+            {
+                if (DeleteBackup(ddb, b, logger))
+                {
+                    didChange = true;
+                }
+            }
 
             if (!didChange)
             {
