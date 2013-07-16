@@ -22,7 +22,7 @@ namespace SQLServerBackupTool.Web
                 "~/Scripts/jquery.pldr.js",
                 "~/Scripts/select2.js",
                 "~/Scripts/ssbtw.js"
-            ));
+            ).IncludeDirectory("~/Scripts/lang/", "*.js"));
 
             // Styles
 

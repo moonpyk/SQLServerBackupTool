@@ -1,12 +1,25 @@
-window.ssbt = {
-    messages: {
-        CONFIRM_DELETE_BACKUP: 'Are you sure you want to delete this database backup ?',
-        CONFIRM_PURGE_BACKUPS: 'Are you sure you want to purge expired backups ?',
-        WAIT_WHILE_BACKUP: 'Please wait while your backup is beeing done...'
-    }
-};
+(function (exports) {
+    exports.ssbt = exports.ssbt || {};
+    exports.ssbt.lang = exports.ssbt.lang || {};
+    exports.ssbt.currentLang = "en";
 
+    function getMessage(m) {
+        var loc = exports.ssbt.lang[exports.ssbt.currentLang];
+
+        if (typeof loc === "object" && typeof loc[m] === "string" && loc[m] !== "") {
+            return loc[m];
+        }
+        return m;
+    };
+
+    exports._ = function (m) {
+        return getMessage(m);
+    };
+
+}(window));
 $(document).ready(function () {
+    ssbt.currentLang = $('html').attr('lang');
+
     // Multiusage antiforgery token protected form
     var $f = $('#form-aft');
 
@@ -15,7 +28,10 @@ $(document).ready(function () {
      */
 
     $('.pldr').pldr({ autostart: false });
-    $('.loading').modal({ show: false, keyboard: false });
+    $('.loading').modal({
+        show: false,
+        keyboard: false
+    });
 
     $('.select2').each(function () {
         var $me = $(this);
@@ -43,7 +59,7 @@ $(document).ready(function () {
     $('#backup-purge').on('click', function (e) {
         e.preventDefault();
 
-        if (!confirm(ssbt.messages.CONFIRM_PURGE_BACKUPS)) {
+        if (!confirm(_('Are you sure you want to purge expired backups ?'))) {
             return;
         }
 
@@ -58,7 +74,7 @@ $(document).ready(function () {
         var $me = $(this),
             $bContainer = $('#backups-container');
 
-        var wait = pleaseWait(ssbt.messages.WAIT_WHILE_BACKUP);
+        var wait = pleaseWait(_('Please wait while your backup is beeing done...'));
 
         $.ajax({
             type: 'post',
@@ -67,6 +83,7 @@ $(document).ready(function () {
         }).done(function (html) {
             $bContainer.find('.no-row').remove();
             $bContainer.append(html);
+
         }).always(function () {
             wait.modal('hide');
         });
@@ -75,7 +92,7 @@ $(document).ready(function () {
     $(document).on('click', '.backup-delete', function (e) {
         e.preventDefault();
 
-        if (!confirm(ssbt.messages.CONFIRM_DELETE_BACKUP)) {
+        if (!confirm(_('Are you sure you want to delete this database backup ?'))) {
             return;
         }
 
@@ -83,7 +100,7 @@ $(document).ready(function () {
             $tbody = $me.parents('tbody'),
             href = $me.attr('href');
 
-        if ($tbody.find('tr').length == 1) {
+        if ($tbody.find('tr').length === 1) {
             $f.attr('action', href).submit();
             return;
         }

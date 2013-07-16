@@ -16,6 +16,14 @@ namespace SQLServerBackupTool.Web.Lib.Mvc
         {
             return _service.GetText(text, Request.UserLanguages);
         }
+
+        public string Language
+        {
+            get
+            {
+                return __("en");
+            }
+        }
     }
 
     public abstract class SsbtWebViewPage<T> : WebViewPage<T>, ILocalizing
@@ -30,6 +38,14 @@ namespace SQLServerBackupTool.Web.Lib.Mvc
         public string __(string text)
         {
             return _service.GetText(text, Request.UserLanguages);
+        }
+
+        public string Language
+        {
+            get
+            {
+                return __("en");
+            }
         }
     }
 }

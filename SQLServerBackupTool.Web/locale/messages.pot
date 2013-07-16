@@ -45,6 +45,11 @@ msgstr ""
 msgid "Unknown format"
 msgstr ""
 
+#: C:\Users\moonpyk\Documents\Visual Studio 2012\Projects\ssbt\SQLServerBackupTool.Web\Lib\Mvc\SsbtWebViewPage.cs:24
+#: C:\Users\moonpyk\Documents\Visual Studio 2012\Projects\ssbt\SQLServerBackupTool.Web\Lib\Mvc\SsbtWebViewPage.cs:47
+msgid "en"
+msgstr ""
+
 #: C:\Users\moonpyk\Documents\Visual Studio 2012\Projects\ssbt\SQLServerBackupTool.Web\Views\Home\Index.cshtml:3
 msgid "Databases list"
 msgstr ""
@@ -127,14 +132,14 @@ msgstr ""
 msgid "Delete"
 msgstr ""
 
-#: C:\Users\moonpyk\Documents\Visual Studio 2012\Projects\ssbt\SQLServerBackupTool.Web\Views\Shared\_Layout.cshtml:16
+#: C:\Users\moonpyk\Documents\Visual Studio 2012\Projects\ssbt\SQLServerBackupTool.Web\Views\Shared\_Layout.cshtml:15
 msgid "Home"
 msgstr ""
 
-#: C:\Users\moonpyk\Documents\Visual Studio 2012\Projects\ssbt\SQLServerBackupTool.Web\Views\Shared\_Layout.cshtml:21
+#: C:\Users\moonpyk\Documents\Visual Studio 2012\Projects\ssbt\SQLServerBackupTool.Web\Views\Shared\_Layout.cshtml:20
 msgid "Users"
 msgstr ""
 
-#: C:\Users\moonpyk\Documents\Visual Studio 2012\Projects\ssbt\SQLServerBackupTool.Web\Views\Shared\_Layout.cshtml:36
+#: C:\Users\moonpyk\Documents\Visual Studio 2012\Projects\ssbt\SQLServerBackupTool.Web\Views\Shared\_Layout.cshtml:35
 msgid "Baked with love by"
 msgstr ""
